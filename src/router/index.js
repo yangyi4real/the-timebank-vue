@@ -40,6 +40,7 @@ import lecturerDetails from '../pages/Enterprise/Customized/lecturerDetails' // 
 import Appointment from '../pages/Enterprise/Customized/Appointment' // 预约
 import AppointmentInput from '../pages/Enterprise/Customized/AppointmentInput' // 预约-填写
 import ReserveIndex from '../pages/Enterprise/Reserve/Index' // 定制服务
+import ServiceDetails from '../pages/Enterprise/Reserve/ServiceDetails' // 服务详情
 import UserIndex from '../pages/Enterprise/User/Index' // 企业端-我的
 import EnterpriseInfo from '../pages/Enterprise/User/EnterpriseInfo' // 企业信息
 import PersonalCenter from '../pages/Enterprise/User/PersonalCenter' // 个人中心
@@ -280,6 +281,12 @@ export default new Router({
       path: '/reserve/index',
       name: 'ReserveIndex',
       component: ReserveIndex
+    },
+    // 服务详情
+    {
+      path: '/reserve/servicedetails',
+      name: 'ServiceDetails',
+      component: ServiceDetails
     },
     // 我的
     {
