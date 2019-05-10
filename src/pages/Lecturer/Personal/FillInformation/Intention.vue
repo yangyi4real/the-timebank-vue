@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="intention-btn">
-        <div @click="pushClick" :class="{ '': inOperation, 'btn-border': operation}">下一步</div>
+        <div @click="pushClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">下一步</div>
       </div>
     </div>
   </div>
