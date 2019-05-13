@@ -49,6 +49,6 @@ export default {
   .pay-base{padding: 0.5rem 0.2rem}
   .pay-base p{font-size:18px;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding: 0.2rem 0;}
   .pay-base-div{border-bottom: 0.01rem solid #E8E8E8;margin-bottom: 1.3rem;}
-  .pay-base-div input{font-size:0.32rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(0,0,0,1);line-height: 0.45rem;border: 0;outline: none;margin: 0.2rem 0;}
+  .pay-base-div input{font-size:0.32rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(0,0,0,1);line-height: 0.45rem;border: 0;outline: none;margin: 0.2rem 0;width: 100%;}
   .btn-bottom{padding-bottom: 2rem}
 </style>

@@ -13,7 +13,7 @@
         </div>
         <div class="course-text">
           <div class="course-text-title">课程内容/描述</div>
-          <textarea draggable="false" v-model="courseMsg" v-on:input="inputValue" placeholder="用文字描述自己或者直接上传一张简历图片吧~"></textarea>
+          <textarea draggable="false" v-model="courseMsg" v-on:input="inputValue" placeholder=""></textarea>
         </div>
       </div>
       <div class="course-btn flex-row-between">

@@ -8,7 +8,7 @@
         <div class="head flex-row-start">
           <div class="head-img">
             <!--<img :src="userIconUrl" @click="userIconDidClicked" class="User-icon">-->
-            <img src="" />
+            <img src="" @click="userIconDidClicked"/>
           </div>
           <div>
             <p class="head-text">进阶的讲师</p>
@@ -99,6 +99,9 @@ export default {
     // 完善资料
     baseDataClick () {
       this.$router.push('/personal/information/basedata')
+    },
+    userIconDidClicked () {
+      this.$router.push('/personal/personaldata')
     }
   },
   mounted () {}

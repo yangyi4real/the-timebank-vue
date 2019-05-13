@@ -29,7 +29,7 @@
           </div>
         </div>
         <div class="CoData-list flex-row-between">
-          <div class="CoData-list-left">注册地址</div>
+          <div class="CoData-list-left">地区</div>
           <div class="CoData-list-right flex-row-between">
             <div>
               <yd-cell-group>
@@ -42,6 +42,10 @@
             </div>
             <div><i class="iconfont iconjiantou"></i></div>
           </div>
+        </div>
+        <div class="CoData-list flex-row-between">
+          <div class="CoData-list-left">详细地址</div>
+          <div class="CoData-list-right"><input type="text" v-model="userAddress" placeholder="请填写详细地址" v-on:input="inputValue"/></div>
         </div>
         <div class="CoData-list flex-row-between">
           <div class="CoData-list-left">联系人</div>
@@ -80,6 +84,7 @@ export default {
       titleMsg: '企业信息',
       CoName: '',
       CoAbbName: '',
+      userAddress: '',
       userName: '',
       userPhone: '',
       CoEMail: '',
@@ -131,7 +136,7 @@ export default {
   },
   watch: {
     inputValue () {
-      if (this.CoName !== '' && this.CoAbbName !== '' && this.userName !== '' && this.CoEMail !== '' && this.registerDate !== '' && this.areaValue !== '') {
+      if (this.CoName !== '' && this.CoAbbName !== '' && this.userName !== '' && this.userAddress !== '' && this.CoEMail !== '' && this.registerDate !== '' && this.areaValue !== '') {
         this.inOperation = false
         this.operation = true
       } else {

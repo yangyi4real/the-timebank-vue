@@ -4,8 +4,11 @@ import Router from 'vue-router'
 import CalendarIndex from '../pages/Lecturer/Calendar/Index' // 日历
 import ceshi from '../pages/Lecturer/Calendar/ceshi' // 测试
 import Definitions from '../pages/Lecturer/Calendar/Definitions' // 名词解释
-import CourseIndex from '../pages/Lecturer/Course/Index' // 约课记录
+import CourseIndex from '../pages/Lecturer/Course/Index' // 约讲记录
+import CoEvaluate from '../pages/Lecturer/Course/CoEvaluate' // 评价企业
+import AboutDetails from '../pages/Lecturer/Course/AboutDetails' // 约讲详情
 import PersonalIndex from '../pages/Lecturer/Personal/Index' // 我的
+import PersonalData from '../pages/Lecturer/Personal/PersonalData' // 个人资料
 import BaseData from '../pages/Lecturer/Personal/FillInformation/BaseData' // 基本信息
 import Intention from '../pages/Lecturer/Personal/FillInformation/Intention' // 存储意向
 import Profile from '../pages/Lecturer/Personal/FillInformation/Profile' // 介绍资料
@@ -41,6 +44,7 @@ import Appointment from '../pages/Enterprise/Customized/Appointment' // 预约
 import AppointmentInput from '../pages/Enterprise/Customized/AppointmentInput' // 预约-填写
 import ReserveIndex from '../pages/Enterprise/Reserve/Index' // 定制服务
 import ServiceDetails from '../pages/Enterprise/Reserve/ServiceDetails' // 服务详情
+import Purchase from '../pages/Enterprise/Reserve/Purchase' // 购买
 import UserIndex from '../pages/Enterprise/User/Index' // 企业端-我的
 import EnterpriseInfo from '../pages/Enterprise/User/EnterpriseInfo' // 企业信息
 import PersonalCenter from '../pages/Enterprise/User/PersonalCenter' // 个人中心
@@ -102,17 +106,35 @@ export default new Router({
       name: 'Definitions',
       component: Definitions
     },
-    // 约课记录
+    // 约讲记录
     {
       path: '/course/index',
       name: 'CourseIndex',
       component: CourseIndex
+    },
+    // 评价企业
+    {
+      path: '/course/evaluate',
+      name: 'CoEvaluate',
+      component: CoEvaluate
+    },
+    // 约讲详情
+    {
+      path: '/course/aboutdetails',
+      name: 'AboutDetails',
+      component: AboutDetails
     },
     // 我的
     {
       path: '/personal/index',
       name: 'personalIndex',
       component: PersonalIndex
+    },
+    // 个人资料
+    {
+      path: '/personal/personaldata',
+      name: 'PersonalData',
+      component: PersonalData
     },
     // 邀请好友
     {
@@ -287,6 +309,12 @@ export default new Router({
       path: '/reserve/servicedetails',
       name: 'ServiceDetails',
       component: ServiceDetails
+    },
+    // 购买
+    {
+      path: '/reserve/purchase',
+      name: 'Purchase',
+      component: Purchase
     },
     // 我的
     {

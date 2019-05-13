@@ -14,7 +14,7 @@
         <div class="intention-list flex-row-between" style="border: 0">
           <div>意向薪酬</div>
           <div>
-            <input type="text" v-model="Pay" placeholder="元/小时"/>
+            <input type="text" v-model="Pay" placeholder="请输入金额 "/> 元/小时
           </div>
         </div>
       </div>

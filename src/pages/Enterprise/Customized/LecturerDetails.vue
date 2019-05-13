@@ -23,7 +23,7 @@
             </div>
             <div class="lecturer-data-div3-right fr">
               <label>66</label>
-              <p>平台约课</p>
+              <p>平台约课数</p>
             </div>
           </div>
         </div>
@@ -34,8 +34,30 @@
             </div>
           </div>
           <div v-show="show1" class="lecturer-skill-div">1</div>
-          <div v-show="show2" class="lecturer-skill-div">2</div>
-          <div v-show="show3" class="lecturer-skill-div">3</div>
+          <div v-show="show2" class="lecturer-skill-div">
+            <div class="lecturer-skill-div-class">
+              <div class="lecturer-skill-div-class-title">产品设计的思路</div>
+              <div class="flex-row-start">
+                <div class="tip">产品经理</div>
+                <div class="tip">UI设计</div>
+              </div>
+              <div class="lecturer-skill-div-class-text">
+                内容介绍介绍介绍介绍：讲师介绍，课程介绍、服务案例 （历史案例、平台案例）、评价，若点击每个菜单按钮直 接切换至此模块；4.咨询：咨询客服，点击弹出电话，可 以进行拨打。。
+              </div>
+            </div>
+          </div>
+          <div v-show="show3" class="lecturer-skill-div">
+            <div class="lecturer-skill-div-case">
+              <p>历史案例</p>
+              <label>课程名称</label>
+              <label>企业名称</label>
+            </div>
+            <div class="lecturer-skill-div-case">
+              <p>平台案例</p>
+              <label>课程名称</label>
+              <label>企业名称</label>
+            </div>
+          </div>
           <div v-show="show4" class="lecturer-skill-div">
             <div class="lecturer-skill-evaluate flex-row-start">
               <div class="lecturer-skill-evaluate-left"><img src=""/></div>
@@ -149,4 +171,10 @@ export default {
   .lecturer-skill-evaluate .lecturer-skill-evaluate-right span{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:#A7A7A7;display: block;padding: 0.06rem 0;}
   .lecturer-skill-evaluate .lecturer-skill-evaluate-right p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
   .lecturer-skill-evaluate .lecturer-skill-evaluate-right p i{padding-right: 0.03rem;}
+  .lecturer-skill-div-case{padding-top: 0.2rem;border-bottom: 0.01rem solid #E8E8E8;}
+  .lecturer-skill-div-case p{font-size:0.15rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.15rem;}
+  .lecturer-skill-div-case label{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);display: block;padding-left: 0.15rem;padding-bottom: 0.15rem;}
+  .lecturer-skill-div-class .lecturer-skill-div-class-title{font-size:0.15rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding: 0.2rem 0;}
+  .lecturer-skill-div-class .tip{width: 0.84rem;height: 0.31rem;background:rgba(249,91,64,1);border-radius:5px;text-align: center;color: #fff;font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;line-height: 0.31rem;margin-right: 0.2rem;}
+  .lecturer-skill-div-class .lecturer-skill-div-class-text{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.2rem;padding-top: 0.2rem}
 </style>
