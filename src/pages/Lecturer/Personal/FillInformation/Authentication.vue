@@ -22,6 +22,12 @@
           <div class="tips">取消认证时，认证费用将退还给您</div>
         </div>
         <div class="basedata-list flex-row-between">
+          <div class="basedata-list-left">姓名</div>
+          <div>
+            <input type="text" placeholder="请输入真实姓名"/>
+          </div>
+        </div>
+        <div class="basedata-list flex-row-between">
           <div class="basedata-list-left">身份证</div>
           <div>
             <input type="text" placeholder="上传身份证正反面"/><i class="iconfont iconjiantou"></i>
