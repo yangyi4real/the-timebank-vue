@@ -85,4 +85,8 @@ export default {
   .btn-border-opacity{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40;background:rgba(249,91,64,1);opacity:0.4966;color:rgba(255,255,255,1);}
   /*按钮背景色不透明*/
   .btn-border{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40;background:rgba(249,91,64,1);color:rgba(255,255,255,1);}
+  .treeselect .vue-treeselect__multi-value-item{color: #fff;background: rgba(249,91,64,1);}
+  .treeselect .vue-treeselect__value-remove{color: #fff;}
+  .treeselect .vue-treeselect__checkbox--checked{background: rgba(249,91,64,1)!important;border: 0.01rem solid rgba(249,91,64,1)!important;}
+  .treeselect .vue-treeselect__indent-level-0 .vue-treeselect__option{padding-top: 0.1rem;padding-bottom: 0.1rem;}
 </style>

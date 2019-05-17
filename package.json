@@ -11,7 +11,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@riophae/vue-treeselect": "^0.0.38",
     "axios": "^0.18.0",
+    "js-cookie": "^2.2.0",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.4",
     "vue-calendar-component": "^2.8.2",

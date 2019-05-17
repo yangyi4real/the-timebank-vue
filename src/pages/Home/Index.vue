@@ -27,7 +27,8 @@ export default {
       shows: 1
     }
   },
-  computed: {},
+  computed: {
+  },
   methods: {
     jsClick () {
       this.shows = 1
@@ -36,8 +37,9 @@ export default {
       this.shows = 2
     },
     loginClick () {
+      console.log(this.getUserType)
       // this.$router.push(`/sych/taskconfirm/${_this.refereeCardId}/${_this.userAccount}`)
-      this.$router.push('/login')
+      // this.$router.push('/login')
     }
   },
   mounted () {}

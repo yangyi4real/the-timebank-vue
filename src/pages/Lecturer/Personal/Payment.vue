@@ -91,7 +91,7 @@ export default {
       this.$router.push('/personal/setup/newpaypassword')
     },
     getPush () {
-      // this.$dialog.loading.open('支付中，请勿操作')
+      this.$dialog.loading.open('支付中，请勿操作')
       // setTimeout(() => {
       //   this.$dialog.loading.close()
       // }, 2000)

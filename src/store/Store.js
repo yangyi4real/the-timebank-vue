@@ -1,7 +1,7 @@
 /* eslint-disable import/first */
 import Vue from 'vue'
 import Vuex from 'vuex'
-import HTTPData from '../common/HTTPData.js'
+import HTTPData from '../common/HTTPDatas.js'
 let httpData = new HTTPData()
 import {
   SHOW_PROGRESS,

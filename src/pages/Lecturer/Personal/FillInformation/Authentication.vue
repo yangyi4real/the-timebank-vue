@@ -28,9 +28,9 @@
           </div>
         </div>
         <div class="basedata-list flex-row-between">
-          <div class="basedata-list-left">身份证</div>
+          <div class="basedata-list-left">身份证号</div>
           <div>
-            <input type="text" placeholder="上传身份证正反面"/><i class="iconfont iconjiantou"></i>
+            <input type="text" placeholder="请输入身份证号"/>
           </div>
         </div>
         <div class="basedata-list flex-row-between">

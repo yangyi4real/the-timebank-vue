@@ -2,12 +2,11 @@
 /**
  * 功能描述：HTTPData.js 项目网络数据
  */
-// import axios from 'vue-axios'
 import axios from 'axios'
 import SaiLeiTool from './SaiLei'
 import TipsTools from './TipsTools'
-// import UserModel from '../pages/member/UserModel'
-import { SHOW_GLOBAL_LOGIN } from '../store/MutationTypes'
+import UserModel from '../store/UserModel'
+import { SET_USER_INFO, SHOW_GLOBAL_LOGIN } from '../store/MutationTypes'
 
 const PUBLIC = false // 发布状态
 
@@ -23,14 +22,30 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'https://192.168.1.122:8081'
+      this.host = 'http://192.168.1.117:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
     // 请求路径对象
     this.url = {
       // 用户登录/注册
-      login: '/time-bank/user/login_or_register'
+      login: '/time-bank/user/login_or_register',
+      // 发送短信验证码
+      authCode: '/time-bank/user/send_auth_code_web',
+      // 基本资料填写
+      fillInfo: '/time-bank/user/fill_info',
+      // 授权意向
+      myClassInfo: '/time-bank/user/my_class_info',
+      // 查看讲师当日储存信息(企业)
+      dateInfo: '/time-bank/user/date_info',
+      // 储存时间
+      storeTime: '/time-bank/user/store_time',
+      // 设置支付密码
+      setPayPassword: '/time-bank/user_account/set_paypassword',
+      // 重置支付密码
+      resetPayPassword: '/time-bank/user_account/reset_pay_password',
+      // 约课(企业)
+      appoint: '/time-bank/user/appoint'
     }
     // 请求拦截
     // 响应拦截
@@ -47,6 +62,52 @@ class HTTPData {
       return Promise.reject(error)
     })
   }
+  /**
+   * 获取用户登录信息
+   */
+  // getRequiredParams () {
+  //   let newValue = this.SaiLei.cookiesGet('login_info')
+  //   return newValue ? newValue : { tokenKey: '0' }
+  // }
+  /**
+   * 设置必选参数
+   * @param data
+   * @returns {*}
+   */
+  _setRequiredParams (data) {
+    let params = data
+    // let tokenObj = this.getRequiredParams()
+    params.append('token', '')
+    params.append('deviceId', 'PC')
+    params.append('loginIp', '')
+    params.append('requestFrom', '0')
+    params.append('sign', '')
+    return params
+  }
+  /**
+   * 登录信息加密
+   * @private
+   */
+  // _ResForLoginMsg (res) {
+  //   let data = {}
+  //   data.loginId = res.result.loginId
+  //   data.tokenKey = res.result.token
+  //   this.SaiLei.cookiesSave('login_info', data)
+  // }
+
+  /**
+   * 清除用户信息
+   */
+  clearUserInfo () {
+    this.SaiLei.cookiesClear('user_info')
+    if (currentVueObj) { currentVueObj.$store.dispatch(SET_USER_INFO, null) }
+    this.SaiLei.LocalStorageRemove(this.SaiLei.USER_LOGIN_TOKEN_KEY)
+  }
+  /**
+   * 校验响应结果状态码
+   * @param res
+   * @return {boolean}
+   */
   checkResponseResultCode (res, obj) {
     let _this = this
     /**
@@ -92,7 +153,7 @@ class HTTPData {
         return false
       }
       window['isShowLoginFormOther'] = true
-      this.TipsTools.MessageAlert_Error('', '该账号在其他地点登录，请重新登录', (res) => {
+      this.TipsTools.MessageAlert_Alert('', '该账号在其他地点登录，请重新登录', (res) => {
         _this.clearUserInfo()
         obj.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
       })
@@ -116,7 +177,7 @@ class HTTPData {
      */
     if (res.code === 49 || res.code === '049') {
       if (!obj['isButtonAlert']) {
-        this.LibTools.MessageAlert_Error('请先开通支付账户')
+        this.TipsTools.MessageAlert_Error('请先开通支付账户')
       }
       return false
     }
@@ -136,6 +197,154 @@ class HTTPData {
       this.TipsTools.MessageAlert_Error(res.message)
     }
     return false
+  }
+  /**
+   * Axios post 请求
+   * @param obj 调用该方法所在的 vue 对象
+   * @param url 本次请求的路径
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   * @constructor
+   */
+  POST (obj, url, data, callback) {
+    currentVueObj = obj
+    // let _this = this
+    let params = this._setRequiredParams(data)
+    Axios.post(url, params, {}).then(function (response) {
+      callback(response.data)
+    }).catch(function (e) {
+      // _this.$dialog.loading.close('加载中')
+    })
+  }
+  /**
+   * 获取短信验证码
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getAuthCode (obj, data, callback) {
+    let _this = this
+    data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.authCode}`, data, function (res) {
+      callback(res)
+    })
+  }
+  /**
+   * 登陆/注册
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getLogin (obj, data, callback) {
+    let _this = this
+    data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.login}`, data, function (res) {
+      if (res.code === 0 || res.code === '000') {
+        _this.SaiLei.cookiesSave('user_info', res.result)
+        _this.SaiLei.cookiesSave('user_id', res.result.id)
+        let user = new UserModel(res.result)
+        obj.$store.dispatch(SET_USER_INFO, user)
+      }
+      callback(res)
+    })
+  }
+  /**
+   * 基本资料填写
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getFillInfo (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.fillInfo}`, data, function (res) {
+      _this.SaiLei.cookiesSave('user_photo', res.result.photo)
+      console.log(res.result.photo)
+      callback(res)
+    })
+  }
+  /**
+   * 授权意向
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getMyClassInfo (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.myClassInfo}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 查看讲师当日储存信息(企业)
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getDateInfo (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.dateInfo}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 储存时间
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getStoreTime (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.storeTime}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 设置支付密码
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getSetPayPassword (obj, data, callback) {
+    let _this = this
+    _this.POST(obj, `${_this.host}${_this.url.setPayPassword}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 重置支付密码
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getResetPayPassword (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.resetPayPassword}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 约课(企业)
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getAppoint (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.appoint}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
   }
 }
 

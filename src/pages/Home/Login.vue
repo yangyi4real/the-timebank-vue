@@ -15,7 +15,7 @@
       </div>
       <p class="agreement">新用户登录默认同意<span>《协议》</span>并注册</p>
       <div class="login-btn">
-        <div @click="pushClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">登录</div>
+        <div @click="loginBtnClicked" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">登录</div>
       </div>
     </div>
   </div>
@@ -23,6 +23,10 @@
 
 <script>
 import Navbar from '../../views/navbar/navbar'
+// import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
+import TipsTools from '../../common/TipsTools'
+let lib = new TipsTools()
+
 export default {
   name: 'Login',
   components: {
@@ -68,8 +72,12 @@ export default {
      */
     checkInputValue () {
       // 判断输入手机号是手机号码
-      if (this.phoneNumber === '' || this.phoneNumber === null) {
-        alert('请输入正确手机号')
+      if (this.phoneNumber === '' || this.phoneNumber === null || this.phoneNumber.length < 11) {
+        lib.MessageAlert_Error('请输入正确手机号')
+        return false
+      }
+      if (this.phoneNumberCode.length < 1) {
+        lib.MessageAlert_Error('请输入短信验证码')
         return false
       }
       return true
@@ -100,12 +108,44 @@ export default {
      * 点击了获取验证码按钮
      */
     getMsgCodeButtonClicked () {
+      let _this = this
       if (!this.getMsgCodeButtonCanTap) { return }
-      if (!this.checkInputValue()) { return }
-      this.startTimer()
+      if (this.phoneNumber === '' || this.phoneNumber === null) {
+        lib.MessageAlert_Error('请输入正确手机号')
+        return false
+      }
+      let formData = new FormData()
+      formData.append('phone', _this.phoneNumber)
+      _this['isButtonAlert'] = true
+      _this.$_HTTPData.getAuthCode(_this, formData, function (res) {
+        _this['isButtonAlert'] = false
+        if (res.code === 0 || res.code === '000') {
+          _this.startTimer()
+          lib.MessageAlert_Success('发送成功')
+        } else {
+          console.log(res.message)
+        }
+      })
     },
-    pushClick () {
-      this.$router.push('/paypassword')
+    /**
+     * 点击登录按钮
+     */
+    loginBtnClicked () {
+      if (!this.checkInputValue()) { return }
+      let _this = this
+      let formData = new FormData()
+      formData.append('loginId', _this.phoneNumber)
+      formData.append('authCode', _this.phoneNumberCode)
+      formData.append('userType', _this.phoneNumberCode)
+      _this.$_HTTPData.getLogin(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          // _this.TipsTools.MessageAlert_Success('注册成功')
+          console.log('1111')
+          _this.$router.push('/paypassword')
+        } else {
+          _this.TipsTools.MessageAlert_Error(res.message)
+        }
+      })
     }
   },
   mounted () {},

@@ -34,7 +34,8 @@ export default {
       payPassword: '',
       payPasswordSure: '',
       inOperation: true, // 灰色按钮
-      operation: false
+      operation: false,
+      userInfoItem: ''
     }
   },
   computed: {
@@ -53,33 +54,46 @@ export default {
      * 验证输入框的值
      * @return {boolean}
      */
-    checkInputValue (callback) {
-      // 判断密码位数
-      if (!this.$SaiLei.CheckPasswordSix(this.payPassword)) {
-        callback('密码为 6 位数字和字母组合')
-        return
-        // 判断两次密码一致
-      } else if (this.payPasswordSure !== this.payPassword) {
-        callback('请确认两次输入的密码一致')
-        return
+    checkInputValue () {
+      if (this.payPassword.length < 6 || this.payPassword.length > 6) {
+        lib.MessageAlert_Error('请输入6位数密码')
+        return false
       }
-      callback()
+      if (this.payPassword !== this.payPasswordSure) {
+        lib.MessageAlert_Error('密码不一致')
+        return false
+      }
+      if (this.payPassword === '') {
+        lib.MessageAlert_Error('请输入密码')
+        return false
+      }
+      if (this.payPasswordSure === '') {
+        lib.MessageAlert_Error('请确认密码')
+        return false
+      }
+      return true
     },
     /**
      * 点击了确认按钮
      */
     confirmButtonClicked () {
-      lib.MessageAlert_Success('设置成功')
-      this.$router.push('/calendar/index')
-      // lib.MessageAlert_Confirm('密码不一致')
-      // this.checkInputValue(function (message) {
-      //   if (message) {
-      //     callback('error', message)
-      //     return
-      //   } else {
-      //     console.log('正确')
-      //   }
-      // })
+      if (!this.checkInputValue()) { return }
+      let _this = this
+      let userInfo = []
+      userInfo.push(this.$SaiLei.cookiesGet('user_info'))
+      this.userInfoItem = userInfo
+      // console.log(this.userInfoItem[0].id)
+      let formData = new FormData()
+      formData.append('userId', _this.userInfoItem[0].id)
+      formData.append('paypassword', _this.payPasswordSure)
+      _this.$_HTTPData.getSetPayPassword(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_Success('设置成功')
+          this.$router.push('/calendar/index')
+        } else {
+          console.log(res.message)
+        }
+      })
     }
   },
   mounted () {},
