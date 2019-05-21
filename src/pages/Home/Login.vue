@@ -140,7 +140,6 @@ export default {
       _this.$_HTTPData.getLogin(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           // _this.TipsTools.MessageAlert_Success('注册成功')
-          console.log('1111')
           _this.$router.push('/paypassword')
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)

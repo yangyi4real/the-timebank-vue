@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.117:8081'
+      this.host = 'http://192.168.1.124:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
@@ -45,7 +45,11 @@ class HTTPData {
       // 重置支付密码
       resetPayPassword: '/time-bank/user_account/reset_pay_password',
       // 约课(企业)
-      appoint: '/time-bank/user/appoint'
+      appoint: '/time-bank/user/appoint',
+      // 讲师认证
+      lectureAuth: '/time-bank/user/lecture_auth',
+      // 介绍资料填写
+      introData: '/time-bank/user/intro_data'
     }
     // 请求拦截
     // 响应拦截
@@ -342,6 +346,34 @@ class HTTPData {
     let _this = this
     // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.appoint}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 讲师认证
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getLectureAuth (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.lectureAuth}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 介绍资料
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getIntroData (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.introData}`, data, function (res) {
       _this.TipsTools.MessageAlert_Success('succcess')
       callback(res)
     })

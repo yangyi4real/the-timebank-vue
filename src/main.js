@@ -10,6 +10,8 @@ import LibTools from './common/TipsTools'
 import HTTPData from './common/HTTPDatas'
 import YDUI from 'vue-ydui'
 import 'vue-ydui/dist/ydui.px.css'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 Vue.config.devtool = true
@@ -19,6 +21,7 @@ Vue.prototype.$SaiLei = new SL()
 Vue.prototype.$_lib = new LibTools()
 Vue.prototype.$_HTTPData = new HTTPData()
 Vue.use(YDUI)
+Vue.use(ElementUI)
 
 /* eslint-disable no-new */
 new Vue({

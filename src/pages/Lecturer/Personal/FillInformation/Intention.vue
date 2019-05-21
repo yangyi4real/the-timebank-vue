@@ -25,7 +25,7 @@
     <div class="wapper" v-show="sub1">
       <div class="treeselect">
         <div class="flex-row-between">
-          <treeselect class="treeselect-input" v-model="skillValue" :multiple="true" :alwaysOpen="true" :options="skillOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请输入技能" :searchable="true" v-on:input="skillData" />
+          <treeselect class="treeselect-input" v-model="skillValue" :multiple="true" :alwaysOpen="true" :options="skillOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请输入技能" :searchable="true" v-on:input="skillData" :limit='5'/>
           <div class="treeselectBtn" @click="treeselectBtn">完成</div>
         </div>
       </div>
@@ -33,7 +33,7 @@
     <div class="wapper" v-show="sub2">
       <div class="treeselect">
         <div class="flex-row-between">
-          <treeselect class="treeselect-input" v-model="areaValue" :multiple="true" :alwaysOpen="true" :options="areaOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请选择地点" :searchable="true" v-on:input="areaData"/>
+          <treeselect class="treeselect-input" v-model="areaValue" :multiple="true" :alwaysOpen="true" :options="areaOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请选择地点" :searchable="true" v-on:input="areaData" :limit='5'/>
           <div class="treeselectBtn" @click="treeselectBtn">完成</div>
         </div>
       </div>
@@ -46,8 +46,8 @@ import AreaJson from '../../../../common/areaCodeSelect'
 import Navbar from '../../../../views/navbar/navbar'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import TipsTools from '../../../../common/TipsTools'
-let lib = new TipsTools()
+// import TipsTools from '../../../../common/TipsTools'
+// let lib = new TipsTools()
 export default {
   name: 'Intention',
   components: {
@@ -156,26 +156,6 @@ export default {
         }
       })
       // this.$router.push('/personal/information/profile')
-    },
-    skillData () {
-      if (this.skillValue.length > 4) {
-        this.isDisabledSkill = true
-        for (let i = 0; i < this.skillOptions.length; i++) {
-          this.skillOptions[i].isDisabled = this.isDisabledSkill
-          for (let j = 0; j < this.skillOptions[i].children.length; j++) {
-            this.skillOptions[i].children[j].isDisabled = this.isDisabledSkill
-          }
-        }
-        console.log(this.skillOptions)
-        console.log(this.isDisabledSkill)
-        // lib.MessageAlert_Error('最多选择5个标签哦')
-      }
-    },
-    areaData () {
-      if (this.areaValue.length > 4) {
-        this.areaIsDisabled = true
-        lib.MessageAlert_Error('标签不能超过5个')
-      }
     }
   },
   mounted () {
@@ -195,26 +175,6 @@ export default {
     //     this.operation = false
     //   }
     // }
-    skillData () {
-      if (this.skillValue.length > 4) {
-        this.isDisabledSkill = true
-        for (let i = 0; i < this.skillOptions.length; i++) {
-          this.skillOptions[i].isDisabled = this.isDisabledSkill
-          for (let j = 0; j < this.skillOptions[i].children.length; j++) {
-            this.skillOptions[i].children[j].isDisabled = this.isDisabledSkill
-          }
-        }
-        console.log(this.skillOptions)
-        console.log(this.isDisabledSkill)
-        // lib.MessageAlert_Error('最多选择5个标签哦')
-      }
-    },
-    areaData () {
-      if (this.areaValue.length > 5) {
-        this.areaIsDisabled = true
-        lib.MessageAlert_Error('最多选择5个标签哦')
-      }
-    }
   }
 }
 </script>

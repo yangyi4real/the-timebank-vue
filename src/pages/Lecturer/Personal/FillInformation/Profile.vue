@@ -44,6 +44,9 @@
 
 <script>
 import Navbar from '../../../../views/navbar/navbar'
+import TipsTools from '../../../../common/TipsTools'
+let lib = new TipsTools()
+
 export default {
   name: 'Profile',
   components: {
@@ -73,29 +76,52 @@ export default {
     addCaseClick () {
       this.$router.push('/personal/information/serviceCase')
     },
+    /**
+     * 验证输入框的值
+     * @return {boolean}
+     */
+    checkInputValue () {
+      if (this.profileMsg === '') {
+        lib.MessageAlert_Error('请填写个人介绍')
+        return false
+      }
+      return true
+    },
     pushClick () {
+      if (!this.checkInputValue()) { return }
       let _this = this
-      this.$dialog.confirm({
-        title: '<p style="text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.1rem">保存成功</p>',
-        mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">现在认证只需300元</p>' +
-        '<p style="text-align: center;font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">认证后将可存储时间并开始约课</p>' +
-        '<p style="text-align: center;font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">取消认证时，认证费用将退还给您</p>',
-        opts: [
-          {
-            txt: '暂不认证',
-            color: '#ccc',
-            callback: () => {
-              _this.$router.push('/calendar/index')
-            }
-          },
-          {
-            txt: '去认证',
-            color: true,
-            callback: () => {
-              _this.$router.push('/personal/information/authentication')
-            }
-          }
-        ]
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('introduction', _this.profileMsg)
+      formData.append('intros', '')
+      formData.append('examples', '')
+      _this.$_HTTPData.getIntroData(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          this.$dialog.confirm({
+            title: '<p style="text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.1rem">保存成功</p>',
+            mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">现在认证只需300元</p>' +
+            '<p style="text-align: center;font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">认证后将可存储时间并开始约课</p>' +
+            '<p style="text-align: center;font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">取消认证时，认证费用将退还给您</p>',
+            opts: [
+              {
+                txt: '暂不认证',
+                color: '#ccc',
+                callback: () => {
+                  _this.$router.push('/calendar/index')
+                }
+              },
+              {
+                txt: '去认证',
+                color: true,
+                callback: () => {
+                  _this.$router.push('/personal/information/authentication')
+                }
+              }
+            ]
+          })
+        } else {
+          _this.TipsTools.MessageAlert_Error(res.message)
+        }
       })
     },
     inputValue () {
