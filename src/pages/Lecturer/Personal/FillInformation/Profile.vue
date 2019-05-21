@@ -2,46 +2,93 @@
   <div class="body">
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
-      <div class="profile-title">个人介绍</div>
-      <div class="profile-text">
-        <textarea draggable="false" v-model="profileMsg" placeholder="用文字描述自己或者直接上传一张简历图片吧~"></textarea>
+      <div v-show="mainDiv">
+        <div class="profile-title">个人介绍</div>
+        <div class="profile-text">
+          <textarea draggable="false" v-model="introduction" placeholder="用文字描述自己或者直接上传一张简历图片吧~"></textarea>
+        </div>
+        <div class="profile-add-course">
+          <div class="profile-add-course-set flex-row-between">
+            <div>课程介绍</div>
+            <div><span @click="courseClick">添加</span></div>
+          </div>
+          <div v-for="(item, index) in introDataList" :key="index" style="border-bottom: 0.01rem solid #E8E8E8;padding-bottom: 0.2rem;">
+            <div class="profile-add-course-list flex-row-between">
+              <div>{{item.className}}</div>
+              <div>
+                <i class="iconfont iconbianji main-color" @click="courseModify(index)"></i>
+                <i class="iconfont iconshanchu main-color" @click="courseDelClick(index)"></i>
+              </div>
+            </div>
+            <div class="profile-add-course-list">
+              {{item.tags}}
+            </div>
+            <div class="profile-add-course-list">
+              {{item.description}}
+            </div>
+          </div>
+        </div>
+        <div class="profile-add-case">
+          <div class="profile-add-course-set flex-row-between">
+            <div>服务案例</div>
+            <div><span @click="addCaseClick">添加</span></div>
+          </div>
+          <div v-for="(item, index) in introDatasList" :key="index + 1" style="border-bottom: 0.01rem solid #E8E8E8;padding-bottom: 0.2rem;">
+            <div class="profile-add-course-list flex-row-between">
+              <div>{{item.classNames}}</div>
+              <div>
+                <i class="iconfont iconbianji main-color" @click="caseModify(index)"></i>
+                <i class="iconfont iconshanchu main-color" @click="caseDelClick(index)"></i>
+              </div>
+            </div>
+            <div class="profile-add-course-list">
+              {{item.companyName}}
+            </div>
+          </div>
+        </div>
+        <div class="profile-btn">
+          <div @click="keepClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">保存</div>
+        </div>
       </div>
-      <div class="profile-add-course" v-for="(item, index) in courseList" :key="index">
-        <div class="profile-add-course-set flex-row-between">
-          <div>课程介绍</div>
-          <div><span @click="courseClick">添加</span></div>
+      <div class="course" v-show="courseDiv">
+        <div class="course">
+          <div class="course-list flex-row-between">
+            <div>课程名称</div>
+            <div><input type="text" v-model="className" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-list flex-row-between">
+            <div>课程标签</div>
+            <div><input type="text" v-model="tags" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-text">
+            <div class="course-text-title">课程内容/描述</div>
+            <textarea draggable="false" v-model="description" v-on:input="inputValue" placeholder=""></textarea>
+          </div>
         </div>
-        <div class="profile-add-course-list flex-row-between">
-          <div>{{item.courseName}}</div>
-          <div><i class="iconfont iconbianji main-color"></i></div>
-        </div>
-        <div class="profile-add-course-list">
-          {{item.courseLabel}}
-        </div>
-        <div class="profile-add-course-list">
-          {{item.courseDescribe}}
-        </div>
-      </div>
-      <div class="profile-add-case" v-for="(item, index) in caseList" :key="index + 1">
-        <div class="profile-add-course-set flex-row-between">
-          <div>服务案例</div>
-          <div><span @click="addCaseClick">添加</span></div>
-        </div>
-        <div class="profile-add-course-list flex-row-between">
-          <div>{{item.caseName}}</div>
-          <div><i class="iconfont iconbianji main-color"></i></div>
-        </div>
-        <div class="profile-add-course-list">
-          {{item.enterpriseName}}
+        <div class="course-btn flex-row-between">
+          <div @click="courseCancelClick" class="btn-small-border">取消</div>
+          <div @click="courseCompleteClick" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
         </div>
       </div>
-      <div class="profile-btn">
-        <div @click="pushClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">保存</div>
+      <div class="service-case" v-show="serviceDiv">
+        <div class="course">
+          <div class="course-list flex-row-between">
+            <div>课程名称</div>
+            <div><input type="text" v-model="classNames" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-list flex-row-between" style="border: 0">
+            <div>企业名称</div>
+            <div><input type="text" v-model="companyName" v-on:input="inputValue"/></div>
+          </div>
+        </div>
+        <div class="course-btn flex-row-between">
+          <div @click="caseCancelClick" class="btn-small-border">取消</div>
+          <div @click="caseCompleteClick" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
 import Navbar from '../../../../views/navbar/navbar'
 import TipsTools from '../../../../common/TipsTools'
@@ -55,46 +102,116 @@ export default {
   data () {
     return {
       titleMsg: '介绍资料',
-      profileMsg: '',
-      courseList: [
-        {courseName: '课程名称', courseLabel: '课程标签', courseDescribe: '课程内容/描述'}
-      ],
-      caseList: [
-        {caseName: '课程名称', enterpriseName: '企业名称'}
-      ],
+      introduction: '',
+      introDataList: [], // 已完成的课程介绍list
+      introDatasList: [], // 返回的课程案例list
+      className: '',
+      tags: '',
+      description: '',
+      classNames: '',
+      companyName: '',
       inOperation: true, // 灰色按钮
-      operation: false
+      operation: false,
+      mainDiv: true,
+      courseDiv: false,
+      serviceDiv: false
     }
   },
   created () {},
   computed: {
   },
   methods: {
-    courseClick () {
-      this.$router.push('/personal/information/course')
+    // 课程介绍点击完成
+    courseCompleteClick () {
+      this.mainDiv = true
+      this.courseDiv = false
+      let temp = {className: this.className, tags: this.tags, description: this.description}
+      this.introDataList.push(temp)
+      // 清空文本框中的数据
+      this.className = ''
+      this.tags = ''
+      this.description = ''
     },
+    // 课程介绍点击修改
+    courseModify (index) {
+      this.mainDiv = false
+      this.courseDiv = true
+      this.className = this.introDataList[index].className
+      this.tags = this.introDataList[index].tags
+      this.description = this.introDataList[index].description
+    },
+    // 课程案例点击完成
+    caseCompleteClick () {
+      this.mainDiv = true
+      this.serviceDiv = false
+      let tempData = {classNames: this.classNames, companyName: this.companyName}
+      this.introDatasList.push(tempData)
+      // 清空文本框中的数据
+      this.classNames = ''
+      this.companyName = ''
+    },
+    caseModify (index) {
+      this.mainDiv = false
+      this.serviceDiv = true
+      this.classNames = this.introDataList[index].classNames
+      this.companyName = this.introDataList[index].companyName
+    },
+    // 点击添加课程介绍
+    courseClick () {
+      this.mainDiv = false
+      this.courseDiv = true
+    },
+    // 点击添加课程案例
     addCaseClick () {
-      this.$router.push('/personal/information/serviceCase')
+      this.mainDiv = false
+      this.serviceDiv = true
+    },
+    // 点击删除课程案例
+    courseDelClick (index) {
+      if (!confirm('是否要删除当前数据')) {
+        return
+      }
+      this.introDataList.splice(index, 1)
+    },
+    // 点击删除课程案例
+    caseDelClick (index) {
+      if (!confirm('是否要删除当前数据')) {
+        return
+      }
+      this.introDatasList.splice(index, 1)
+    },
+    // 取消添加课程介绍
+    courseCancelClick () {
+      this.mainDiv = true
+      this.courseDiv = false
+    },
+    // 取消添加课程案例
+    caseCancelClick () {
+      this.mainDiv = true
+      this.serviceDiv = false
     },
     /**
      * 验证输入框的值
      * @return {boolean}
      */
     checkInputValue () {
-      if (this.profileMsg === '') {
+      if (this.introduction === '') {
         lib.MessageAlert_Error('请填写个人介绍')
         return false
       }
       return true
     },
-    pushClick () {
+    keepClick () {
       if (!this.checkInputValue()) { return }
+      let myJSON = JSON.stringify(this.introDataList)
+      let myJSONData = JSON.stringify(this.introDatasList)
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('introduction', _this.profileMsg)
-      formData.append('intros', '')
-      formData.append('examples', '')
+      formData.append('introduction', _this.introduction)
+      formData.append('intros', myJSON)
+      formData.append('examples', myJSONData)
+      console.log(myJSON)
       _this.$_HTTPData.getIntroData(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           this.$dialog.confirm({
@@ -157,9 +274,31 @@ export default {
   .profile-text{border-bottom: 0.01rem solid #E8E8E8;margin: 0 0.2rem;padding-bottom: 0.2rem;}
   .profile-text textarea{width:3.54rem;height:1.4rem;border-radius:0.05rem;border:0.01rem solid rgba(249,91,64,1);padding: 0.19rem 0.15rem;font-size:0.14rem;
     font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
-  .profile-add-course{padding: 0.2rem 0;border-bottom: 0.01rem solid #E8E8E8;margin: 0 0.2rem;}
+  .profile-add-course{padding: 0.2rem 0;margin: 0 0.2rem;}
   .profile-add-case{padding: 0.2rem 0;margin: 0 0.2rem;}
   .profile-add-course-set{padding-bottom: 0.10rem;font-size:0.16rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);}
   .profile-add-course-set span{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);}
   .profile-add-course-list{padding-top: 0.15rem;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
+  .course{margin: 0 0.1rem;padding-bottom: 0.2rem;}
+  .service-case{margin: 0 0.1rem;padding-bottom: 0.2rem;}
+  .course-list{padding: 0.15rem 0;font-size:0.16rem;border-bottom: 0.01rem solid #E8E8E8;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
+  .course-list input{border: 0;outline: none;background-color: rgba(0, 0, 0, 0);font-size: 0.16rem;text-align: right;
+    font-family:PingFangSC-Regular;font-weight:400;}
+  .course-btn{padding-bottom: 0.6rem;width: 3.14rem;margin: 0 auto;padding-top: 3rem}
+  .btn-small-opacity{width:1.27rem;height:0.48rem;line-height: 0.48rem;background:rgba(249,91,64,1);border-radius:0.05rem;opacity:0.503;font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(255,255,255,1);text-align: center;}
+  .btn-small{width:1.27rem;height:0.48rem;line-height: 0.48rem;background:rgba(249,91,64,1);border-radius:0.05rem;font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(255,255,255,1);text-align: center;}
+  .btn-small-border-opacity{width:1.27rem;height:0.48rem;line-height: 0.48rem;border-radius:0.05rem;opacity:0.503;border:0.01rem solid rgba(249,91,64,1);font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);text-align: center;}
+  .btn-small-border{width:1.27rem;height:0.48rem;line-height: 0.48rem;border-radius:0.05rem;border:0.01rem solid rgba(249,91,64,1);font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);text-align: center;}
+  .course-text .course-text-title{padding: 0.15rem 0;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
+  .course-text textarea{width:3.54rem;height:1rem;border-radius:0.05rem;border:0.01rem solid rgba(249,91,64,1);padding: 0.19rem 0.15rem;font-size:0.14rem;
+    font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
+  .course-list{padding: 0.15rem 0;font-size:0.16rem;border-bottom: 0.01rem solid #E8E8E8;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
+  .course-list input{border: 0;outline: none;background-color: rgba(0, 0, 0, 0);font-size: 0.16rem;text-align: right;
+    font-family:PingFangSC-Regular;font-weight:400;}
+  .course-btn{padding: 0.6rem 0;width: 3.14rem;margin: 0 auto}
+  .btn-small-opacity{width:1.27rem;height:0.48rem;line-height: 0.48rem;background:rgba(249,91,64,1);border-radius:0.05rem;opacity:0.503;font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(255,255,255,1);text-align: center;}
+  .btn-small{width:1.27rem;height:0.48rem;line-height: 0.48rem;background:rgba(249,91,64,1);border-radius:0.05rem;font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(255,255,255,1);text-align: center;}
+  .btn-small-border-opacity{width:1.27rem;height:0.48rem;line-height: 0.48rem;border-radius:0.05rem;opacity:0.503;border:0.01rem solid rgba(249,91,64,1);font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);text-align: center;}
+  .btn-small-border{width:1.27rem;height:0.48rem;line-height: 0.48rem;border-radius:0.05rem;border:0.01rem solid rgba(249,91,64,1);font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);text-align: center;}
+  .main-color{padding-right: 0.05rem}
 </style>

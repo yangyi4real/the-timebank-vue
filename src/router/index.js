@@ -12,8 +12,6 @@ import PersonalData from '../pages/Lecturer/Personal/PersonalData' // 个人资�
 import BaseData from '../pages/Lecturer/Personal/FillInformation/BaseData' // 基本信息
 import Intention from '../pages/Lecturer/Personal/FillInformation/Intention' // 存储意向
 import Profile from '../pages/Lecturer/Personal/FillInformation/Profile' // 介绍资料
-import Course from '../pages/Lecturer/Personal/FillInformation/Course' // 课程介绍
-import ServiceCase from '../pages/Lecturer/Personal/FillInformation/ServiceCase' // 服务案例
 import Authentication from '../pages/Lecturer/Personal/FillInformation/Authentication' // 讲师认证
 import Payment from '../pages/Lecturer/Personal/Payment' // 支付
 import WalletIndex from '../pages/Lecturer/Personal/Wallet/Index' // 钱包
@@ -207,18 +205,6 @@ export default new Router({
       path: '/personal/information/profile',
       name: 'Profile',
       component: Profile
-    },
-    // 课程介绍
-    {
-      path: '/personal/information/course',
-      name: 'Course',
-      component: Course
-    },
-    // 服务案例
-    {
-      path: '/personal/information/serviceCase',
-      name: 'ServiceCase',
-      component: ServiceCase
     },
     // 讲师认证
     {
