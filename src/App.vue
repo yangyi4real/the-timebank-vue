@@ -63,6 +63,7 @@ export default {
   .a7-color{color: #A7A7A7}
   .black-color{color: rgba(0,0,0,1);}
   .color-333{color: #333}
+  .color-999{color: #999}
   /*ydui*/
   .tabbar .yd-tabbar-txt{font-size: 0.15rem!important;}
   .basedata-list .yd-datetime-input{font-size:0.16rem!important;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
@@ -89,4 +90,65 @@ export default {
   .treeselect .vue-treeselect__value-remove{color: #fff;}
   .treeselect .vue-treeselect__checkbox--checked{background: rgba(249,91,64,1)!important;border: 0.01rem solid rgba(249,91,64,1)!important;}
   .treeselect .vue-treeselect__indent-level-0 .vue-treeselect__option{padding-top: 0.1rem;padding-bottom: 0.1rem;}
+  .wh_content_all{
+    font-family: -apple-system,BlinkMacSystemFont,PingFang SC,Helvetica Neue,STHeiti,Microsoft Yahei,Tahoma,Simsun,sans-serif;
+    background-color: #fff!important;
+    width: 100%!important;
+    overflow: hidden!important;
+    padding-bottom: 0.08rem!important;
+  }
+  .wh_content_item, wh_content_item_tag{
+    font-size: 0.19rem;
+    width: 14.2% !important;
+    text-align: center;
+    color: #999!important;
+    position: relative;
+    border: 0.01rem solid #ccc;
+    font-family:PingFangSC-Semibold;
+    font-weight:600;
+  }
+  .wh_top_changge li {
+    cursor: pointer;
+    display: flex;
+    color: #999!important;
+    font-size: 18px;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    height: 47px;
+  }
+  .wh_jiantou1{
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #999!important;
+    border-left: 2px solid #999!important;
+    transform: rotate(-45deg);
+  }
+  .wh_jiantou2{
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #999!important;
+    border-right: 2px solid #999!important;
+    transform: rotate(45deg);
+  }
+  .wh_content_item .wh_chose_day{
+    background: none!important;
+    border-radius: 0!important;
+    border: 0.02rem solid rgba(249,91,64,1)!important
+  }
+  .wh_item_date, .wh_top_tag{
+    width: 100%!important;
+    height: 0.38rem!important;
+    line-height: 0.38rem!important;
+  }
+  .wh_content_item .wh_isToday {
+    background: none!important;
+    border-radius: 100px;
+  }
+  .calendar .wh_content_item{height: auto!important;}
+  .calendar .wh_content_item .wh_isToday {
+    background: none!important;
+    border-radius: 0.05rem!important;
+    border: 0.01rem solid rgba(249,91,64,1)!important
+  }
 </style>

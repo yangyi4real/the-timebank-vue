@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.138:8081'
+      this.host = 'http://192.168.1.105:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
@@ -44,12 +44,20 @@ class HTTPData {
       setPayPassword: '/time-bank/user_account/set_paypassword',
       // 重置支付密码
       resetPayPassword: '/time-bank/user_account/reset_pay_password',
-      // 约课(企业)
-      appoint: '/time-bank/user/appoint',
+      // 预约(企业)
+      appoint: '/time-bank/company/appoint',
       // 讲师认证
       lectureAuth: '/time-bank/user/lecture_auth',
       // 介绍资料填写
-      introData: '/time-bank/user/intro_data'
+      introData: '/time-bank/user/intro_data',
+      // 企业资料填写
+      companyFillInfo: '/time-bank/company/fill_info',
+      // 讲师确认/取消订单
+      confirmAppoint: '/time-bank/user/confirm_appoint',
+      // 订单列表
+      orderList: '/time-bank/user/order_list',
+      // 订单详情
+      orderDetail: '/time-bank/user/order_detail'
     }
     // 请求拦截
     // 响应拦截
@@ -337,7 +345,7 @@ class HTTPData {
     })
   }
   /**
-   * 约课(企业)
+   * 预约(企业)
    * @param obj 调用该方法所在的 vue 对象
    * @param data 本次请求的参数
    * @param callback 本次请求的回调
@@ -374,6 +382,62 @@ class HTTPData {
     let _this = this
     // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.introData}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 企业资料
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getCompanyFillInfo (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.companyFillInfo}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 企业资料
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getConfirmAppoint (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.confirmAppoint}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 企业资料
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getOrderList (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.orderList}`, data, function (res) {
+      _this.TipsTools.MessageAlert_Success('succcess')
+      callback(res)
+    })
+  }
+  /**
+   * 企业资料
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getOrderDetail (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.orderDetail}`, data, function (res) {
       _this.TipsTools.MessageAlert_Success('succcess')
       callback(res)
     })

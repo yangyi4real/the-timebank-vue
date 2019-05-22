@@ -10,7 +10,8 @@
           <div class="chose-btn-right chose-btn-div" :class="{active: shows == 2}" @click="qyClick">企业</div>
         </div>
         <div class="operation-button">
-          <div class="btn-border-black" @click="loginClick">手机号码登录/注册</div>
+          <div class="btn-border-black" @click="jsLoginClick" v-show="jsBtnClick">手机号码登录/注册</div>
+          <div class="btn-border-black" @click="qyLoginClick" v-show="qyBtnClick">手机号码登录/注册</div>
           <div style="height: 0.3rem;"></div>
           <div class="btn-border-black">微信用户一键登录</div>
         </div>
@@ -24,7 +25,9 @@ export default {
   components: {},
   data () {
     return {
-      shows: 1
+      shows: 1,
+      jsBtnClick: true,
+      qyBtnClick: false
     }
   },
   computed: {
@@ -32,14 +35,20 @@ export default {
   methods: {
     jsClick () {
       this.shows = 1
+      this.jsBtnClick = true
+      this.qyBtnClick = false
     },
     qyClick () {
       this.shows = 2
+      this.jsBtnClick = false
+      this.qyBtnClick = true
     },
-    loginClick () {
-      console.log(this.getUserType)
+    jsLoginClick () {
+      this.$router.push('/login/1')
+    },
+    qyLoginClick () {
       // this.$router.push(`/sych/taskconfirm/${_this.refereeCardId}/${_this.userAccount}`)
-      // this.$router.push('/login')
+      this.$router.push('/login/2')
     }
   },
   mounted () {}

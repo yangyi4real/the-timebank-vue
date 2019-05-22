@@ -10,7 +10,14 @@
       <img src="" />
     </div>
     <div class="wapper">
-      <div class="class-select"></div>
+      <div class="class-select">
+        <div>
+          <select v-model="selected" @change='getValue'>
+            <option value="" class="class-select-div">授课类别<i class="iconfont iconnv main-color"></i></option>
+            <option v-for="(item,index) in optList" :key="index">{{ item }}</option>
+          </select>
+        </div>
+      </div>
       <div class="class-list" v-show="classList">
         <div class="class-list-div flex-row-start">
           <div class="class-list-div-left">
@@ -48,7 +55,9 @@ export default {
     return {
       searchValue: '',
       classList: true,
-      classListNone: false
+      classListNone: false,
+      selected: '',
+      optList: ['青龙', '白虎', '朱雀', '玄武']
     }
   },
   computed: {
@@ -62,6 +71,9 @@ export default {
     },
     pushClick () {
       this.$router.push('/user/enterpriseInfo')
+    },
+    getValue () {
+      console.log('您选择了', this.selected)
     }
   },
   mounted () {}
@@ -86,4 +98,11 @@ export default {
   .class-list-none{padding: 0.6rem 0;}
   .class-list-none p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(167,167,167,1);}
   .class-btn{margin: 0.5rem 0;}
+  .class-select select{
+    appearance:none!important;
+    -moz-appearance:none!important;
+    -webkit-appearance:none!important;
+    border: 0.01rem solid #fff;
+  }
+  .class-select select{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
 </style>

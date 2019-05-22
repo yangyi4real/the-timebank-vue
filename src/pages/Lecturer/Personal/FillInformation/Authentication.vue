@@ -246,13 +246,12 @@ export default {
       formData.append('credentials', myJSON)
       formData.append('classPhotos', myJSONT)
       formData.append('traditional', true)
-      console.log(myJSON)
       _this.$_HTTPData.getLectureAuth(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          // _this.TipsTools.MessageAlert_Success('认证成功')
+          lib.MessageAlert_Success(res.message)
           // this.$router.push('/personal/payment')
         } else {
-          _this.TipsTools.MessageAlert_Error(res.message)
+          lib.MessageAlert_Error(res.message)
         }
       })
     },

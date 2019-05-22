@@ -54,6 +54,9 @@ export default {
       } else {
         return `重新发送 ${this.getMsgCodeSecond} s`
       }
+    },
+    getUserType () {
+      return this.$route.params.userType
     }
   },
   methods: {
@@ -134,15 +137,37 @@ export default {
       if (!this.checkInputValue()) { return }
       let _this = this
       let formData = new FormData()
-      formData.append('loginId', _this.phoneNumber)
-      formData.append('authCode', _this.phoneNumberCode)
-      formData.append('userType', _this.phoneNumberCode)
+      formData.append('loginId', this.phoneNumber)
+      formData.append('authCode', this.phoneNumberCode)
+      formData.append('userType', this.getUserType)
       _this.$_HTTPData.getLogin(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          // _this.TipsTools.MessageAlert_Success('注册成功')
-          _this.$router.push('/paypassword')
-        } else {
-          _this.TipsTools.MessageAlert_Error(res.message)
+        if (_this.getUserType === 1 || _this.getUserType === '1') {
+          if (res.code === 0 || res.code === '000') {
+            if (res.message === '登陆成功') {
+              lib.MessageAlert_None(res.message)
+              _this.$router.push('/calendar/index')
+            } else if (res.message === '注册成功') {
+              lib.MessageAlert_None(res.message)
+              _this.$router.push('/paypassword')
+            } else {
+              _this.TipsTools.MessageAlert_Error(res.message)
+            }
+          } else {
+            _this.TipsTools.MessageAlert_Error(res.message)
+          }
+        } else if (_this.getUserType === 2 || _this.getUserType === '2') {
+          if (res.code === 0 || res.code === '000') {
+            console.log(res.message)
+            if (res.message === '登陆成功') {
+              lib.MessageAlert_None(res.message)
+              _this.$router.push('/customized/index')
+            } else if (res.message === '注册成功') {
+              lib.MessageAlert_None(res.message)
+              _this.$router.push('/customized/index')
+            }
+          } else {
+            _this.TipsTools.MessageAlert_Error(res.message)
+          }
         }
       })
     }

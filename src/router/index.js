@@ -3,6 +3,8 @@ import Router from 'vue-router'
 
 import CalendarIndex from '../pages/Lecturer/Calendar/Index' // 日历
 import ceshi from '../pages/Lecturer/Calendar/ceshi' // 测试
+import ceshiSelect from '../pages/Home/ceshiSelect'
+import selectItem from '../pages/Home/selectItem'
 import Definitions from '../pages/Lecturer/Calendar/Definitions' // 名词解释
 import CourseIndex from '../pages/Lecturer/Course/Index' // 约讲记录
 import CoEvaluate from '../pages/Lecturer/Course/CoEvaluate' // 评价企业
@@ -82,7 +84,7 @@ export default new Router({
     },
     // 登录页
     {
-      path: '/login',
+      path: '/login/:userType',
       name: 'Login',
       component: Login
     },
@@ -259,6 +261,18 @@ export default new Router({
       path: '/ceshi',
       name: 'ceshi',
       component: ceshi
+    },
+    // 测试
+    {
+      path: '/ceshiSelect',
+      name: 'ceshiSelect',
+      component: ceshiSelect
+    },
+    // 测试
+    {
+      path: '/selectItem',
+      name: 'selectItem',
+      component: selectItem
     },
     // 约课
     {

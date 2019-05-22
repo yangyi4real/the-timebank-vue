@@ -25,7 +25,7 @@
     <div class="wapper" v-show="sub1">
       <div class="treeselect">
         <div class="flex-row-between">
-          <treeselect class="treeselect-input" v-model="skillValue" :multiple="true" :alwaysOpen="true" :options="skillOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请输入技能" :searchable="true" v-on:input="skillData" :limit='5'/>
+          <treeselect class="treeselect-input" v-model="skillValue" :multiple="true" :alwaysOpen="true" :options="skillOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请输入技能" :searchable="true" :limit='5'/>
           <div class="treeselectBtn" @click="treeselectBtn">完成</div>
         </div>
       </div>
@@ -33,8 +33,8 @@
     <div class="wapper" v-show="sub2">
       <div class="treeselect">
         <div class="flex-row-between">
-          <treeselect class="treeselect-input" v-model="areaValue" :multiple="true" :alwaysOpen="true" :options="areaOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请选择地点" :searchable="true" v-on:input="areaData" :limit='5'/>
-          <div class="treeselectBtn" @click="treeselectBtn">完成</div>
+          <treeselect class="treeselect-input" v-model="areaValue" :multiple="true" :alwaysOpen="true" :options="areaOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请选择地点" :searchable="true" :limit='5'/>
+          <div class="treeselectBtn" @click="treeselectBtn2">完成</div>
         </div>
       </div>
     </div>
@@ -46,8 +46,8 @@ import AreaJson from '../../../../common/areaCodeSelect'
 import Navbar from '../../../../views/navbar/navbar'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-// import TipsTools from '../../../../common/TipsTools'
-// let lib = new TipsTools()
+import TipsTools from '../../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'Intention',
   components: {
@@ -127,7 +127,14 @@ export default {
   computed: {},
   methods: {
     treeselectBtn () {
-      console.log(this.areaValue)
+      this.sub1 = false
+      this.showList = true
+      this.skillValue.toString()
+    },
+    treeselectBtn2 () {
+      this.sub2 = false
+      this.showList = true
+      this.areaValue.toString()
     },
     showSub1 () {
       this.showList = false
@@ -142,20 +149,18 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('skillLevel1', '')
-      formData.append('skillLevel2', '')
+      formData.append('skillLevel', this.skillValue.toString())
       formData.append('expectSalary', _this.Pay)
-      formData.append('expectLocation', _this.areaValue)
+      formData.append('expectLocation', _this.areaValue.toString())
       _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          // _this.TipsTools.MessageAlert_Success('注册成功')
+          lib.MessageAlert_Success(res.message)
           console.log('1111')
           _this.$router.push('/paypassword')
         } else {
-          _this.TipsTools.MessageAlert_Error(res.message)
+          lib.MessageAlert_Error(res.message)
         }
       })
-      // this.$router.push('/personal/information/profile')
     }
   },
   mounted () {

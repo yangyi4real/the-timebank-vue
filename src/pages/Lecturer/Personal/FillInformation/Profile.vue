@@ -211,7 +211,6 @@ export default {
       formData.append('introduction', _this.introduction)
       formData.append('intros', myJSON)
       formData.append('examples', myJSONData)
-      console.log(myJSON)
       _this.$_HTTPData.getIntroData(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           this.$dialog.confirm({

@@ -3,38 +3,40 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div></div>
-      <div class="choice-time-list">
-        <div class="flex-row-between choice-time-list-div">
-          <div class="choice-time-list-left">所选时间</div>
-          <div>2019-04-24</div>
+      <div>
+        <div class="choice-time-list">
+          <div class="flex-row-between choice-time-list-div">
+            <div class="choice-time-list-left">所选时间</div>
+            <div>2019-04-24</div>
+          </div>
+          <div class="flex-row-between choice-time-list-div padding-top-15">
+            <div class="choice-time-list-left">约讲时间</div>
+            <div class="choice-time-list-right">9:00-18：00</div>
+          </div>
         </div>
-        <div class="flex-row-between choice-time-list-div padding-top-15">
-          <div class="choice-time-list-left">约讲时间</div>
-          <div class="choice-time-list-right">9:00-18：00</div>
+        <div class="choice-time-list">
+          <div class="flex-row-between choice-time-list-div">
+            <div class="choice-time-list-left">所选时间</div>
+            <div>2019-04-24</div>
+          </div>
+          <div class="flex-row-between choice-time-list-div padding-top-15">
+            <div class="choice-time-list-left">约讲时间</div>
+            <div class="choice-time-list-right">9:00-18：00</div>
+          </div>
         </div>
-      </div>
-      <div class="choice-time-list">
-        <div class="flex-row-between choice-time-list-div">
-          <div class="choice-time-list-left">所选时间</div>
-          <div>2019-04-24</div>
+        <div class="choice-time-list">
+          <div class="flex-row-between choice-time-list-div">
+            <div class="choice-time-list-left">所选时间</div>
+            <div>2019-04-24</div>
+          </div>
+          <div class="flex-row-between choice-time-list-div padding-top-15">
+            <div class="choice-time-list-left">约讲时间</div>
+            <div class="choice-time-list-right">9:00-18：00</div>
+          </div>
         </div>
-        <div class="flex-row-between choice-time-list-div padding-top-15">
-          <div class="choice-time-list-left">约讲时间</div>
-          <div class="choice-time-list-right">9:00-18：00</div>
+        <div class="choice-btn">
+          <div class="btn-border" @click="appointmentClick">下一步</div>
         </div>
-      </div>
-      <div class="choice-time-list">
-        <div class="flex-row-between choice-time-list-div">
-          <div class="choice-time-list-left">所选时间</div>
-          <div>2019-04-24</div>
-        </div>
-        <div class="flex-row-between choice-time-list-div padding-top-15">
-          <div class="choice-time-list-left">约讲时间</div>
-          <div class="choice-time-list-right">9:00-18：00</div>
-        </div>
-      </div>
-      <div class="choice-btn">
-        <div class="btn-border" @click="appointmentClick">下一步</div>
       </div>
     </div>
   </div>
@@ -42,6 +44,8 @@
 
 <script>
 import Navbar from '../../../views/navbar/navbar'
+import TipsTools from '../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'Appointment',
   components: {
@@ -55,7 +59,25 @@ export default {
   computed: {},
   methods: {
     appointmentClick () {
-      this.$router.push('/customized/appointmentinput')
+      if (!this.checkInputValue()) { return }
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('companyId', _this.profile)
+      formData.append('date', _this.name)
+      formData.append('begin', _this.shortName)
+      formData.append('end', _this.foundingTime)
+      formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
+      formData.append('joinNum', _this.joinNum)
+      formData.append('purpose', _this.purpose)
+      _this.$_HTTPData.getAppoint(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          // this.$router.push('/customized/appointmentinput')
+          lib.MessageAlert_None(res.message)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
     }
   },
   mounted () {}

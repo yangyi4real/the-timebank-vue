@@ -31,11 +31,11 @@
         </div>
         <div class="CoData-list flex-row-between">
           <div class="CoData-list-left">联系人</div>
-          <div class="CoData-list-right">王琼</div>
+          <div class="CoData-list-right"><input type="text" v-model="linkman" placeholder="请填写参与人数" v-on:input="inputValue"/></div>
         </div>
         <div class="CoData-list flex-row-between">
           <div class="CoData-list-left">联系方式</div>
-          <div class="CoData-list-right">158****2233</div>
+          <div class="CoData-list-right"><input type="text" v-model="phone" placeholder="请填写参与人数" v-on:input="inputValue"/></div>
         </div>
         <div class="CoData-list flex-row-between">
           <div class="CoData-list-left">需求</div>
