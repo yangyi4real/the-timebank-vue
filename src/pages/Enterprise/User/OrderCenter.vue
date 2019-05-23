@@ -9,44 +9,14 @@
           </div>
         </div>
         <div>
-          <div class="order-center-list">
+          <div class="order-center-list" @click="OrderDetailClick" v-for="(item,index) in listData" :key="index" >
             <div class="order-center-list-msg">
               <div class="flex-row-between">
                 <div class="order-center-list-msg-div flex-row-start">
-                  <div class="msg-left"><img src=""/></div>
+                  <div class="msg-left"><img :src="item.photo"/></div>
                   <div class="msg-right">
-                    <label>王琼<i class="iconfont iconnv main-color"></i></label>
-                    <p>24岁 | 工作两年 | 青岛</p>
-                    <p>专注研究产品设计</p>
-                  </div>
-                </div>
-                <div class="tip">待付款</div>
-              </div>
-              <div class="msg-time">
-                <div>约讲内容：产品经理/axure原型设计</div>
-                <div class="flex-row-start">
-                  <div>约讲时间：</div>
-                  <div><p>2019-04-24 9:00-18:00</p><p>2019-04-24 9:00-18:00</p></div>
-                </div>
-              </div>
-            </div>
-            <div class="order-center-list-opt">
-              <p class="text-right">合计：2000.00</p>
-              <div class="opt-btn flex-row-end">
-                <div>去支付</div>
-                <div>取消订单</div>
-                <div>联系客服</div>
-              </div>
-            </div>
-          </div>
-          <div class="order-center-list">
-            <div class="order-center-list-msg">
-              <div class="flex-row-between">
-                <div class="order-center-list-msg-div flex-row-start">
-                  <div class="msg-left"><img src=""/></div>
-                  <div class="msg-right">
-                    <label>王琼<i class="iconfont iconnv main-color"></i></label>
-                    <p>24岁 | 工作两年 | 青岛</p>
+                    <label>{{item.name}}<i class="iconfont iconnv main-color" v-if="item.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.sexuality === 2"></i></label>
+                    <p>24岁 | 工作{{item.workingAge}}年 | 青岛</p>
                     <p>专注研究产品设计</p>
                   </div>
                 </div>
@@ -76,6 +46,8 @@
 
 <script>
 import Navbar from '../../../views/navbar/navbar'
+import TipsTools from '../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'OrderCenter',
   components: {
@@ -91,13 +63,45 @@ export default {
         {name: '待评价'},
         {name: '退款/售后'}
       ],
-      changeTab: 0
+      changeTab: 0,
+      listData: []
     }
   },
   computed: {},
   methods: {
     tabsClicked (index) {
       this.changeTab = index
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('status', _this.changeTab + 1)
+      formData.append('type', 2)
+      console.log(_this.changeTab + 1)
+      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          this.listData = res.result
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    paymentClicked (index) {
+      let _this = this
+      let formData = new FormData()
+      formData.append('getCompanyPay', 1)
+      formData.append('orderId', 0)
+      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
+      console.log(_this.changeTab + 1)
+      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          this.listData = res.result
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    OrderDetailClick () {
+      this.$router.push('/user/OrderDetails/:orderId')
     },
     allOrderClick () {
       this.$router.push('/user/allorder')

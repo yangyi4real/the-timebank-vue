@@ -10,25 +10,38 @@
       <img src="" />
     </div>
     <div class="wapper">
-      <div class="class-select">
+      <div class="class-select flex-row-between">
+        <div class="all" @click="allClick">全部讲师</div>
         <div>
           <select v-model="selected" @change='getValue'>
             <option value="" class="class-select-div">授课类别<i class="iconfont iconnv main-color"></i></option>
             <option v-for="(item,index) in optList" :key="index">{{ item }}</option>
           </select>
         </div>
+        <div>
+          <select v-model="selected2" @change='getValue2'>
+            <option value="" class="class-select-div">授课区域<i class="iconfont iconnv main-color"></i></option>
+            <option v-for="(item,index) in optList" :key="index">{{ item }}</option>
+          </select>
+        </div>
+        <div>
+          <select v-model="selected3" @change='getValue3'>
+            <option value="" class="class-select-div">价格<i class="iconfont iconnv main-color"></i></option>
+            <option v-for="(item,index) in optList" :key="index">{{ item }}</option>
+          </select>
+        </div>
       </div>
       <div class="class-list" v-show="classList">
-        <div class="class-list-div flex-row-start">
+        <div class="class-list-div flex-row-start" v-for='(item, index) of listData' :key="index" @click="pushDetailsClick">
           <div class="class-list-div-left">
-            <img src=""/>
+            <img :src="item.photo"/>
           </div>
-          <div class="class-list-div-right" @click="pushDetailsClick">
-            <label>王琼<i class="iconfont iconnv main-color"></i></label>
-            <p>24岁 | 工作两年 | 青岛</p>
-            <p><i class="iconfont iconqiwangzhiwei main-color"></i>产品经理/UI-设计…</p>
-            <p><i class="iconfont iconditu main-color"></i>青岛/烟台/淄博/济南/潍坊</p>
-            <p><i class="iconfont icongongzi main-color"></i>100元/小时</p>
+          <div class="class-list-div-right">
+            <label>{{item.name}}<i class="iconfont iconnv main-color" v-if="item.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.sexuality === 2"></i></label>
+            <p>24岁 | 工作{{item.workingAge}}年 | 青岛</p>
+            <p><i class="iconfont iconqiwangzhiwei main-color"></i>{{item.skillLevel}}</p>
+            <p><i class="iconfont iconditu main-color"></i>{{item.expectedLocation}}</p>
+            <p><i class="iconfont icongongzi main-color"></i>{{item.expectedSalary}}元/小时</p>
           </div>
         </div>
       </div>
@@ -46,6 +59,8 @@
 
 <script>
 import TabbarEnt from '../../../views/Tabbar/TabbarEnt'
+import TipsTools from '../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'CustomizedIndex',
   components: {
@@ -57,26 +72,84 @@ export default {
       classList: true,
       classListNone: false,
       selected: '',
-      optList: ['青龙', '白虎', '朱雀', '玄武']
+      selected2: '',
+      selected3: '',
+      optList: ['a', 'b', 'c', 'd'],
+      optList2: ['a', 'b', 'c', 'd'],
+      optList3: ['a', 'b', 'c', 'd'],
+      listData: []
     }
   },
   computed: {
   },
+  mounted () {
+    this.loadData()
+  },
   methods: {
+    allClick () {
+      this.loadData()
+    },
     submitHandler (value) {
       this.$dialog.toast({mes: `搜索：${value}`})
     },
     pushDetailsClick () {
-      this.$router.push('/customized/details')
+      // this.$router.push('/customized/details/:orderId')
     },
     pushClick () {
       this.$router.push('/user/enterpriseInfo')
     },
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
+      _this.$_HTTPData.getLectureList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
     getValue () {
-      console.log('您选择了', this.selected)
+      let _this = this
+      let formData = new FormData()
+      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('skillLevel', _this.selected)
+      _this.$_HTTPData.getLectureList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    getValue2 () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('location', _this.selected2)
+      _this.$_HTTPData.getLectureList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    getValue3 () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('price', _this.selected3)
+      _this.$_HTTPData.getLectureList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
     }
-  },
-  mounted () {}
+  }
 }
 </script>
 
@@ -87,8 +160,8 @@ export default {
   .banner{margin: 0.1rem;}
   .banner img{width: 100%;height:1.6rem;}
   .class-select{padding: 0.15rem 0;border-bottom: 0.01rem solid #E8E8E8;margin: 0 0.2rem;}
-  .class-list{margin: 0 0.2rem;}
-  .class-list .class-list-div{padding: 0.2rem 0;}
+  .class-list{margin: 0 0.2rem;padding-bottom: 0.8rem;}
+  .class-list .class-list-div{padding: 0.2rem 0;border-bottom: 0.01rem solid #E8E8E8;}
   .class-list .class-list-div .class-list-div-left img{width:1.4rem;height:1.2rem;background:rgba(216,216,216,1);border-radius:0.05rem;}
   .class-list .class-list-div .class-list-div-right{text-align: left;padding-left: 0.2rem;}
   .class-list .class-list-div .class-list-div-right label{font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);}
@@ -105,4 +178,5 @@ export default {
     border: 0.01rem solid #fff;
   }
   .class-select select{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
+  .class-select .all{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
 </style>

@@ -61,53 +61,53 @@ export default {
       areaIsDisabled: false,
       skillOptions: [
         {
-          id: 'a',
+          id: '1',
           label: '软件/互联网开发/系统集成',
           isDisabled: false,
           children: [
-            {
-              id: '1',
-              isDisabled: false,
-              label: 'UI-设计'
-            },
             {
               id: '2',
               isDisabled: false,
-              label: '产品经理'
-            }
-          ]
-        },
-        {
-          id: 'b',
-          label: '软件/互联网开发/系统集成',
-          isDisabled: false,
-          children: [
-            {
-              id: '3',
-              isDisabled: false,
               label: 'UI-设计'
             },
             {
-              id: '4',
+              id: '3',
               isDisabled: false,
               label: '产品经理'
             }
           ]
         },
         {
-          id: 'c',
-          label: '软件/互联网开发/系统集成',
+          id: '4',
+          label: '销售',
           isDisabled: false,
           children: [
             {
               id: '5',
               isDisabled: false,
-              label: 'UI-设计'
+              label: '操盘手'
             },
             {
               id: '6',
               isDisabled: false,
-              label: '产品经理'
+              label: '大堂经理'
+            }
+          ]
+        },
+        {
+          id: '7',
+          label: '酒保',
+          isDisabled: false,
+          children: [
+            {
+              id: '8',
+              isDisabled: false,
+              label: '面案'
+            },
+            {
+              id: '9',
+              isDisabled: false,
+              label: '服务员'
             }
           ]
         }
@@ -156,7 +156,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
           console.log('1111')
-          _this.$router.push('/paypassword')
+          _this.$router.push('/personal/information/profile')
         } else {
           lib.MessageAlert_Error(res.message)
         }

@@ -92,12 +92,12 @@ export default {
     },
     getPush () {
       this.$dialog.loading.open('支付中，请勿操作')
-      // setTimeout(() => {
-      //   this.$dialog.loading.close()
-      // }, 2000)
-      // this.show1 = false
-      lib.MessageAlert_None('支付成功')
-      // this.$router.push('/personal/index')
+      setTimeout(() => {
+        this.$dialog.loading.close()
+        lib.MessageAlert_None('支付成功')
+        this.$router.push('/personal/index')
+      }, 2000)
+      this.show1 = false
     }
   },
   watch: {

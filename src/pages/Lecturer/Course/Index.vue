@@ -4,6 +4,7 @@
       约讲记录
     </div>
     <div class="tab flex-row-around">
+      <div @click="tabsAllClicked" class="active">全部</div>
       <div v-for="(item,index) in tabItems" :key="index" class="s-tab" :class="{ active: changeTab === index}" @click="tabsClicked(index)">
         {{ item.name }}
       </div>
@@ -56,8 +57,8 @@
           <div class="order-center-list-opt">
             <p class="text-right">参与人数：10人&nbsp;&nbsp;&nbsp;&nbsp;合计：2000.00</p>
             <div class="opt-btn flex-row-end">
-              <div>接受</div>
-              <div>拒绝</div>
+              <div @click="acceptType">接受</div>
+              <div @click="refuseType">拒绝</div>
               <div>联系客服</div>
             </div>
           </div>
@@ -70,6 +71,8 @@
 
 <script>
 import Tabbar from '../../../views/Tabbar/Tabbar'
+import TipsTools from '../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'CourseIndex',
   components: {
@@ -78,13 +81,12 @@ export default {
   data () {
     return {
       tabItems: [
-        {name: '全部'},
         {name: '待确认'},
         {name: '待开课'},
         {name: '待评价'},
         {name: '已完成'}
       ],
-      changeTab: 0,
+      changeTab: '',
       Tips: false,
       listItem: true
     }
@@ -92,8 +94,63 @@ export default {
   computed: {
   },
   methods: {
+    tabsAllClicked () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('status', '')
+      formData.append('type', 1)
+      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          console.log(res)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
     tabsClicked (index) {
       this.changeTab = index
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('status', _this.changeTab + 2)
+      formData.append('type', 1)
+      console.log(this.changeTab + 2)
+      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          console.log(res)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    // 接受
+    acceptType () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('type', 1)
+      formData.append('orderId', this.getOrderId)
+      _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    // 取消
+    refuseType () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('type', 2)
+      formData.append('orderId', this.getOrderId)
+      _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
     },
     evaluateClick () {
       this.$router.push('/course/evaluate')
@@ -102,7 +159,9 @@ export default {
       this.$router.push('/course/aboutdetails')
     }
   },
-  mounted () {}
+  mounted () {
+    this.tabsAllClicked()
+  }
 }
 </script>
 

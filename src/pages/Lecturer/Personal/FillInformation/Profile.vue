@@ -87,6 +87,21 @@
         </div>
       </div>
     </div>
+    <div class="popup">
+      <div class="popup-bg" v-show="maskShow"></div>
+      <div class="popup-main" v-show="maskShow">
+        <div class="msg"><i class="iconfont iconqueren main-color"></i> 保存成功</div>
+        <div class="text">
+          <label>现在认证只需300元</label>
+          <p>认证后将可存储时间并开始约课</p>
+          <p>取消认证时，认证费用将退还给您</p>
+        </div>
+        <div class="flex-row-around popup-main-btn">
+          <div class="div" @click="$router.push('/calendar/index')">暂不认证</div>
+          <div @click="$router.push('/personal/information/authentication')">去认证</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -114,7 +129,8 @@ export default {
       operation: false,
       mainDiv: true,
       courseDiv: false,
-      serviceDiv: false
+      serviceDiv: false,
+      maskShow: false
     }
   },
   created () {},
@@ -213,30 +229,9 @@ export default {
       formData.append('examples', myJSONData)
       _this.$_HTTPData.getIntroData(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          this.$dialog.confirm({
-            title: '<p style="text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.1rem">保存成功</p>',
-            mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">现在认证只需300元</p>' +
-            '<p style="text-align: center;font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">认证后将可存储时间并开始约课</p>' +
-            '<p style="text-align: center;font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">取消认证时，认证费用将退还给您</p>',
-            opts: [
-              {
-                txt: '暂不认证',
-                color: '#ccc',
-                callback: () => {
-                  _this.$router.push('/calendar/index')
-                }
-              },
-              {
-                txt: '去认证',
-                color: true,
-                callback: () => {
-                  _this.$router.push('/personal/information/authentication')
-                }
-              }
-            ]
-          })
+          _this.maskShow = true
         } else {
-          _this.TipsTools.MessageAlert_Error(res.message)
+          lib.MessageAlert_Error(res.message)
         }
       })
     },
@@ -300,4 +295,15 @@ export default {
   .btn-small-border-opacity{width:1.27rem;height:0.48rem;line-height: 0.48rem;border-radius:0.05rem;opacity:0.503;border:0.01rem solid rgba(249,91,64,1);font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);text-align: center;}
   .btn-small-border{width:1.27rem;height:0.48rem;line-height: 0.48rem;border-radius:0.05rem;border:0.01rem solid rgba(249,91,64,1);font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);text-align: center;}
   .main-color{padding-right: 0.05rem}
+  .popup{width: 100%;height: 100%;}
+  .popup-bg{width: 100%;height: 100%;position: fixed;top: 0;left: 0;background: #000;opacity: 0.3;}
+  .popup-main{position: fixed;background: #fff;width: 3.2rem;height: 2.1rem;border: 0.01rem solid #ccc;text-align: center;border-radius: 0.08rem;top: calc(50% - 1.6rem);left: calc(50% - 1.6rem);}
+  .popup-main .msg{font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-top: 0.3rem;padding-bottom: 0.1rem;}
+  .popup-main .msg i{font-weight: 600;font-size:0.19rem;}
+  .popup-main .text{padding-bottom: 0.15rem;}
+  .popup-main label{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);padding-bottom: 0.1rem;display: block;}
+  .popup-main p{font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.18rem;}
+  .popup-main-btn{border-top: 0.01rem solid #E8E8E8;font-size:0.17rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
+  .popup-main-btn div{width: 50%;padding: 0.18rem 0;}
+  .popup-main-btn .div{border-right: 0.01rem solid #E8E8E8;color:rgba(143,143,143,1)!important;}
 </style>

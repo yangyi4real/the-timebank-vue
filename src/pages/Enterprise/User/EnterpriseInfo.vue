@@ -222,6 +222,7 @@ export default {
       _this.$_HTTPData.getCompanyFillInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_None(res.message)
+          _this.$router.push('/customized/index')
         } else {
           lib.MessageAlert_None(res.message)
         }

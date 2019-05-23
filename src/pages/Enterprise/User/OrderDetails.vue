@@ -47,6 +47,8 @@
 
 <script>
 import Navbar from '../../../views/navbar/navbar'
+import TipsTools from '../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'OrderDetails',
   components: {
@@ -54,12 +56,32 @@ export default {
   },
   data () {
     return {
-      titleMsg: '订单详情'
+      titleMsg: '订单详情',
+      listDatas: []
     }
   },
-  computed: {},
-  methods: {},
-  mounted () {}
+  computed: {
+    getOrderId () {
+      return this.$route.params.orderId
+    }
+  },
+  mounted () {
+    this.loadData()
+  },
+  methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('orderId', this.getOrderId)
+      _this.$_HTTPData.getOrderDetail(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listDatas = res
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    }
+  }
 }
 </script>
 

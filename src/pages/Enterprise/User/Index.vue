@@ -8,11 +8,11 @@
         <div class="head flex-row-start">
           <div class="head-img">
             <!--<img :src="userIconUrl" @click="userIconDidClicked" class="User-icon">-->
-            <img src="" @click="userIconDidClicked"/>
+            <img :src="src" alt=""/>
           </div>
           <div>
-            <p class="head-text">完善企业信息</p>
-            <p class="head-text2">企业编号：50976567</p>
+            <p class="head-text">{{listData.name}}</p>
+            <p class="head-text2">企业编号：{{listData.serialNumber}}</p>
           </div>
         </div>
         <div class="msg">
@@ -22,15 +22,15 @@
     </div>
     <div class="modular2 flex-row-around">
       <div @click="walletClick">
-        <label>20000.00</label>
+        <label>{{listData.balance}}</label>
         <p>钱包</p>
       </div>
       <div>
-        <label>20000.00</label>
+        <label>{{listData.bouns}}</label>
         <p class="border">奖励分红</p>
       </div>
       <div>
-        <label>20000.00</label>
+        <label>{{listData.sdg}}</label>
         <p>SDG</p>
       </div>
     </div>
@@ -41,23 +41,23 @@
       </div>
       <div class="modular3-sort flex-row-between">
         <div>
-          <img src=""/>
+          <i class="iconfont icondaifukuan"></i>
           <p>待付款</p>
         </div>
         <div>
-          <img src=""/>
+          <i class="iconfont iconqueren1"></i>
           <p>待付款</p>
         </div>
         <div>
-          <img src=""/>
+          <i class="iconfont iconkaishijixi"></i>
           <p>待开课</p>
         </div>
         <div>
-          <img src=""/>
+          <i class="iconfont iconpingjia"></i>
           <p>待评价</p>
         </div>
         <div>
-          <img src=""/>
+          <i class="iconfont icontubiaolunkuo-"></i>
           <p>退款/售后</p>
         </div>
       </div>
@@ -65,35 +65,35 @@
     <div class="modular4">
       <div class="modular4-div flex-row-around">
         <div @click="linkInvitation">
-          <img src=""/>
+          <img src="../../../assets/icon/yaoqing.png"/>
           <p>邀请好友</p>
         </div>
         <div>
-          <img src=""/>
+          <img src="../../../assets/icon/shoucang.png"/>
           <p>收藏夹</p>
         </div>
         <div @click="linkSetUp">
-          <img src=""/>
+          <img src="../../../assets/icon/liulan.png"/>
           <p>浏览记录</p>
         </div>
       </div>
       <div class="modular4-div flex-row-around">
         <div>
-          <img src=""/>
+          <img src="../../../assets/icon/kefu.png"/>
           <p>联系客服</p>
         </div>
         <div>
-          <img src=""/>
+          <img src="../../../assets/icon/bangzhu.png"/>
           <p>帮助中心</p>
         </div>
         <div @click="linkSetUp">
-          <img src=""/>
+          <img src="../../../assets/icon/yonghu.png"/>
           <p>服务协议</p>
         </div>
       </div>
       <div class="modular4-div flex-row-around">
         <div>
-          <img src=""/>
+          <img src="../../../assets/icon/yijian.png"/>
           <p>意见反馈</p>
         </div>
         <div style="visibility:hidden">
@@ -119,11 +119,45 @@ export default {
   },
   data () {
     return {
+      src: '',
+      listData: {
+        name: '',
+        photo: '',
+        serialNumber: '',
+        skillLevel: '',
+        livingLocation: '',
+        bouns: '',
+        balance: '',
+        introduction: '',
+        sdg: '',
+        authStatus: '',
+        sex: ''
+      }
     }
   },
   computed: {
   },
+  mounted () {
+    this.loadData()
+  },
   methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 2)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+          _this.src = res.result.photo
+          _this.authStatus = res.result.authStatus
+          _this.sex = res.result.sex
+          console.log(res.result)
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     // 个人中心
     userIconDidClicked () {
       this.$router.push('/user/personalcenter')
@@ -152,8 +186,7 @@ export default {
     baseDataClick () {
       this.$router.push('/personal/information/basedata')
     }
-  },
-  mounted () {}
+  }
 }
 </script>
 
@@ -178,6 +211,7 @@ export default {
   .modular3 .modular3-title .modular3-title-right{font-size:14px;font-family:PingFangSC-Regular;;font-weight:400;color:rgba(167,167,167,1);}
   .modular3 .modular3-sort{padding: 0.2rem 0;}
   .modular3 .modular3-sort div{text-align: center}
+  .modular3 .modular3-sort div i{color: #F95B40;font-size: 0.24rem;}
   .modular3 .modular3-sort div img{width: 0.22rem;height: 0.22rem;}
   .modular3 .modular3-sort div p{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);padding-top: 0.1rem;}
   .modular4 .modular4-title i{padding-right: 0.1rem}

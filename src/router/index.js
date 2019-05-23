@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import CalendarIndex from '../pages/Lecturer/Calendar/Index' // 日历
+import AddCalendar from '../pages/Lecturer/Calendar/AddCalendar' // 添加日历
 import ceshi from '../pages/Lecturer/Calendar/ceshi' // 测试
 import ceshiSelect from '../pages/Home/ceshiSelect'
 import selectItem from '../pages/Home/selectItem'
@@ -100,6 +101,12 @@ export default new Router({
       name: 'CalendarIndex',
       component: CalendarIndex
     },
+    // 添加日历
+    {
+      path: '/calendar/addcalendat',
+      name: 'AddCalendar',
+      component: AddCalendar
+    },
     // 名词解释
     {
       path: '/calendar/definitions',
@@ -120,7 +127,7 @@ export default new Router({
     },
     // 约讲详情
     {
-      path: '/course/aboutdetails',
+      path: '/course/aboutdetails/:orderId',
       name: 'AboutDetails',
       component: AboutDetails
     },
@@ -282,7 +289,7 @@ export default new Router({
     },
     // 讲师详情
     {
-      path: '/customized/details',
+      path: '/customized/details/:orderId',
       name: 'lecturerDetails',
       component: lecturerDetails
     },
@@ -348,7 +355,7 @@ export default new Router({
     },
     // 订单详情
     {
-      path: '/user/OrderDetails',
+      path: '/user/OrderDetails/:orderId',
       name: 'OrderDetails',
       component: OrderDetails
     },

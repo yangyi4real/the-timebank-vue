@@ -7,40 +7,43 @@
       <div class="modular1-div flex-row-between">
         <div class="head flex-row-start">
           <div class="head-img">
-            <!--<img :src="userIconUrl" @click="userIconDidClicked" class="User-icon">-->
-            <img src="" @click="userIconDidClicked"/>
+            <div class="user-icon">
+              <img :src="src" alt="">
+              <!--<input type="file" @change="userIconDidClicked" ref="file" placeholder="上传照片">-->
+            </div>
           </div>
           <div>
-            <p class="head-text">进阶的讲师</p>
-            <p class="head-text2">编号：50976567</p>
+            <p class="head-text">{{listData.name}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></p>
+            <p class="head-text2">编号：{{listData.serialNumber}}</p>
           </div>
         </div>
         <div class="msg">
           <i class="iconfont iconlingdang main-color" @click="msgClick"></i>
         </div>
       </div>
-      <p class="text-right main-color modular-data" @click="baseDataClick">完善个人资料 <i class="iconfont iconjiantou" style="font-size: 0.13rem"></i></p>
       <div class="modular-already">
         <div class="flex-row-between">
           <div>产品经理<span><i class="iconfont iconjiantou"></i>|</span></div>
-          <div><i class="iconfont iconditu main-color"></i>青岛<span><i class="iconfont iconjiantou"></i>|</span></div>
-          <div>完善资料<span><i class="iconfont iconjiantou"></i>|</span></div>
-          <div>去认证<span><i class="iconfont iconjiantou"></i></span></div>
+          <div><i class="iconfont iconditu main-color"></i>{{listData.livingLocation}}<span><i class="iconfont iconjiantou"></i>|</span></div>
+          <div @click="baseDataClick">完善资料<span><i class="iconfont iconjiantou"></i>|</span></div>
+          <div v-if="listData.authStatus === 0">去认证<span><i class="iconfont iconjiantou"></i></span></div>
+          <div v-if="listData.authStatus === 1">已认证<span><i class="iconfont iconjiantou"></i></span></div>
         </div>
-        <p>添加个人描述，可让企业更好地认识你</p>
+        <p v-if="listData.skillLevel === ''">添加个人描述，可让企业更好地认识你</p>
+        <p>{{listData.skillLevel}}</p>
       </div>
     </div>
     <div class="modular2 flex-row-around">
       <div @click="walletClick">
-        <label>20000.00</label>
+        <label>{{listData.balance}}</label>
         <p>钱包</p>
       </div>
       <div>
-        <label>20000.00</label>
+        <label>{{listData.bouns}}</label>
         <p class="border">奖励分红</p>
       </div>
       <div>
-        <label>20000.00</label>
+        <label>{{listData.sdg}}</label>
         <p>SDG</p>
       </div>
     </div>
@@ -50,15 +53,15 @@
       </div>
       <div class="modular3-div flex-row-around">
         <div @click="linkInvitation">
-          <img src=""/>
+          <img src="../../../assets/icon/yaoqing.png"/>
           <p>邀请好友</p>
         </div>
         <div>
-          <img src=""/>
+          <img src="../../../assets/icon/kefu.png"/>
           <p>联系客服</p>
         </div>
         <div @click="linkSetUp">
-          <img src=""/>
+          <img src="../../../assets/icon/shezhi.png"/>
           <p>设置</p>
         </div>
       </div>
@@ -69,6 +72,9 @@
 
 <script>
 import Tabbar from '../../../views/Tabbar/Tabbar'
+// import TipsTools from '../../../common/TipsTools'
+// let lib = new TipsTools()
+
 export default {
   name: 'PersonalIndex',
   components: {
@@ -76,11 +82,55 @@ export default {
   },
   data () {
     return {
+      src: '',
+      listData: {
+        name: '',
+        photo: '',
+        serialNumber: '',
+        skillLevel: '',
+        livingLocation: '',
+        bouns: '',
+        balance: '',
+        introduction: '',
+        sdg: '',
+        authStatus: '',
+        sex: ''
+      },
+      baseData: true
     }
   },
-  computed: {
+  computed: {},
+  mounted () {
+    this.loadData()
   },
   methods: {
+    // userIconDidClicked (e) {
+    //   let _this = this
+    //   var files = e.target.files[0]
+    //   if (!e || !window.FileReader) return
+    //   let reader = new FileReader()
+    //   reader.readAsDataURL(files)
+    //   reader.onloadend = function () {
+    //     _this.src = this.result
+    //   }
+    // },
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 1)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+          _this.src = res.result.photo
+          _this.authStatus = res.result.authStatus
+          _this.sex = res.result.sex
+          console.log(res.result)
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     msgClick () {
       this.$router.push('/personal/msg')
     },
@@ -99,12 +149,8 @@ export default {
     // 完善资料
     baseDataClick () {
       this.$router.push('/personal/information/basedata')
-    },
-    userIconDidClicked () {
-      this.$router.push('/personal/personaldata')
     }
-  },
-  mounted () {}
+  }
 }
 </script>
 
@@ -115,10 +161,9 @@ export default {
   .modular3{background: #fff;padding: 0.2rem 0.2rem 0.4rem 0.2rem;margin: 0 0.1rem;border-radius:0.05rem;}
   .modular1 .modular1-div{padding: 0.2rem 0;}
   .head-img{padding-right: 0.15rem;}
-  .head-img img{width: 0.67rem;height: 0.67rem;}
   .head-text{font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.05rem;}
+  .head-text i{font-size: 0.2rem;padding-left: 0.05rem;}
   .head-text2{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
-  .modular-data{font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);}
   .border{border-right: 0.01rem solid #D0D0D0;border-left: 0.01rem solid #D0D0D0;padding: 0 0.4rem;}
   .modular2 div{text-align: center;}
   .modular2 div p{font-size: 0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
@@ -131,4 +176,7 @@ export default {
   .modular-already div{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
   .modular-already div span{padding-left: 0.1rem;}
   .modular-already p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);padding-top: 0.15rem;}
+  .user-icon{position: relative;overflow: hidden;}
+  .user-icon input{position: absolute;top: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';}
+  .user-icon img{width: 0.67rem;height: 0.67rem;}
 </style>

@@ -82,6 +82,8 @@
 import AreaJson from '../../../../common/areaCode'
 import Navbar from '../../../../views/navbar/navbar'
 // import FileManager from '../../../../common/FileManager'
+import TipsTools from '../../../../common/TipsTools'
+let lib = new TipsTools()
 
 export default {
   name: 'BaseData',
@@ -175,9 +177,8 @@ export default {
       formData.append('profile', _this.src)
       _this.$_HTTPData.getFillInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          console.log(res)
-          // lib.MessageAlert_Success('设置成功')
-          // this.$router.push('/personal/information/intention')
+          lib.MessageAlert_Success('设置成功')
+          this.$router.push('/personal/information/intention')
         } else {
           console.log(res.message)
         }

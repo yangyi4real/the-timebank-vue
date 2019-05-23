@@ -36,8 +36,8 @@
       <div class="order-center-list-opt">
         <p class="text-right">合计：<span>2000.00</span>元</p>
         <div class="opt-btn flex-row-end">
-          <div>接受</div>
-          <div>拒绝</div>
+          <div @click="acceptType">接受</div>
+          <div @click="refuseType">拒绝</div>
           <div>联系客服</div>
         </div>
       </div>
@@ -47,6 +47,8 @@
 
 <script>
 import Navbar from '../../../views/navbar/navbar'
+import TipsTools from '../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'AboutDetails',
   components: {
@@ -58,9 +60,56 @@ export default {
       rate: 4
     }
   },
-  computed: {},
-  methods: {},
-  mounted () {}
+  computed: {
+    getOrderId () {
+      return this.$route.params.orderId
+    }
+  },
+  mounted () {
+    this.loadData()
+  },
+  methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('orderId', this.getOrderId)
+      _this.$_HTTPData.getOrderDetail(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listDatas = res
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    // 接受
+    acceptType () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('type', 1)
+      formData.append('orderId', this.getOrderId)
+      _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    // 取消
+    refuseType () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('type', 2)
+      formData.append('orderId', this.getOrderId)
+      _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    }
+  }
 }
 </script>
 
