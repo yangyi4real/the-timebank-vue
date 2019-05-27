@@ -1,12 +1,6 @@
 <template>
   <div class="body">
-    <div class="navbar">
-      <div class="left-btn">
-      </div>
-      <div class="item title">
-        讲师认证
-      </div>
-    </div>
+    <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="basedata-main">
         <div class="basedata-list">
@@ -82,7 +76,6 @@
       <p class="text-center main-color tips-p">以上信息作为平台审核认证讲师资格使用</p>
       <div class="authentication-btn">
         <div class="btn-border-black" @click="pushClick" v-if="this.listData.authStatus === 0 || this.listData.authStatus === null">确定</div>
-        <div class="btn-border-black" @click="pushCancelClick" v-if="this.listData.authStatus === 0 || this.listData.authStatus === null">取消</div>
         <div class="btn-border-black" @click="cancelClick" v-if="this.listData.authStatus === 1">取消认证</div>
       </div>
     </div>
@@ -91,15 +84,20 @@
 
 <script>
 
+import Navbar from '../../../../views/navbar/navbar'
 import TipsTools from '../../../../common/TipsTools'
 let lib = new TipsTools()
 
 export default {
-  name: 'Authentication',
-  components: {},
+  name: 'AuthenticationCenter',
+  components: {
+    Navbar
+  },
   data () {
     return {
+      titleMsg: '讲师认证',
       btnShow: true,
+      statusTitleCanTab: false,
       name: '',
       IdNumber: '',
       imgList: [],
@@ -114,10 +112,10 @@ export default {
     }
   },
   created () {},
-  computed: {
-  },
   mounted () {
     this.loadData()
+  },
+  computed: {
   },
   methods: {
     fileClick () {
@@ -214,11 +212,25 @@ export default {
       }
       return true
     },
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 1)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+          console.log(res.result)
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     /**
      * 点击确定
      */
     pushClick () {
-      // if (!this.checkInputValue()) { return }
+      if (!this.checkInputValue()) { return }
       let tempImgs = []
       let tempImgs2 = []
       for (let i = 0; i < this.imgList.length; i++) {
@@ -249,23 +261,6 @@ export default {
           _this.$router.push('/personal/payment')
         } else {
           lib.MessageAlert_Error(res.message)
-        }
-      })
-    },
-    pushCancelClick () {
-      this.$router.push('/calendar/index')
-    },
-    loadData () {
-      let _this = this
-      let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('type', 1)
-      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.listData = res.result
-          console.log(res.result)
-        } else {
-          console.log(res.message)
         }
       })
     },
@@ -319,54 +314,4 @@ export default {
   .upload_warp_img {border-top: 1px solid #D2D2D2;padding-top: 0.1rem;overflow: hidden}
   .upload_warp {margin: 5px;}
   .upload_warp_text{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(167,167,167,1);}
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 0.66rem;
-    z-index: 10;
-    text-align: center;
-    background: #f5f5f5;
-  }
-  .navbar .item {
-    min-width: 0.2rem;
-  }
-  .navbar .left-btn {
-    text-align: left;
-    margin-left: 0.1rem;
-    padding: 0.1rem 0;
-    user-select: none;
-    color: black;
-    font-size: 0.18rem;
-  }
-  .navbar .left-btn:active {
-    color: #dcbc6c;
-  }
-  .navbar .title {
-    padding: 0.2rem 0;
-    user-select: none;
-    color: black;
-    font-size: 0.2rem;
-    font-family:PingFangSC-Semibold;
-    font-weight:600;
-    flex: 1;
-    text-align: center;
-  }
-  .navbar .right-btn {
-    width: 0.6rem;
-    margin-right: 0.1rem;
-    padding: 0.12rem 0 0.08rem 0;
-    user-select: none;
-    color: black;
-    font-size: 0.15rem;
-    text-align: right;
-  }
-  .navbar .right-btn:active {
-    color: #dcbc6c;
-  }
 </style>

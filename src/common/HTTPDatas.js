@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.120:8081'
+      this.host = 'http://192.168.1.116:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
@@ -65,7 +65,11 @@ class HTTPData {
       // 约课付款(企业)
       companyPay: '/time-bank/company/pay',
       // 我的
-      myInfo: '/time-bank/user/my_info'
+      myInfo: '/time-bank/user/my_info',
+      // 讲师详情
+      lectureDetail: '/time-bank/company/lecture_detail',
+      // 查询讲师所存时间
+      savedTime: '/time-bank/company/saved_time'
     }
     // 请求拦截
     // 响应拦截
@@ -261,20 +265,8 @@ class HTTPData {
     _this.POST(obj, `${_this.host}${_this.url.login}`, data, function (res) {
       if (res.code === 0 || res.code === '000') {
         _this.SaiLei.cookiesSave('user_info', res.result)
-        _this.SaiLei.cookiesSave('user_birthday', res.result.birthday) // 生日
         _this.SaiLei.cookiesSave('user_id', res.result.id) // id
-        _this.SaiLei.cookiesSave('user_email', res.result.email) // 邮箱
-        _this.SaiLei.cookiesSave('user_expectedSalary', res.result.expectedSalary) // 价格
-        _this.SaiLei.cookiesSave('user_expectedLocation', res.result.expectedLocation) // 意向地点
-        _this.SaiLei.cookiesSave('user_idNumber: ', res.result.idNumber) // 身份证号码
         _this.SaiLei.cookiesSave('user_name', res.result.name) // 姓名
-        _this.SaiLei.cookiesSave('user_password', res.result.password) // 支付密码
-        _this.SaiLei.cookiesSave('user_photo', res.result.photo) // 头像
-        _this.SaiLei.cookiesSave('user_workingAge', res.result.workingAge) // 工作年限
-        _this.SaiLei.cookiesSave('user_invitedCode', res.result.invitedCode) // 邀请码
-        _this.SaiLei.cookiesSave('user_livingLocation', res.result.livingLocation) // 现居住地
-        _this.SaiLei.cookiesSave('user_sexuality', res.result.sexuality) // 性别
-        _this.SaiLei.cookiesSave('user_skillLevel', res.result.skillLevel) // 技能
         _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
         let user = new UserModel(res.result)
         obj.$store.dispatch(SET_USER_INFO, user)
@@ -344,7 +336,9 @@ class HTTPData {
    */
   getSetPayPassword (obj, data, callback) {
     let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.setPayPassword}`, data, function (res) {
+      console.log('111111')
       callback(res)
     })
   }
@@ -501,6 +495,32 @@ class HTTPData {
     let _this = this
     // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.myInfo}`, data, function (res) {
+      callback(res)
+    })
+  }
+  /**
+   * 讲师详情
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getLectureDetail (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.lectureDetail}`, data, function (res) {
+      callback(res)
+    })
+  }
+  /**
+   * 查询讲师所存时间
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getSavedTime (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.savedTime}`, data, function (res) {
       callback(res)
     })
   }

@@ -117,6 +117,10 @@ export default {
         lib.MessageAlert_Error('请输入正确手机号')
         return false
       }
+      if (this.phoneNumber.length < 11) {
+        lib.MessageAlert_Error('请输入正确手机号')
+        return false
+      }
       let formData = new FormData()
       formData.append('phone', _this.phoneNumber)
       _this['isButtonAlert'] = true
@@ -148,7 +152,7 @@ export default {
               _this.$router.push('/calendar/index')
             } else if (res.message === '注册成功') {
               lib.MessageAlert_None(res.message)
-              _this.$router.push('/paypassword')
+              _this.$router.push(`/paypassword/${res.result.id}`)
             } else {
               _this.TipsTools.MessageAlert_Error(res.message)
             }

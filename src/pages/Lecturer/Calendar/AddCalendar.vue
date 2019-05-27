@@ -38,7 +38,10 @@
 import Navbar from '../../../views/navbar/navbar'
 import Calendar from 'vue-calendar-component'
 import TipsTools from '../../../common/TipsTools'
+import moment from 'moment'
+
 let lib = new TipsTools()
+
 export default {
   name: 'AddCalendar',
   components: {
@@ -59,18 +62,23 @@ export default {
   methods: {
     clickDay (data) {
       this.calendarData = data
-      console.log(this.calendarData)
     },
     subClick () {
+      let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let calendarTime = Date.parse(this.calendarData)
+      let beginDateTime = Date.parse(beginDate)
+      let endDateTime = Date.parse(endDate)
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('date', _this.calendarData)
-      formData.append('begin', _this.dateTimeBegin)
-      formData.append('end', _this.dateTimeEnd)
-      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+      formData.append('date', calendarTime)
+      formData.append('begin', beginDateTime)
+      formData.append('end', endDateTime)
+      _this.$_HTTPData.getStoreTime(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_None(res.message)
+          _this.$router.push('/calendar/index')
         } else {
           lib.MessageAlert_None(res.message)
         }

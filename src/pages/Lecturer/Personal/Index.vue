@@ -13,7 +13,7 @@
             </div>
           </div>
           <div>
-            <p class="head-text">{{listData.name}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></p>
+            <p class="head-text">{{listData.nickname}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></p>
             <p class="head-text2">编号：{{listData.serialNumber}}</p>
           </div>
         </div>
@@ -23,11 +23,11 @@
       </div>
       <div class="modular-already">
         <div class="flex-row-between">
-          <div>产品经理<span><i class="iconfont iconjiantou"></i>|</span></div>
-          <div><i class="iconfont iconditu main-color"></i>{{listData.livingLocation}}<span><i class="iconfont iconjiantou"></i>|</span></div>
-          <div @click="baseDataClick">完善资料<span><i class="iconfont iconjiantou"></i>|</span></div>
-          <div v-if="listData.authStatus === 0">去认证<span><i class="iconfont iconjiantou"></i></span></div>
-          <div v-if="listData.authStatus === 1">已认证<span><i class="iconfont iconjiantou"></i></span></div>
+          <div>产品经理<span>|</span></div>
+          <div><i class="iconfont iconditu main-color"></i>{{listData.livingLocation}}<span>|</span></div>
+          <div @click="baseDataClick">完善资料<span>|</span></div>
+          <div v-if="listData.authStatus === 0" @click="authenticationClicked">去认证<span></span></div>
+          <div v-if="listData.authStatus === 1" @click="authenticationClicked">已认证<span></span></div>
         </div>
         <p v-if="listData.skillLevel === ''">添加个人描述，可让企业更好地认识你</p>
         <p>{{listData.skillLevel}}</p>
@@ -114,6 +114,9 @@ export default {
     //     _this.src = this.result
     //   }
     // },
+    authenticationClicked () {
+      this.$router.push('/personal/information/authentication-center')
+    },
     loadData () {
       let _this = this
       let formData = new FormData()

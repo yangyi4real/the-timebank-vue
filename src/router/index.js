@@ -16,6 +16,7 @@ import BaseData from '../pages/Lecturer/Personal/FillInformation/BaseData' // �
 import Intention from '../pages/Lecturer/Personal/FillInformation/Intention' // 存储意向
 import Profile from '../pages/Lecturer/Personal/FillInformation/Profile' // 介绍资料
 import Authentication from '../pages/Lecturer/Personal/FillInformation/Authentication' // 讲师认证
+import AuthenticationCenter from '../pages/Lecturer/Personal/FillInformation/AuthenticationCenter' // 讲师认证
 import Payment from '../pages/Lecturer/Personal/Payment' // 支付
 import WalletIndex from '../pages/Lecturer/Personal/Wallet/Index' // 钱包
 import Detailed from '../pages/Lecturer/Personal/Wallet/Detailed' // 明细
@@ -91,7 +92,7 @@ export default new Router({
     },
     // 支付密码
     {
-      path: '/paypassword',
+      path: '/paypassword/:id',
       name: 'PayPassword',
       component: PayPassword
     },
@@ -121,7 +122,7 @@ export default new Router({
     },
     // 评价企业
     {
-      path: '/course/evaluate',
+      path: '/course/evaluate/:orderId',
       name: 'CoEvaluate',
       component: CoEvaluate
     },
@@ -221,6 +222,12 @@ export default new Router({
       name: 'Authentication',
       component: Authentication
     },
+    // 讲师认证-我的
+    {
+      path: '/personal/information/authentication-center',
+      name: 'AuthenticationCenter',
+      component: AuthenticationCenter
+    },
     // 支付
     {
       path: '/personal/payment',
@@ -289,13 +296,13 @@ export default new Router({
     },
     // 讲师详情
     {
-      path: '/customized/details/:orderId',
+      path: '/customized/details/:id',
       name: 'lecturerDetails',
       component: lecturerDetails
     },
     // 预约
     {
-      path: '/customized/appointment',
+      path: '/customized/appointment/:id',
       name: 'Appointment',
       component: Appointment
     },
@@ -361,7 +368,7 @@ export default new Router({
     },
     // 评价讲师
     {
-      path: '/user/evaluate',
+      path: '/user/evaluate/:orderId',
       name: 'Evaluate',
       component: Evaluate
     },

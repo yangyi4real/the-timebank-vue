@@ -7,11 +7,11 @@
           <div class="clearfix">
             <div class="head flex-row-start fl">
               <div class="head-img">
-                <img src=""/>
+                <img :src="listData.photo"/>
               </div>
               <div>
-                <label>王琼<i class="iconfont iconnv main-color"></i></label>
-                <p>24岁 | 工作两年 | 青岛</p>
+                <label>{{listData.name}}<i class="iconfont iconnv main-color"></i></label>
+                <p>24岁 | 工作{{listData.workingAge}}年 | 青岛</p>
               </div>
             </div>
             <div class="fr">
@@ -19,8 +19,8 @@
             </div>
           </div>
           <div class="pro-data-head-number">
-            <div><i class="iconfont iconshouji main-color"></i>158****3445</div>
-            <div><i class="iconfont iconyouxiang main-color"></i>112616****@qq.com</div>
+            <div><i class="iconfont iconshouji main-color"></i>{{listData.loginId}}</div>
+            <div><i class="iconfont iconyouxiang main-color"></i>{{listData.email}}</div>
           </div>
         </div>
         <div class="pro-data-intention padding-20 pro-data-border">
@@ -29,9 +29,9 @@
             <div><i class="iconfont iconbianji main-color"></i></div>
           </div>
           <div class="pro-data-introduce-cont">
-            <div><i class="iconfont iconqiwangzhiwei main-color"></i>产品经理/UI-设计…</div>
-            <div class="padding-20"><i class="iconfont iconditu main-color"></i>青岛/烟台/淄博/济南/潍坊</div>
-            <div><i class="iconfont icongongzi main-color"></i>100元/小时</div>
+            <div><i class="iconfont iconqiwangzhiwei main-color"></i>{{listData.skillLevel}}</div>
+            <div class="padding-20"><i class="iconfont iconditu main-color"></i>{{listData.expectedLocation}}</div>
+            <div><i class="iconfont icongongzi main-color"></i>{{listData.expectedSalary}}元/小时</div>
           </div>
         </div>
         <div class="pro-data-introduce padding-20 pro-data-border">
@@ -73,6 +73,8 @@
 
 <script>
 import Navbar from '../../../views/navbar/navbar'
+import TipsTools from '../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'PersonalData',
   components: {
@@ -80,19 +82,35 @@ export default {
   },
   data () {
     return {
-      titleMsg: '个人资料'
+      titleMsg: '个人资料',
+      listData: null
     }
   },
   created () {},
   computed: {
   },
+  mounted () {
+    this.getMyinfo()
+  },
   methods: {
+    getMyinfo () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 1)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    }
     // cancelClick () {},
     // pushClick () {
     //   this.$router.push('')
     // }
   },
-  mounted () {},
   watch: {}
 }
 </script>

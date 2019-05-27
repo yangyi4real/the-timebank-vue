@@ -4,7 +4,6 @@
       约讲记录
     </div>
     <div class="tab flex-row-around">
-      <div @click="tabsAllClicked" class="active">全部</div>
       <div v-for="(item,index) in tabItems" :key="index" class="s-tab" :class="{ active: changeTab === index}" @click="tabsClicked(index)">
         {{ item.name }}
       </div>
@@ -14,51 +13,33 @@
         <p><span class="main-color">存储时间</span> 后，企业才能跟你对讲哦</p>
       </div>
       <div v-show="listItem">
-        <div class="order-center-list" @click="aboutDetailsClick">
-          <div class="order-center-list-msg">
+        <div class="order-center-list" v-for="(item,index) in listRecord" :key="index">
+          <div class="order-center-list-msg" @click="aboutDetailsClick(item)">
             <div class="clearfix">
               <div class="order-center-list-msg-div fl">
-                约讲企业：青岛赛雷科技有限公司
+                约讲企业：{{item.companyEntity.companyName}}
               </div>
-              <div class="tip fr">待评价</div>
+              <div class="tip fr" v-if="item.orderEntity.orderStatus === 1">待付款</div>
+              <div class="tip fr" v-if="item.orderEntity.orderStatus === 2">待确认</div>
+              <div class="tip fr" v-if="item.orderEntity.orderStatus === 3">待开课</div>
+              <div class="tip fr" v-if="item.orderEntity.orderStatus === 4">待评价</div>
+              <div class="tip fr" v-if="item.orderEntity.orderStatus === 5">已完成</div>
             </div>
             <div class="msg-time">
-              <div>约讲地址：市北区敦化路诺德广场A座</div>
+              <div>约讲地址：{{item.orderEntity.address}}</div>
               <div class="flex-row-start">
                 <div>约讲时间：</div>
-                <div><p>2019-04-24 9:00-18:00</p><p>2019-04-24 9:00-18:00</p></div>
+                <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
               </div>
             </div>
           </div>
           <div class="order-center-list-opt">
-            <p class="text-right">参与人数：10人&nbsp;&nbsp;&nbsp;&nbsp;合计：2000.00</p>
+            <p class="text-right">参与人数：{{item.orderEntity.joinNum}}人&nbsp;&nbsp;&nbsp;&nbsp;合计：{{item.orderEntity.price}}</p>
             <div class="opt-btn flex-row-end">
-              <div @click="evaluateClick">评价</div>
-              <div>联系客服</div>
-            </div>
-          </div>
-        </div>
-        <div class="order-center-list">
-          <div class="order-center-list-msg">
-            <div class="clearfix">
-              <div class="order-center-list-msg-div fl">
-                约讲企业：青岛赛雷科技有限公司
-              </div>
-              <div class="tip fr">待付款</div>
-            </div>
-            <div class="msg-time">
-              <div>约讲地址：市北区敦化路诺德广场A座</div>
-              <div class="flex-row-start">
-                <div>约讲时间：</div>
-                <div><p>2019-04-24 9:00-18:00</p><p>2019-04-24 9:00-18:00</p></div>
-              </div>
-            </div>
-          </div>
-          <div class="order-center-list-opt">
-            <p class="text-right">参与人数：10人&nbsp;&nbsp;&nbsp;&nbsp;合计：2000.00</p>
-            <div class="opt-btn flex-row-end">
-              <div @click="acceptType">接受</div>
-              <div @click="refuseType">拒绝</div>
+              <div @click="evaluateClick(item)" v-if="item.orderEntity.orderStatus === 4 || item.orderEntity.orderStatus === 5">评价</div>
+              <div @click="acceptType(item)" v-if="item.orderEntity.orderStatus === 2">接受</div>
+              <div @click="refuseType(item)" v-if="item.orderEntity.orderStatus === 2">拒绝</div>
+              <div v-if="item.orderEntity.orderStatus === 3">取消行程</div>
               <div>联系客服</div>
             </div>
           </div>
@@ -81,20 +62,25 @@ export default {
   data () {
     return {
       tabItems: [
+        {name: '全部'},
         {name: '待确认'},
         {name: '待开课'},
         {name: '待评价'},
         {name: '已完成'}
       ],
-      changeTab: '',
+      changeTab: 0,
       Tips: false,
-      listItem: true
+      listItem: true,
+      listRecord: []
     }
   },
   computed: {
   },
+  mounted () {
+    this.loadData()
+  },
   methods: {
-    tabsAllClicked () {
+    loadData () {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -102,7 +88,15 @@ export default {
       formData.append('type', 1)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          console.log(res)
+          _this.listRecord = res.result
+          if (_this.listRecord === '') {
+            _this.Tips = true
+            _this.listItem = false
+          } else {
+            _this.Tips = false
+            _this.listItem = true
+          }
+          console.log(_this.listRecord)
         } else {
           lib.MessageAlert_None(res.message)
         }
@@ -113,23 +107,24 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', _this.changeTab + 2)
+      formData.append('status', _this.changeTab + 1)
       formData.append('type', 1)
       console.log(this.changeTab + 2)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          console.log(res)
+          _this.listRecord = res.result
+          console.log(_this.listRecord)
         } else {
           lib.MessageAlert_None(res.message)
         }
       })
     },
     // 接受
-    acceptType () {
+    acceptType (item) {
       let _this = this
       let formData = new FormData()
       formData.append('type', 1)
-      formData.append('orderId', this.getOrderId)
+      formData.append('orderId', item.orderEntity.id)
       _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
@@ -152,15 +147,12 @@ export default {
         }
       })
     },
-    evaluateClick () {
-      this.$router.push('/course/evaluate')
+    evaluateClick (item) {
+      this.$router.push(`/course/evaluate/${item.orderEntity.id}`)
     },
-    aboutDetailsClick () {
-      this.$router.push('/course/aboutdetails')
+    aboutDetailsClick (item) {
+      this.$router.push(`/course/aboutdetails/${item.orderEntity.id}`)
     }
-  },
-  mounted () {
-    this.tabsAllClicked()
   }
 }
 </script>

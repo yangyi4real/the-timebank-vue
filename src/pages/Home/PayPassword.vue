@@ -34,11 +34,14 @@ export default {
       payPassword: '',
       payPasswordSure: '',
       inOperation: true, // 灰色按钮
-      operation: false,
-      userInfoItem: ''
+      operation: false
+      // userInfoItem: ''
     }
   },
   computed: {
+    getId () {
+      return this.$route.params.id
+    }
   },
   methods: {
     inputValue () {
@@ -79,17 +82,17 @@ export default {
     confirmButtonClicked () {
       if (!this.checkInputValue()) { return }
       let _this = this
-      let userInfo = []
-      userInfo.push(this.$SaiLei.cookiesGet('user_info'))
-      this.userInfoItem = userInfo
+      // let userInfo = []
+      // userInfo.push(this.$SaiLei.cookiesGet('user_info'))
+      // this.userInfoItem = userInfo
       // console.log(this.userInfoItem[0].id)
       let formData = new FormData()
-      formData.append('userId', _this.userInfoItem[0].id)
+      formData.append('userId', _this.getId)
       formData.append('paypassword', _this.payPasswordSure)
       _this.$_HTTPData.getSetPayPassword(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('设置成功')
-          this.$router.push('/calendar/index')
+          _this.$router.push('/calendar/index')
         } else {
           console.log(res.message)
         }

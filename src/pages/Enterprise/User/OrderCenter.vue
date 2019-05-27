@@ -9,31 +9,36 @@
           </div>
         </div>
         <div>
-          <div class="order-center-list" @click="OrderDetailClick" v-for="(item,index) in listData" :key="index" >
+          <div class="order-center-list" v-for="(item,index) in listData" :key="index" >
             <div class="order-center-list-msg">
               <div class="flex-row-between">
                 <div class="order-center-list-msg-div flex-row-start">
-                  <div class="msg-left"><img :src="item.photo"/></div>
+                  <div class="msg-left"><img :src="item.userEntity.photo" @click="OrderDetailClick(item)"/></div>
                   <div class="msg-right">
-                    <label>{{item.name}}<i class="iconfont iconnv main-color" v-if="item.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.sexuality === 2"></i></label>
-                    <p>24岁 | 工作{{item.workingAge}}年 | 青岛</p>
-                    <p>专注研究产品设计</p>
+                    <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
+                    <p>25岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
+                    <p>{{item.userEntity.skillLevel}}</p>
                   </div>
                 </div>
-                <div class="tip">待付款</div>
+                <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
+                <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
+                <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
+                <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
+                <div class="tip" v-if="item.orderEntity.orderStatus === 5">待已退款</div>
               </div>
               <div class="msg-time">
-                <div>约讲内容：产品经理/axure原型设计</div>
+                <div>约讲内容：{{item.userEntity.skillLevel}}</div>
                 <div class="flex-row-start">
                   <div>约讲时间：</div>
-                  <div><p>2019-04-24 9:00-18:00</p><p>2019-04-24 9:00-18:00</p></div>
+                  <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
                 </div>
               </div>
             </div>
             <div class="order-center-list-opt">
-              <p class="text-right">合计：2000.00</p>
+              <p class="text-right">合计：{{item.orderEntity.price}}</p>
               <div class="opt-btn flex-row-end">
-                <div>去支付</div>
+                <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
+                <div v-if="item.orderEntity.orderStatus === 4">评价</div>
                 <div>取消订单</div>
                 <div>联系客服</div>
               </div>
@@ -64,11 +69,28 @@ export default {
         {name: '退款/售后'}
       ],
       changeTab: 0,
-      listData: []
+      listData: null
     }
   },
   computed: {},
+  mounted () {
+    this.loadData()
+  },
   methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('status', _this.changeTab + 1)
+      formData.append('type', 2)
+      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
     tabsClicked (index) {
       this.changeTab = index
       let _this = this
@@ -79,35 +101,34 @@ export default {
       console.log(_this.changeTab + 1)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          this.listData = res.result
+          _this.listData = res.result
         } else {
           lib.MessageAlert_None(res.message)
         }
       })
     },
-    paymentClicked (index) {
+    paymentClicked (item) {
       let _this = this
       let formData = new FormData()
-      formData.append('getCompanyPay', 1)
-      formData.append('orderId', 0)
-      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
-      console.log(_this.changeTab + 1)
-      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+      formData.append('payType', 1)
+      formData.append('orderId', item.orderEntity.id)
+      formData.append('companyId', item.orderEntity.companyId)
+      _this.$_HTTPData.getCompanyPay(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          this.listData = res.result
+          console.log(res.result)
+          lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)
         }
       })
     },
-    OrderDetailClick () {
-      this.$router.push('/user/OrderDetails/:orderId')
+    OrderDetailClick (item) {
+      this.$router.push(`/user/OrderDetails/${item.orderEntity.id}`)
     },
     allOrderClick () {
       this.$router.push('/user/allorder')
     }
-  },
-  mounted () {}
+  }
 }
 </script>
 

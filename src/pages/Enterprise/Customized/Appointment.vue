@@ -6,7 +6,7 @@
         <div>
           <Calendar
             ref='Calendar'
-            :markDateMore='calendarList'
+            :markDateMore='listDatasTime'
             v-on:isToday='clickToday'
             agoDayHide='1554048000'
             futureDayHide='1561910399'
@@ -17,9 +17,16 @@
         </div>
         <div>
           <div class="choice-time-list">
-            <div class="flex-row-between choice-time-list-div">
+            <div class="flex-row-between choice-time-list-div" style="padding-bottom: 0.2rem;">
               <div class="choice-time-list-left">所选时间</div>
               <div>{{calendarData}}</div>
+            </div>
+            <div class="flex-row-between choice-time-list-div">
+              <div class="choice-time-list-left">可预约时间范围</div>
+              <div>
+                <p>{{chose.begin}}至</p>
+                <p>{{chose.end}}</p>
+              </div>
             </div>
             <div class="flex-row-between choice-time-list-div padding-top-15">
               <div class="choice-time-list-left">约讲时间</div>
@@ -95,6 +102,7 @@ import Navbar from '../../../views/navbar/navbar'
 import Calendar from 'vue-calendar-component'
 import TipsTools from '../../../common/TipsTools'
 import AreaJson from '../../../common/areaCode'
+import moment from 'moment'
 let lib = new TipsTools()
 export default {
   name: 'Appointment',
@@ -105,7 +113,6 @@ export default {
   data () {
     return {
       titleMsg: '预约',
-      calendarList: [],
       calendarData: '请选择日期',
       dateTimeBegin: '00:00',
       dateTimeEnd: '00:00',
@@ -121,10 +128,21 @@ export default {
       model1: '',
       district: AreaJson,
       inOperation: true, // 灰色按钮
-      operation: false
+      operation: false,
+      listDatasTime: [],
+      chose: [],
+      className: 'mark1'
     }
   },
-  computed: {},
+  computed: {
+    getId () {
+      return this.$route.params.id
+    }
+  },
+  mounted () {
+    this.nowTimes()
+    this.loadDataList()
+  },
   methods: {
     /**
      * 验证输入框的值
@@ -157,28 +175,65 @@ export default {
       }
       return true
     },
+    loadDataList () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.getId)
+      _this.$_HTTPData.getSavedTime(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listDatasTime = res.result
+          for (let i = 0; i < _this.listDatasTime.length; i++) {
+            _this.$set(_this.listDatasTime[i], 'className', 'mark1')
+          }
+          console.log(_this.listDatasTime)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
     clickDay (data) {
       this.calendarData = data
-      console.log(this.calendarData)
+      let calendarTime = Date.parse(this.calendarData)
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.getId)
+      formData.append('date', calendarTime)
+      _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.chose = res.result
+          console.log(res.result)
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
     },
     appointmentClick () {
       this.calendarShow = false
       this.formDataShow = true
     },
     formDataClick () {
+      let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let calendarTime = Date.parse(this.calendarData)
+      let beginDateTime = Date.parse(beginDate)
+      let endDateTime = Date.parse(endDate)
       if (!this.checkInputValue()) { return }
       let _this = this
       let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('companyId', _this.profile)
-      formData.append('date', _this.calendarData)
-      formData.append('begin', _this.dateTimeBegin)
-      formData.append('end', _this.dateTimeEnd)
+      formData.append('userId', _this.getId)
+      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('date', calendarTime)
+      formData.append('begin', beginDateTime)
+      formData.append('end', endDateTime)
       formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
-      formData.append('joinNum', _this.address)
+      formData.append('joinNum', _this.number)
       formData.append('purpose', _this.demand)
+      formData.append('linkman', _this.linkman)
+      formData.append('phone', _this.phone)
       _this.$_HTTPData.getAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
+          _this.$router.push('/customized/index')
           lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)
@@ -218,9 +273,6 @@ export default {
         this.operation = false
       }
     }
-  },
-  mounted () {
-    this.nowTimes()
   },
   watch: {
     inputValue () {

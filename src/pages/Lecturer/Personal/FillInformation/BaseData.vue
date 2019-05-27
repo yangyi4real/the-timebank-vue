@@ -127,6 +127,41 @@ export default {
     // }
   },
   methods: {
+    /**
+     * 验证输入框的值
+     * @return {boolean}
+     */
+    checkInputValue () {
+      if (this.neme === '') {
+        lib.MessageAlert_Error('请输入姓名')
+        return false
+      }
+      if (this.sex === '') {
+        lib.MessageAlert_Error('请输入性别')
+        return false
+      }
+      if (this.birthDate === '') {
+        lib.MessageAlert_Error('请输入出生年月')
+        return false
+      }
+      if (this.workDate === '') {
+        lib.MessageAlert_Error('请输入参加工作时间')
+        return false
+      }
+      if (this.src === '') {
+        lib.MessageAlert_Error('请上传头像')
+        return false
+      }
+      if (this.model1 === '') {
+        lib.MessageAlert_Error('请输入现居地')
+        return false
+      }
+      if (this.EMail === '') {
+        lib.MessageAlert_Error('请输入电子邮箱')
+        return false
+      }
+      return true
+    },
     getFile (e) {
       let _this = this
       var files = e.target.files[0]
@@ -165,6 +200,7 @@ export default {
      * 点击了下一步按钮
      */
     pushClick () {
+      if (!this.checkInputValue()) { return }
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -178,7 +214,7 @@ export default {
       _this.$_HTTPData.getFillInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('设置成功')
-          this.$router.push('/personal/information/intention')
+          _this.$router.push('/personal/information/intention')
         } else {
           console.log(res.message)
         }

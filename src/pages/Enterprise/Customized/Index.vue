@@ -32,7 +32,7 @@
         </div>
       </div>
       <div class="class-list" v-show="classList">
-        <div class="class-list-div flex-row-start" v-for='(item, index) of listData' :key="index" @click="pushDetailsClick">
+        <div class="class-list-div flex-row-start" v-for='(item, index) of listData' :key="index" @click="pushDetailsClick(item)">
           <div class="class-list-div-left">
             <img :src="item.photo"/>
           </div>
@@ -74,9 +74,9 @@ export default {
       selected: '',
       selected2: '',
       selected3: '',
-      optList: ['a', 'b', 'c', 'd'],
-      optList2: ['a', 'b', 'c', 'd'],
-      optList3: ['a', 'b', 'c', 'd'],
+      optList: ['UI设计', '产品经理', '营销', '新媒体'],
+      optList2: ['山东', '吉林', '北京', '上海'],
+      optList3: ['100', '1000', '300', '500'],
       listData: []
     }
   },
@@ -92,8 +92,8 @@ export default {
     submitHandler (value) {
       this.$dialog.toast({mes: `搜索：${value}`})
     },
-    pushDetailsClick () {
-      // this.$router.push('/customized/details/:orderId')
+    pushDetailsClick (item) {
+      this.$router.push(`/customized/details/${item.id}`)
     },
     pushClick () {
       this.$router.push('/user/enterpriseInfo')

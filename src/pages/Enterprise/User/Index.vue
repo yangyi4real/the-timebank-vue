@@ -11,7 +11,7 @@
             <img :src="src" alt=""/>
           </div>
           <div>
-            <p class="head-text">{{listData.name}}</p>
+            <p class="head-text" @click="addInfo">{{listData.name}} <span class="main-color wanshan">点我完善信息</span></p>
             <p class="head-text2">企业编号：{{listData.serialNumber}}</p>
           </div>
         </div>
@@ -141,6 +141,9 @@ export default {
     this.loadData()
   },
   methods: {
+    addInfo () {
+      this.$router.push('/user/enterpriseInfo')
+    },
     loadData () {
       let _this = this
       let formData = new FormData()

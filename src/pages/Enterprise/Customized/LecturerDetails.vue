@@ -6,15 +6,15 @@
           <div class="lecturer-data-div1 flex-row-between">
             <div><img src=""/></div>
             <div>
-              <label>王琼<i class="iconfont iconnv main-color"></i></label>
-              <p>24岁 | 工作两年 | 青岛</p>
-              <p>专注研究产品设计</p>
+              <label>{{listDatas.name}}<i class="iconfont iconnv main-color" v-if="listDatas.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="listDatas.sexuality === 2"></i></label>
+              <p>24岁 | 工作{{listDatas.workingAge}}年 | 青岛</p>
+              <p>{{listDatas.introduction}}</p>
             </div>
           </div>
           <div class="lecturer-data-div2">
-            <p>授课方向：产品经理/UI-设计/Axure原型设计</p>
-            <p>授课地点：青岛/烟台/淄博/济南/潍坊</p>
-            <p>课程均价：100元/小时</p>
+            <p>授课方向：{{listDatas.skillLevel}}</p>
+            <p>授课地点：{{listDatas.expectedLocation}}</p>
+            <p>课程均价：{{listDatas.expectedSalary}}元/小时</p>
           </div>
           <div class="lecturer-data-div3 clearfix">
             <div class="lecturer-data-div3-left fl">
@@ -22,15 +22,15 @@
               <p>综合评分</p>
             </div>
             <div class="lecturer-data-div3-right fr">
-              <label>66</label>
+              <label>{{listDatas.classAmount}}</label>
               <p>平台约课数</p>
             </div>
           </div>
         </div>
         <div class="lecturer-skill">
           <div class="lecturer-skill-tab flex-row-around">
-            <div v-for="(item,index) in tabItems" :key="index" class="s-tab" :class="{ active: changeTab === index}" @click="tabsClicked(index)">
-              {{ item.name }}
+            <div v-for="(tag,index) in tabItems" :key="index" class="s-tab" :class="{ active: changeTab === index}" @click="tabsClicked(index)">
+              {{ tag.name }}
             </div>
           </div>
           <div v-show="show1" class="lecturer-skill-div">1</div>
@@ -73,13 +73,15 @@
       </div>
       <div class="base-btn flex-row-start">
         <div class="base-btn-div base-btn-left">资讯</div>
-        <div class="base-btn-div base-btn-right" @click="appointmentClick">预约</div>
+        <div class="base-btn-div base-btn-right" @click="appointmentClick()">预约</div>
       </div>
     </div>
 </template>
 
 <script>
 import Navbar from '../../../views/navbar/navbar'
+import TipsTools from '../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'lecturerDetails',
   components: {
@@ -98,10 +100,18 @@ export default {
       show1: true,
       show2: false,
       show3: false,
-      show4: false
+      show4: false,
+      listDatas: []
     }
   },
-  computed: {},
+  computed: {
+    getId () {
+      return this.$route.params.id
+    }
+  },
+  mounted () {
+    this.loadData()
+  },
   methods: {
     tabsClicked (index) {
       this.changeTab = index
@@ -130,11 +140,23 @@ export default {
         this.show4 = true
       }
     },
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.getId)
+      _this.$_HTTPData.getLectureDetail(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listDatas = res.result
+          console.log(_this.listDatas)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
     appointmentClick () {
-      this.$router.push('/customized/appointment')
+      this.$router.push(`/customized/appointment/${this.getId}`)
     }
-  },
-  mounted () {}
+  }
 }
 </script>
 

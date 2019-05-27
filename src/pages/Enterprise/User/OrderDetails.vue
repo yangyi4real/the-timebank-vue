@@ -4,37 +4,39 @@
     <div class="wapper">
       <div class="order-details">
         <div class="order-info flex-row-around">
-          <div class="order-info-left"><img src=""/></div>
+          <div class="order-info-left"><img :src="listDatas.userEntity.photo"/></div>
           <div class="order-info-right">
-            <label>王琼<i class="iconfont iconnv main-color"></i></label>
-            <p>24岁 | 工作两年 | 青岛</p>
-            <p>专注研究产品设计</p>
+            <label>{{listDatas.userEntity.name}}<i class="iconfont iconnv main-color" v-if="listDatas.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="listDatas.userEntity.sexuality === 2"></i></label>
+            <p>24岁 | 工作{{listDatas.userEntity.workingAge}}年 | {{listDatas.userEntity.livingLocation}}</p>
+            <p>{{listDatas.userEntity.skillLevel}}</p>
           </div>
         </div>
         <div class="order-content">
-          <div class="order-content-text">约讲内容：产品经理/UI-设计/Axure原型设计</div>
+          <div class="order-content-text">约讲内容：{{listDatas.userEntity.skillLevel}}</div>
           <div class="clearfix order-content-text">
             <div class="fl">约讲时间：</div>
             <div class="fl">
-              <p>2019-04-21 9:00-18:00</p>
-              <p>2019-04-21 9:00-18:00</p>
+              <p>{{listDatas.orderEntity.begin}}</p>
+              <p>{{listDatas.orderEntity.end}}</p>
             </div>
           </div>
-          <div class="order-content-text">约讲地址：市北区诺德广场A座1606室</div>
-          <div>需求：市北区诺德广场A座1606室</div>
+          <div class="order-content-text">约讲地址：{{listDatas.orderEntity.location}}</div>
+          <div>需求：{{listDatas.orderEntity.purpose}}</div>
         </div>
         <div class="order-sign-up">
           <div class="order-sign-up-title">报名信息</div>
           <div class="order-sign-up-info">
-            <p>联系人：王琼</p>
-            <p>联系方式：156****4633</p>
-            <p>参与人数：10人</p>
+            <p>联系人：{{listDatas.orderEntity.linkman}}</p>
+            <p>联系方式：{{listDatas.orderEntity.phone}}</p>
+            <p>参与人数：{{listDatas.orderEntity.joinNum}}人</p>
             <p>创建时间：2019-04-21 9:21:23</p>
             <p>支付时间：2019-04-21 9:21:23</p>
           </div>
           <div class="order-opt">
-            <p class="text-right">实付金额：<span>2000.00</span> 元</p>
+            <p class="text-right">实付金额：<span>{{listDatas.orderEntity.price}}</span> 元</p>
             <div class="order-opt-btn flex-row-end">
+              <div @click="paymentClicked" v-if="listDatas.orderEntity.orderStatus === 1">去支付</div>
+              <div v-if="listDatas.orderEntity.orderStatus === 4">评价</div>
               <div>取消订单</div>
               <div>联系客服</div>
             </div>
@@ -57,7 +59,10 @@ export default {
   data () {
     return {
       titleMsg: '订单详情',
-      listDatas: []
+      listDatas: {
+        orderEntity: [],
+        userEntity: []
+      }
     }
   },
   computed: {
@@ -72,10 +77,28 @@ export default {
     loadData () {
       let _this = this
       let formData = new FormData()
-      formData.append('orderId', this.getOrderId)
+      formData.append('orderId', _this.getOrderId)
       _this.$_HTTPData.getOrderDetail(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          _this.listDatas = res
+          _this.listDatas = res.result
+          console.log(_this.listDatas)
+          _this.listDatas.orderEntity = res.result.orderEntity
+          _this.listDatas.userEntity = res.result.userEntity
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    paymentClicked () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('payType', 1)
+      formData.append('orderId', _this.getOrderId)
+      formData.append('companyId', '')
+      _this.$_HTTPData.getCompanyPay(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          console.log(res.result)
+          lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)
         }

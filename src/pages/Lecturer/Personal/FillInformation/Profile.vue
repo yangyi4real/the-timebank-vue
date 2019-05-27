@@ -218,22 +218,24 @@ export default {
       return true
     },
     keepClick () {
-      if (!this.checkInputValue()) { return }
-      let myJSON = JSON.stringify(this.introDataList)
-      let myJSONData = JSON.stringify(this.introDatasList)
-      let _this = this
-      let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('introduction', _this.introduction)
-      formData.append('intros', myJSON)
-      formData.append('examples', myJSONData)
-      _this.$_HTTPData.getIntroData(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.maskShow = true
-        } else {
-          lib.MessageAlert_Error(res.message)
-        }
-      })
+      this.maskShow = true
+      // if (!this.checkInputValue()) { return }
+      // let myJSON = JSON.stringify(this.introDataList)
+      // let myJSONData = JSON.stringify(this.introDatasList)
+      // let _this = this
+      // let formData = new FormData()
+      // formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      // formData.append('introduction', _this.introduction)
+      // formData.append('intros', myJSON)
+      // formData.append('examples', myJSONData)
+      // _this.$_HTTPData.getIntroData(_this, formData, function (res) {
+      //   if (res.code === 0 || res.code === '000') {
+      //     _this.maskShow = true
+      //   } else {
+      //     _this.maskShow = true
+      //     // lib.MessageAlert_Error(res.message)
+      //   }
+      // })
     },
     inputValue () {
       if (this.profileMsg !== '' && this.birthDate !== '' && this.workDate !== '' && this.EMail !== '' && this.areaValue !== '') {

@@ -67,7 +67,11 @@ export default {
       imgListempImgs: []
     }
   },
-  computed: {},
+  computed: {
+    getOrderId () {
+      return this.$route.params.orderId
+    }
+  },
   methods: {
     fileClick () {
       document.getElementById('upload_file').click()
@@ -129,7 +133,7 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('type', 1)
-      formData.append('orderId', 1)
+      formData.append('orderId', _this.getOrderId)
       formData.append('result', _this.changeBtn + 1)
       formData.append('score', _this.rate)
       formData.append('tags', '')
