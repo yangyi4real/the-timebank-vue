@@ -5,10 +5,28 @@
 </template>
 
 <script>
-
+import UserModel from './store/UserModel'
+import {SET_USER_INFO} from './store/MutationTypes'
 export default {
   name: 'App',
-  components: {}
+  components: {},
+  beforeCreate () {
+    if (this.$SaiLei.cookiesGet('user_info')) {
+      this.$store.dispatch(SET_USER_INFO, new UserModel(this.$SaiLei.cookiesGet('user_info')))
+    }
+    if (this.$SaiLei.cookiesGet('user_id')) {
+      this.$store.dispatch(SET_USER_INFO, new UserModel(this.$SaiLei.cookiesGet('user_id')))
+    }
+    let _this = this
+    window.onfocus = function () {
+      if (_this.$SaiLei.cookiesGet('user_info')) {
+        _this.$store.dispatch(SET_USER_INFO, new UserModel(_this.$SaiLei.cookiesGet('user_info')))
+      }
+      if (_this.$SaiLei.cookiesGet('user_id')) {
+        _this.$store.dispatch(SET_USER_INFO, new UserModel(_this.$SaiLei.cookiesGet('user_id')))
+      }
+    }
+  }
 }
 </script>
 
@@ -52,6 +70,7 @@ export default {
   .text-right{text-align: right;}
   .flex-row-between {display: flex;flex-direction: row;justify-content: space-between;align-items: center;}
   .flex-row-around {display: flex;flex-direction: row;justify-content: space-around;align-items: center;}
+  .flex-row-around-right {display: flex;flex-direction: row-reverse;justify-content: space-around;align-items: center;}
   .flex-row-start {display: flex;flex-direction: row;justify-content: flex-start;align-items: center;}
   .flex-row-end{display: flex;flex-direction: row;justify-content: flex-end;align-items: center;}
   .font-size-14{font-size: 0.14rem;}

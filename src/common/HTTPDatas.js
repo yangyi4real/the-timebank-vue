@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.116:8081'
+      this.host = 'http://114.116.33.168:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
@@ -266,6 +266,7 @@ class HTTPData {
       if (res.code === 0 || res.code === '000') {
         _this.SaiLei.cookiesSave('user_info', res.result)
         _this.SaiLei.cookiesSave('user_id', res.result.id) // id
+        console.log('这里是打印' + _this.SaiLei.cookiesGet('user_id'))
         _this.SaiLei.cookiesSave('user_name', res.result.name) // 姓名
         _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
         let user = new UserModel(res.result)

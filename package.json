@@ -16,6 +16,7 @@
     "element-ui": "^2.8.2",
     "js-base64": "^2.5.1",
     "js-cookie": "^2.2.0",
+    "lrz": "^4.9.40",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.4",
     "vue-calendar-component": "^2.8.2",

@@ -5,9 +5,9 @@
       <div class="basedata-main">
         <div class="basedata-list flex-row-between">
           <div>头像</div>
-          <div class="user-icon">
-            <img :src="src" alt="">
-            <input type="file" @change="getFile" ref="file" placeholder="上传照片">
+          <div class="user-icon flex-row-between" style="width: 3rem;">
+            <div><input type='file' @change='uploadIMG' ref='file' placeholder='上传照片'></div>
+            <div><img :src='imgUrl' alt=''><i class="iconfont iconjiantou"></i></div>
           </div>
         </div>
         <div class="basedata-list flex-row-between">
@@ -94,7 +94,7 @@ export default {
     return {
       titleMsg: '基本信息',
       name: '',
-      src: '',
+      imgUrl: '',
       sex: [
         {name: '男'},
         {name: '女'}
@@ -162,15 +162,80 @@ export default {
       }
       return true
     },
-    getFile (e) {
-      let _this = this
-      var files = e.target.files[0]
-      if (!e || !window.FileReader) return
-      let reader = new FileReader()
-      reader.readAsDataURL(files)
-      reader.onloadend = function () {
-        _this.src = this.result
+    uploadIMG (e) {
+      let files = e.target.files || e.dataTransfer.files
+      if (!files.length) return
+      this.picavalue = files[0]
+      if (this.picavalue.size / 1024 > 5000) {
+        this.$message({
+          message: '图片过大不支持上传',
+          type: 'warning'
+        })
+      } else {
+        this.imgPreview(this.picavalue)
       }
+    },
+    imgPreview (file, callback) {
+      let self = this
+      if (!file || !window.FileReader) return
+      if (/^image/.test(file.type)) {
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = function () {
+          let result = this.result
+          let img = new Image()
+          img.src = result
+          console.log('********未压缩前的图片大小********')
+          console.log(result.length)
+          img.onload = function () {
+            let data = self.compress(img)
+            self.imgUrl = result
+            let blob = self.dataURItoBlob(data)
+            console.log('*******base64转blob对象******')
+            console.log(blob)
+            var formData = new FormData()
+            formData.append('file', blob)
+            console.log('********将blob对象转成formData对象********')
+            console.log(formData.get('file'))
+          }
+        }
+      }
+    },
+    // 压缩图片
+    compress (img) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      let width = img.width
+      let height = img.height
+      canvas.width = width
+      canvas.height = height
+      // 铺底色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, width, height)
+      let ndata = canvas.toDataURL('image/jpeg', 0.1)
+      console.log('*******压缩后的图片大小*******')
+      console.log(ndata)
+      console.log(ndata.length)
+      return ndata
+    },
+    // base64转成bolb对象
+    dataURItoBlob (base64Data) {
+      var byteString
+      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(base64Data.split(',')[1])
+      } else {
+        byteString = unescape(base64Data.split(',')[1])
+      }
+      var mimeString = base64Data
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0]
+      var ia = new Uint8Array(byteString.length)
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i)
+      }
+      return new Blob([ia], { type: mimeString })
     },
     // userIconDidClicked () {
     // },
@@ -210,7 +275,7 @@ export default {
       formData.append('workDate', _this.workDate)
       formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
       formData.append('email', _this.EMail)
-      formData.append('profile', _this.src)
+      formData.append('profile', _this.imgUrl)
       _this.$_HTTPData.getFillInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('设置成功')
@@ -262,6 +327,6 @@ export default {
   .active{background: rgba(249,91,64,1);color: #fff;}
   .basedata-btn{padding-bottom: 1rem;padding-top: 0.3rem;}
   .user-icon{position: relative;overflow: hidden;}
-  .user-icon input{position: absolute;top: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';}
-  .user-icon img{width:0.35rem;height:0.35rem;}
+  .user-icon input{position: absolute;top: 0.1rem;opacity: 0;-ms-filter: 'alpha(opacity=0)';z-index: 9;}
+  .user-icon img{width:0.35rem;height:0.35rem;position: absolute;top: 0.08rem;right: 0.2rem}
 </style>

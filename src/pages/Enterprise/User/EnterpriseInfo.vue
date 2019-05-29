@@ -6,9 +6,13 @@
         <div class="CoData-list flex-row-between">
           <div class="CoData-list-left">企业头像</div>
           <div class="CoData-list-right">
-            <div class="user-icon">
-              <img :src="profile" alt="">
-              <input type="file" @change="getProfile" ref="file" placeholder="上传照片">
+            <!--<div class="user-icon">-->
+              <!--<img :src="profile" alt="">-->
+              <!--<input type="file" @change="getProfile" ref="file" placeholder="上传照片">-->
+            <!--</div>-->
+            <div class="user-icon flex-row-between" style="width: 2rem;">
+              <div><input type='file' @change='uploadIMG' ref='file' placeholder='上传照片'></div>
+              <div><img :src='imgUrl' alt=''><i class="iconfont iconjiantou"></i></div>
             </div>
           </div>
         </div>
@@ -67,9 +71,13 @@
         <div class="CoData-list flex-row-between">
           <div class="CoData-list-left">上传营业执照</div>
           <div class="CoData-list-right">
-            <div class="user-icon">
-              <img :src="license" alt="">
-              <input type="file" @change="getLicense" ref="file" placeholder="上传照片">
+            <!--<div class="user-icon">-->
+              <!--<img :src="license" alt="">-->
+              <!--<input type="file" @change="getLicense" ref="file" placeholder="上传照片">-->
+            <!--</div>-->
+            <div class="user-icon flex-row-between" style="width: 2rem;">
+              <div><input type='file' @change='getLicense' ref='file' placeholder='上传照片'></div>
+              <div><img :src='license' alt=''><i class="iconfont iconjiantou"></i></div>
             </div>
           </div>
         </div>
@@ -94,7 +102,7 @@ export default {
   data () {
     return {
       titleMsg: '企业信息',
-      profile: '',
+      imgUrl: '',
       name: '',
       shortName: '',
       address: '',
@@ -117,27 +125,149 @@ export default {
   computed: {},
   methods: {
     // 上传头像
-    getProfile (e) {
-      let _this = this
-      let files = e.target.files[0]
-      if (!e || !window.FileReader) return
-      let reader = new FileReader()
-      reader.readAsDataURL(files)
-      reader.onloadend = function () {
-        _this.profile = this.result
+    uploadIMG (e) {
+      let files = e.target.files || e.dataTransfer.files
+      if (!files.length) return
+      this.picavalue = files[0]
+      if (this.picavalue.size / 1024 > 5000) {
+        this.$message({
+          message: '图片过大不支持上传',
+          type: 'warning'
+        })
+      } else {
+        this.imgPreview(this.picavalue)
       }
+    },
+    imgPreview (file, callback) {
+      let self = this
+      if (!file || !window.FileReader) return
+      if (/^image/.test(file.type)) {
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = function () {
+          let result = this.result
+          let img = new Image()
+          img.src = result
+          console.log('********未压缩前的图片大小********')
+          console.log(result.length)
+          img.onload = function () {
+            let data = self.compress(img)
+            self.imgUrl = result
+            let blob = self.dataURItoBlob(data)
+            console.log('*******base64转blob对象******')
+            console.log(blob)
+            var formData = new FormData()
+            formData.append('file', blob)
+            console.log('********将blob对象转成formData对象********')
+            console.log(formData.get('file'))
+          }
+        }
+      }
+    },
+    // 压缩图片
+    compress (img) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      let width = img.width
+      let height = img.height
+      canvas.width = width
+      canvas.height = height
+      // 铺底色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, width, height)
+      let ndata = canvas.toDataURL('image/jpeg', 0.1)
+      console.log('*******压缩后的图片大小*******')
+      console.log(ndata)
+      console.log(ndata.length)
+      return ndata
+    },
+    // base64转成bolb对象
+    dataURItoBlob (base64Data) {
+      var byteString
+      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(base64Data.split(',')[1])
+      } else {
+        byteString = unescape(base64Data.split(',')[1])
+      }
+      var mimeString = base64Data
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0]
+      var ia = new Uint8Array(byteString.length)
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i)
+      }
+      return new Blob([ia], { type: mimeString })
     },
     // 上传营业执照
     getLicense (e) {
-      let _this = this
-      let files = e.target.files[0]
-      if (!e || !window.FileReader) return
-      let reader = new FileReader()
-      reader.readAsDataURL(files)
-      reader.onloadend = function () {
-        _this.license = this.result
+      let files = e.target.files || e.dataTransfer.files
+      if (!files.length) return
+      this.picavalue = files[0]
+      if (this.picavalue.size / 1024 > 5000) {
+        this.$message({
+          message: '图片过大不支持上传',
+          type: 'warning'
+        })
+      } else {
+        this.imgPreviews(this.picavalue)
       }
     },
+    imgPreviews (file, callback) {
+      let self = this
+      if (!file || !window.FileReader) return
+      if (/^image/.test(file.type)) {
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = function () {
+          let result = this.result
+          let img = new Image()
+          img.src = result
+          console.log('********未压缩前的图片大小********')
+          console.log(result.length)
+          img.onload = function () {
+            let data = self.compresss(img)
+            self.license = result
+            let blob = self.dataURItoBlob(data)
+            console.log('*******base64转blob对象******')
+            console.log(blob)
+            var formData = new FormData()
+            formData.append('file', blob)
+            console.log('********将blob对象转成formData对象********')
+            console.log(formData.get('file'))
+          }
+        }
+      }
+    },
+    // 压缩图片
+    compresss (img) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      let width = img.width
+      let height = img.height
+      canvas.width = width
+      canvas.height = height
+      // 铺底色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, width, height)
+      let ndata = canvas.toDataURL('image/jpeg', 0.1)
+      console.log('*******压缩后的图片大小*******')
+      console.log(ndata)
+      console.log(ndata.length)
+      return ndata
+    },
+    // getLicense (e) {
+    //   let _this = this
+    //   let files = e.target.files[0]
+    //   if (!e || !window.FileReader) return
+    //   let reader = new FileReader()
+    //   reader.readAsDataURL(files)
+    //   reader.onloadend = function () {
+    //     _this.license = this.result
+    //   }
+    // },
     /**
      * 验证输入框的值
      * @return {boolean}
@@ -209,7 +339,7 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('profile', _this.profile)
+      formData.append('profile', _this.imgUrl)
       formData.append('name', _this.name)
       formData.append('shortName', _this.shortName)
       formData.append('foundingTime', _this.foundingTime)
@@ -261,10 +391,10 @@ export default {
   .CoData{padding-top: 0.35rem;margin: 0 0.2rem;}
   .CoData .CoData-list{border-bottom: 0.01rem solid #E8E8E8;line-height: 0.5rem;height: 0.5rem;}
   .CoData .CoData-list input{border: 0;outline: none;background-color: rgba(0, 0, 0, 0);font-size: 0.16rem;text-align: right;
-    font-family:PingFangSC-Regular;font-weight:400;}
+    font-family:PingFangSC-Regular;font-weight:400;height: 0.4rem;line-height: 0.4rem;}
   .CoData .CoData-list .CoData-list-left{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
   .CoData-btn{padding: 0.85rem 0;}
   .user-icon{position: relative;overflow: hidden;}
-  .user-icon input{position: absolute;top: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';}
-  .user-icon img{width:0.35rem;height:0.35rem;}
+  .user-icon input{position: absolute;top: 0.1rem;opacity: 0;-ms-filter: 'alpha(opacity=0)';z-index: 9;}
+  .user-icon img{width:0.35rem;height:0.35rem;position: absolute;top: 0.08rem;right: 0.2rem}
 </style>

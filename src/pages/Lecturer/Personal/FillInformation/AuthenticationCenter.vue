@@ -108,7 +108,8 @@ export default {
       size: 0,
       limit: 9,
       limit2: 3,
-      listData: []
+      listData: [],
+      picavalue: ''
     }
   },
   created () {},
@@ -145,18 +146,70 @@ export default {
       }
     },
     fileAdd (file) {
-      if (this.limit !== undefined) this.limit--
-      if (this.limit !== undefined && this.limit < 0) return
-      this.size = this.size + file.size
-      let reader = new FileReader()
-      reader.vue = this
-      reader.readAsDataURL(file)
-      reader.onload = function () {
-        file.src = this.result
-        this.vue.imgList.push({
-          file
-        })
+      if (/^image/.test(file.type)) {
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.vue = this
+        if (this.limit !== undefined) this.limit--
+        if (this.limit !== undefined && this.limit < 0) return
+        this.size = this.size + file.size
+        let self = this
+        reader.onloadend = function () {
+          let result = this.result
+          let img = new Image()
+          img.src = result
+          console.log()
+          img.onload = function () {
+            let data = self.compress(img)
+            self.file = result
+            console.log(self.file)
+            let blob = self.dataURItoBlob(data)
+            var formData = new FormData()
+            formData.append('file', blob)
+            file.src = self.file
+            self.vue.imgList.push({
+              file
+            })
+            console.log(this.vue.imgList)
+          }
+        }
       }
+    },
+    // 压缩图片
+    compress (img) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      let width = img.width
+      let height = img.height
+      canvas.width = width
+      canvas.height = height
+      // 铺底色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, width, height)
+      let ndata = canvas.toDataURL('image/jpeg', 0.1)
+      console.log('*******压缩后的图片大小*******')
+      console.log(ndata)
+      console.log(ndata.length)
+      return ndata
+    },
+    // base64转成bolb对象
+    dataURItoBlob (base64Data) {
+      var byteString
+      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(base64Data.split(',')[1])
+      } else {
+        byteString = unescape(base64Data.split(',')[1])
+      }
+      var mimeString = base64Data
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0]
+      var ia = new Uint8Array(byteString.length)
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i)
+      }
+      return new Blob([ia], { type: mimeString })
     },
     fileAdd2 (file) {
       if (this.limit2 !== undefined) this.limit2--
@@ -220,7 +273,6 @@ export default {
       _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
-          console.log(res.result)
         } else {
           console.log(res.message)
         }
@@ -268,7 +320,7 @@ export default {
      * 点击取消认证
      */
     cancelClick () {
-      let _this = this
+      // let _this = this
       this.$dialog.confirm({
         title: '<p style="text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.1rem">确定取消认证？</p>',
         mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">取消后，未来已存储时间将全部失效，并且不可继续约课</p>',
@@ -282,7 +334,7 @@ export default {
             txt: '确定',
             color: true,
             callback: () => {
-              _this.$router.push('/personal/information/authentication')
+              // _this.$router.push('/personal/information/authentication')
             }
           }
         ]

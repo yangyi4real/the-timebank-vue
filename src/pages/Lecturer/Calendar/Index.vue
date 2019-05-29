@@ -5,11 +5,29 @@
     </div>
     <div class="wapper">
       <div class="calendar">
-        <div class="none-rili" v-if="this.listData.authStatus === '' || this.listData.authStatus === null" >
-          <div class="flex-row-between caozuo">
-            <div></div>
-            <div @click="noneCalendarClick" v-if="this.$SaiLei.cookiesGet('user_name') !== '' && this.$SaiLei.cookiesGet('user_name') !== null">存储时间</div>
-            <div @click="noneCalendarClicked" v-if="this.$SaiLei.cookiesGet('user_name') === '' || this.$SaiLei.cookiesGet('user_name') === null">存储时间</div>
+        <div class="none-rili" v-if="this.listData.authStatus === '' || this.listData.authStatus === null">
+          <div style="background:rgba(255,255,255,1);">
+            <div class="caozuo">
+              <div>
+                <div class="flex-row-between">
+                  <div></div>
+                  <div @click="noneCalendarClick" v-if="this.$SaiLei.cookiesGet('user_name') !== '' && this.$SaiLei.cookiesGet('user_name') !== null">存储时间</div>
+                  <div @click="noneCalendarClicked" v-if="this.$SaiLei.cookiesGet('user_name') === '' || this.$SaiLei.cookiesGet('user_name') === null">存储时间</div>
+                </div>
+                <div>
+                  <Calendar
+                    ref='Calendar'
+                    :markDateMore='timeList'
+                    v-on:isToday='clickToday'
+                    agoDayHide='1554048000'
+                    futureDayHide='1561910399'
+                    :sundayStart = 'true'
+                    v-on:choseDay='clickDay'
+                    v-on:changeMonth='changeDate'
+                  ></Calendar>
+                </div>
+              </div>
+            </div>
           </div>
           <div style="padding-top: 0.3rem;">
             <p>计划赶不上变化</p>
@@ -20,7 +38,7 @@
             <div class="btn-border-black" v-if="this.$SaiLei.cookiesGet('user_name') === '' || this.$SaiLei.cookiesGet('user_name') === null" @click="$router.push('/personal/information/basedata')">完善信息</div>
           </div>
         </div>
-        <div v-if="this.listData.authStatus === 1">
+        <div v-if="this.listData.authStatus === 1" style="background:rgba(255,255,255,1);">
           <div class="flex-row-between caozuo">
             <div></div>
             <div @click="addCalendarClick">存储时间</div>
@@ -35,12 +53,12 @@
             v-on:choseDay='clickDay'
             v-on:changeMonth='changeDate'
           ></Calendar>
-        </div>
-        <div class="flex-row-between mingci" @click="clickDefinitions">
-          <div><span class="color-999">D</span> 未存储</div>
-          <div><span class="main-color">D</span> 存储未约</div>
-          <div><span class="main-color borderRadius">D</span> 有约需确认</div>
-          <div><span class="main-color borderRadius borderRadiusBack">D</span> 已约 <i class="iconfont iconjiantou" style="font-size: 0.15rem"></i></div>
+          <div class="flex-row-between mingci" @click="clickDefinitions">
+            <div><span class="color-999">D</span> 未存储</div>
+            <div><span class="main-color">D</span> 存储未约</div>
+            <div><span class="main-color borderRadius">D</span> 有约需确认</div>
+            <div><span class="main-color borderRadius borderRadiusBack">D</span> 已约 <i class="iconfont iconjiantou" style="font-size: 0.15rem"></i></div>
+          </div>
         </div>
       </div>
       <!--<div class="calendarMsg">-->
@@ -147,7 +165,7 @@ export default {
 <style scoped>
   .home-nav{padding: 0.2rem 0 0.1rem 0;font-size: 0.2rem;font-family:PingFangSC-Semibold;font-weight:600;}
   .wapper{border-radius:0.05rem;margin: 0 0.1rem;}
-  .calendar{background:rgba(255,255,255,1);}
+  /*.calendar{}*/
   .caozuo{padding: 0.15rem 0;font-size:0.15rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(249,91,64,1);border-bottom: 0.01rem solid #ccc;margin: 0 0.15rem;}
   .mingci{padding: 0.2rem 0;margin: 0 0.15rem;font-size: 0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
   .borderRadius{border:0.01rem solid rgba(249,91,64,1);border-radius: 1rem;padding: 0 0.05rem;}
