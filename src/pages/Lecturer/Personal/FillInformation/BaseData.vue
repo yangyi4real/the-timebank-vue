@@ -175,7 +175,7 @@ export default {
         this.imgPreview(this.picavalue)
       }
     },
-    imgPreview (file, callback) {
+    imgPreview (file) {
       let self = this
       if (!file || !window.FileReader) return
       if (/^image/.test(file.type)) {
@@ -186,17 +186,15 @@ export default {
           let img = new Image()
           img.src = result
           console.log('********未压缩前的图片大小********')
-          console.log(result.length)
+          console.log(result)
           img.onload = function () {
             let data = self.compress(img)
-            self.imgUrl = result
+            self.imgUrl = self.compress(img)
+            console.log('********imgUrl的数据********')
+            console.log(self.imgUrl)
             let blob = self.dataURItoBlob(data)
-            console.log('*******base64转blob对象******')
-            console.log(blob)
             var formData = new FormData()
             formData.append('file', blob)
-            console.log('********将blob对象转成formData对象********')
-            console.log(formData.get('file'))
           }
         }
       }
@@ -216,7 +214,6 @@ export default {
       let ndata = canvas.toDataURL('image/jpeg', 0.1)
       console.log('*******压缩后的图片大小*******')
       console.log(ndata)
-      console.log(ndata.length)
       return ndata
     },
     // base64转成bolb对象
@@ -266,6 +263,9 @@ export default {
      */
     pushClick () {
       if (!this.checkInputValue()) { return }
+      let myImg = this.imgUrl
+      myImg = myImg.replace('data:image/png;base64,', '')
+      myImg = myImg.replace('data:image/jpeg;base64,', '')
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -275,7 +275,9 @@ export default {
       formData.append('workDate', _this.workDate)
       formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
       formData.append('email', _this.EMail)
-      formData.append('profile', _this.imgUrl)
+      formData.append('profile', myImg)
+      console.log('********imgUrl的数据********')
+      console.log(myImg)
       _this.$_HTTPData.getFillInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('设置成功')

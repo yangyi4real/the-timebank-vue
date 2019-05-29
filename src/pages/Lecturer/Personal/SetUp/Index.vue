@@ -41,8 +41,8 @@
         </div>
       </div>
       <div class="setUp-btn">
-        <div class="btn-border-black margin-30">切换企业身份</div>
-        <div class="btn-border-black margin">退出登录</div>
+        <div class="btn-border-black margin-30" @click="switchClicked">切换讲师身份</div>
+        <div class="btn-border-black margin" @click="SignOutClicked">退出登录</div>
       </div>
     </div>
   </div>
@@ -50,6 +50,8 @@
 
 <script>
 import Navbar from '../../../../views/navbar/navbar'
+import TipsTools from '../../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
   name: 'SetUp',
   components: {
@@ -61,7 +63,65 @@ export default {
     }
   },
   computed: {},
-  methods: {},
+  methods: {
+    // 切换登录
+    switchClicked () {
+      this.$dialog.confirm({
+        title: '确定切换登录身份？',
+        mes: '',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {}
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              let _this = this
+              let formData = new FormData()
+              formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+              formData.append('type', 1)
+              _this.$_HTTPData.getSwitchLogin(_this, formData, function (res) {
+                if (res.code === 0 || res.code === '000') {
+                  lib.MessageAlert_None(res.message)
+                  _this.$router.push('/user/index')
+                } else {
+                  lib.MessageAlert_None(res.message)
+                }
+              })
+            }
+          }
+        ]
+      })
+    },
+    // 退出登录
+    SignOutClicked () {
+      this.$dialog.confirm({
+        title: '确定退出登录？',
+        mes: '',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {}
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              this.$SaiLei.cookiesClear('user_info')
+              this.$SaiLei.cookiesClear('user_id')
+              this.$SaiLei.cookiesClear('user_name')
+              this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
+              this.$router.push('/')
+            }
+          }
+        ]
+      })
+    }
+  },
   mounted () {}
 }
 </script>

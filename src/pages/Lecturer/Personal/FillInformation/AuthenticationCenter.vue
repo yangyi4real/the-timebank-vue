@@ -149,7 +149,6 @@ export default {
       if (/^image/.test(file.type)) {
         let reader = new FileReader()
         reader.readAsDataURL(file)
-        reader.vue = this
         if (this.limit !== undefined) this.limit--
         if (this.limit !== undefined && this.limit < 0) return
         this.size = this.size + file.size
@@ -161,19 +160,19 @@ export default {
           console.log()
           img.onload = function () {
             let data = self.compress(img)
-            self.file = result
-            console.log(self.file)
+            self.file = self.compress(img)
+            file.src = self.file
+            console.log(file.src)
             let blob = self.dataURItoBlob(data)
             var formData = new FormData()
             formData.append('file', blob)
-            file.src = self.file
-            self.vue.imgList.push({
-              file
-            })
-            console.log(this.vue.imgList)
           }
         }
       }
+      this.imgList.push({
+        file
+      })
+      console.log(this.imgList)
     },
     // 压缩图片
     compress (img) {
@@ -193,37 +192,52 @@ export default {
       console.log(ndata.length)
       return ndata
     },
-    // base64转成bolb对象
-    dataURItoBlob (base64Data) {
-      var byteString
-      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
-        byteString = atob(base64Data.split(',')[1])
-      } else {
-        byteString = unescape(base64Data.split(',')[1])
-      }
-      var mimeString = base64Data
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0]
-      var ia = new Uint8Array(byteString.length)
-      for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i)
-      }
-      return new Blob([ia], { type: mimeString })
-    },
     fileAdd2 (file) {
-      if (this.limit2 !== undefined) this.limit2--
-      if (this.limit2 !== undefined && this.limit2 < 0) return
-      this.size = this.size + file.size
-      let reader = new FileReader()
-      reader.vue = this
-      reader.readAsDataURL(file)
-      reader.onload = function () {
-        file.src = this.result
-        this.vue.imgList2.push({
-          file
-        })
+      if (/^image/.test(file.type)) {
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
+        if (this.limit2 !== undefined) this.limit2--
+        if (this.limit2 !== undefined && this.limit2 < 0) return
+        this.size = this.size + file.size
+        let self = this
+        reader.onloadend = function () {
+          let result = this.result
+          let img = new Image()
+          img.src = result
+          console.log()
+          img.onload = function () {
+            let data = self.compresss(img)
+            self.file = self.compresss(img)
+            file.src = self.file
+            console.log(file.src)
+            let blob = self.dataURItoBlob(data)
+            var formData = new FormData()
+            formData.append('file', blob)
+          }
+        }
       }
+      this.imgList2.push({
+        file
+      })
+      console.log(this.imgList2)
+    },
+    // 压缩图片
+    compresss (img) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      let width = img.width
+      let height = img.height
+      canvas.width = width
+      canvas.height = height
+      // 铺底色
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, width, height)
+      let ndata = canvas.toDataURL('image/jpeg', 0.1)
+      console.log('*******压缩后的图片大小*******')
+      console.log(ndata)
+      console.log(ndata.length)
+      return ndata
     },
     fileDel (index) {
       // this.size = this.size - this.imgList[index].file.size
@@ -248,6 +262,24 @@ export default {
       el.preventDefault()
       this.fileList(el.dataTransfer.files)
       this.fileList2(el.dataTransfer.files)
+    },
+    // base64转成bolb对象
+    dataURItoBlob (base64Data) {
+      var byteString
+      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(base64Data.split(',')[1])
+      } else {
+        byteString = unescape(base64Data.split(',')[1])
+      }
+      var mimeString = base64Data
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0]
+      var ia = new Uint8Array(byteString.length)
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i)
+      }
+      return new Blob([ia], { type: mimeString })
     },
     /**
      * 验证输入框的值
@@ -334,7 +366,7 @@ export default {
             txt: '确定',
             color: true,
             callback: () => {
-              // _this.$router.push('/personal/information/authentication')
+              // this.$router.push('/calendar/index')
             }
           }
         ]

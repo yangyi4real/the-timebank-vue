@@ -176,10 +176,10 @@ export default {
   .modular3 .modular3-div{text-align: center;font-size:15px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);padding-top: 0.4rem;}
   .modular3 .modular3-div img{width: 0.3rem;height: 0.3rem;}
   .modular3 .modular3-div p{padding-top: 0.16rem}
-  .modular-already div{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
+  .modular-already div{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);text-align: center}
   .modular-already div span{padding-left: 0.1rem;}
   .modular-already p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);padding-top: 0.15rem;}
   .user-icon{position: relative;overflow: hidden;}
   .user-icon input{position: absolute;top: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';}
-  .user-icon img{width: 0.67rem;height: 0.67rem;}
+  .user-icon img{width: 0.67rem;height: 0.67rem;border: 0.01rem solid #E8E8E8;}
 </style>

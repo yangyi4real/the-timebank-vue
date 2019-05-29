@@ -11,8 +11,8 @@
               <div>
                 <div class="flex-row-between">
                   <div></div>
-                  <div @click="noneCalendarClick" v-if="this.$SaiLei.cookiesGet('user_name') !== '' && this.$SaiLei.cookiesGet('user_name') !== null">存储时间</div>
-                  <div @click="noneCalendarClicked" v-if="this.$SaiLei.cookiesGet('user_name') === '' || this.$SaiLei.cookiesGet('user_name') === null">存储时间</div>
+                  <div @click="noneCalendarClick" v-if="this.$SaiLei.cookiesGet('user_nickname') !== '' && this.$SaiLei.cookiesGet('user_nickname') !== null">存储时间</div>
+                  <div @click="noneCalendarClicked" v-if="this.$SaiLei.cookiesGet('user_nickname') === '' || this.$SaiLei.cookiesGet('user_nickname') === null">存储时间</div>
                 </div>
                 <div>
                   <Calendar
@@ -35,7 +35,7 @@
             <br>
             <br>
             <br>
-            <div class="btn-border-black" v-if="this.$SaiLei.cookiesGet('user_name') === '' || this.$SaiLei.cookiesGet('user_name') === null" @click="$router.push('/personal/information/basedata')">完善信息</div>
+            <div class="btn-border-black" v-if="this.$SaiLei.cookiesGet('user_nickname') === '' || this.$SaiLei.cookiesGet('user_nickname') === null" @click="$router.push('/personal/information/basedata')">完善信息</div>
           </div>
         </div>
         <div v-if="this.listData.authStatus === 1" style="background:rgba(255,255,255,1);">

@@ -8,7 +8,7 @@
         <div class="head flex-row-start">
           <div class="head-img">
             <!--<img :src="userIconUrl" @click="userIconDidClicked" class="User-icon">-->
-            <img :src="src" alt=""/>
+            <img :src="src" alt="" @click="personalCenterClicked"/>
           </div>
           <div>
             <p class="head-text" @click="addInfo">{{listData.name}} <span class="main-color wanshan">点我完善信息</span></p>
@@ -141,6 +141,9 @@ export default {
     this.loadData()
   },
   methods: {
+    personalCenterClicked () {
+      this.$router.push('/user/personalcenter')
+    },
     addInfo () {
       this.$router.push('/user/enterpriseInfo')
     },
@@ -201,7 +204,7 @@ export default {
   .modular4{background: #fff;padding: 0.2rem 0.2rem 1rem 0.2rem;margin: 0 0.1rem;border-radius:0.05rem;}
   .modular1 .modular1-div{padding: 0.2rem 0;}
   .head-img{padding-right: 0.15rem;}
-  .head-img img{width: 0.67rem;height: 0.67rem;}
+  .head-img img{width: 0.67rem;height: 0.67rem;border: 0.01rem solid #E8E8E8;}
   .head-text{font-size:0.17rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.05rem;}
   .head-text2{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
   .modular-data{font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);}
