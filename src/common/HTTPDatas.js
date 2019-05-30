@@ -22,8 +22,8 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      // this.host = 'http://192.168.1.123:8081'
-      this.host = 'http://114.116.33.168:8081'
+      this.host = 'http://192.168.1.118:8081'
+      // this.host = 'http://114.116.33.168:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
@@ -271,6 +271,7 @@ class HTTPData {
         _this.SaiLei.cookiesSave('user_id', res.result.id) // id
         _this.SaiLei.cookiesSave('user_name', res.result.name) // 姓名
         _this.SaiLei.cookiesSave('user_nickname', res.result.nickname) // 昵称
+        _this.SaiLei.cookiesSave('user_sex', res.result.sex) // 昵称
         _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
         let user = new UserModel(res.result)
         obj.$store.dispatch(SET_USER_INFO, user)

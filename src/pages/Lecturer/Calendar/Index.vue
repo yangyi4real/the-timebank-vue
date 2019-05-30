@@ -11,8 +11,8 @@
               <div>
                 <div class="flex-row-between">
                   <div></div>
-                  <div @click="noneCalendarClick" v-if="this.$SaiLei.cookiesGet('user_nickname') !== '' && this.$SaiLei.cookiesGet('user_nickname') !== null">存储时间</div>
-                  <div @click="noneCalendarClicked" v-if="this.$SaiLei.cookiesGet('user_nickname') === '' || this.$SaiLei.cookiesGet('user_nickname') === null">存储时间</div>
+                  <div @click="noneCalendarClick" v-if="this.listData.sex !== '' && this.listData.sex !== null">存储时间</div>
+                  <div @click="noneCalendarClicked" v-if="this.listData.sex === '' || this.listData.sex === null">存储时间</div>
                 </div>
                 <div>
                   <Calendar
@@ -28,6 +28,12 @@
                 </div>
               </div>
             </div>
+            <div class="flex-row-between mingci" @click="clickDefinitions">
+              <div><span class="color-999">D</span> 未存储</div>
+              <div><span class="main-color">D</span> 存储未约</div>
+              <div><span class="main-color borderRadius">D</span> 有约需确认</div>
+              <div><span class="main-color borderRadius borderRadiusBack">D</span> 已约 <i class="iconfont iconjiantou" style="font-size: 0.15rem"></i></div>
+            </div>
           </div>
           <div style="padding-top: 0.3rem;">
             <p>计划赶不上变化</p>
@@ -35,7 +41,7 @@
             <br>
             <br>
             <br>
-            <div class="btn-border-black" v-if="this.$SaiLei.cookiesGet('user_nickname') === '' || this.$SaiLei.cookiesGet('user_nickname') === null" @click="$router.push('/personal/information/basedata')">完善信息</div>
+            <div class="btn-border-black" v-if="this.listData.sex === '' || this.listData.sex === null" @click="$router.push('/personal/information/basedata')">完善信息</div>
           </div>
         </div>
         <div v-if="this.listData.authStatus === 1" style="background:rgba(255,255,255,1);">
@@ -121,7 +127,6 @@ export default {
       _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
-          _this.sex = res.result.sex
         } else {
           console.log(res.message)
         }

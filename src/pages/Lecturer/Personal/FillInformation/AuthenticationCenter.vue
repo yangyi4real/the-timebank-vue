@@ -42,7 +42,7 @@
               已选中{{imgList.length}}张，最多上传<span class="imgNumber"> 9</span> 张图片
             </div>
           </div>
-          <div class="upload_warp" style="border: 1px solid white;">
+          <div class="upload_warp" style="border: 1px solid white;display: none">
             <div class="upload_warp_img" v-show="imgList.length!=0" >
               <div class="upload_warp_img_div" v-for="(item,index) of imgList" :key="index">
                 <div class="upload_warp_img_div_top" >
@@ -53,7 +53,7 @@
             </div>
           </div>
         </div>
-        <div class="basedata-list" style="border: 0">
+        <div class="basedata-list" style="border: 0;">
           <input @change="fileChanges($event)" type="file" id="upload_file2" multiple style="display: none"/>
           <div class="flex-row-between">
             <div class="basedata-list-left">授课照片</div>
@@ -61,7 +61,7 @@
               已选中{{imgList2.length}}张，最多上传<span class="imgNumber"> 3</span> 张图片
             </div>
           </div>
-          <div class="upload_warp" style="border: 1px solid white;">
+          <div class="upload_warp" style="border: 1px solid white;display: none">
             <div class="upload_warp_img" v-show="imgList2.length!=0" >
               <div class="upload_warp_img_div" v-for="(item,index) of imgList2" :key="index">
                 <div class="upload_warp_img_div_top" >
@@ -108,8 +108,7 @@ export default {
       size: 0,
       limit: 9,
       limit2: 3,
-      listData: [],
-      picavalue: ''
+      listData: []
     }
   },
   created () {},
@@ -207,9 +206,8 @@ export default {
           console.log()
           img.onload = function () {
             let data = self.compresss(img)
-            self.file = self.compresss(img)
             file.src = self.file
-            console.log(file.src)
+            self.file = self.compresss(img)
             let blob = self.dataURItoBlob(data)
             var formData = new FormData()
             formData.append('file', blob)
@@ -219,7 +217,6 @@ export default {
       this.imgList2.push({
         file
       })
-      console.log(this.imgList2)
     },
     // 压缩图片
     compresss (img) {
