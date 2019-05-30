@@ -273,6 +273,8 @@ class HTTPData {
         _this.SaiLei.cookiesSave('user_nickname', res.result.nickname) // 昵称
         _this.SaiLei.cookiesSave('user_sex', res.result.sex) // 昵称
         _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
+        _this.SaiLei.cookiesSave('user_loginId', res.result.loginId) // 认证状态
+        _this.SaiLei.cookiesSave('user_email', res.result.email) // 认证状态
         let user = new UserModel(res.result)
         obj.$store.dispatch(SET_USER_INFO, user)
       }

@@ -24,8 +24,8 @@
             <div class="flex-row-between choice-time-list-div">
               <div class="choice-time-list-left">可预约时间范围</div>
               <div>
-                <p>{{chose.begin}}至</p>
-                <p>{{chose.end}}</p>
+                <p>{{chose.timeSave.begin}}至</p>
+                <p>{{chose.timeSave.end}}</p>
               </div>
             </div>
             <div class="flex-row-between choice-time-list-div padding-top-15">
@@ -46,7 +46,7 @@
         <div class="CoData">
           <div class="CoData-list flex-row-between">
             <div class="CoData-list-left">约讲企业</div>
-            <div class="CoData-list-right">青岛赛雷信息科技有限公司</div>
+            <div class="CoData-list-right">{{myInfoData.name}}</div>
           </div>
           <div class="CoData-list flex-row-between" style="padding: 0">
             <div class="CoData-list-left">约讲地</div>
@@ -130,8 +130,13 @@ export default {
       inOperation: true, // 灰色按钮
       operation: false,
       listDatasTime: [],
-      chose: [],
-      className: 'mark1'
+      myInfoData: {
+        name: ''
+      },
+      chose: {
+        order: '',
+        timeSave: {}
+      }
     }
   },
   computed: {
@@ -142,8 +147,23 @@ export default {
   mounted () {
     this.nowTimes()
     this.loadDataList()
+    this.loadData()
   },
   methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 2)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.myInfoData = res.result
+          console.log(_this.myInfoData)
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     /**
      * 验证输入框的值
      * @return {boolean}
@@ -182,8 +202,15 @@ export default {
       _this.$_HTTPData.getSavedTime(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listDatasTime = res.result
+          let temp = JSON.stringify(res.result)
+          let temp2 = temp.replace(/status/g, 'className')
+          _this.listDatasTime = JSON.parse(temp2)
           for (let i = 0; i < _this.listDatasTime.length; i++) {
-            _this.$set(_this.listDatasTime[i], 'className', 'mark1')
+            let item = _this.listDatasTime[i]
+            console.log(item)
+            if (item.className === 0) {
+              item.className = 'mark1'
+            }
           }
           console.log(_this.listDatasTime)
         } else {
@@ -201,6 +228,7 @@ export default {
       _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.chose = res.result
+          _this.chose.timeSave = res.result.timeSave
           console.log(res.result)
           lib.MessageAlert_Success(res.message)
         } else {

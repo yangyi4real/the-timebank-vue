@@ -11,7 +11,7 @@
             <img :src="src" alt="" @click="personalCenterClicked"/>
           </div>
           <div>
-            <p class="head-text" @click="addInfo">{{listData.name}} <span class="main-color wanshan">点我完善信息</span></p>
+            <p class="head-text" @click="addInfo">{{listData.name}} <span v-if="this.listData.name === null || this.listData.name === ''" class="main-color wanshan">点我完善信息</span></p>
             <p class="head-text2">企业编号：{{listData.serialNumber}}</p>
           </div>
         </div>
@@ -112,6 +112,7 @@
 
 <script>
 import TabbarEnt from '../../../views/Tabbar/TabbarEnt'
+import icon from '../../../assets/icon/user_icon.png'
 export default {
   name: 'UserIndex',
   components: {
@@ -119,7 +120,7 @@ export default {
   },
   data () {
     return {
-      src: '',
+      src: icon,
       listData: {
         name: '',
         photo: '',

@@ -128,7 +128,7 @@ export default {
         _this['isButtonAlert'] = false
         if (res.code === 0 || res.code === '000') {
           _this.startTimer()
-          lib.MessageAlert_Success('发送成功')
+          lib.MessageAlert_Success(res.message)
         } else {
           console.log(res.message)
         }

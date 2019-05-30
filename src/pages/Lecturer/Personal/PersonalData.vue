@@ -19,8 +19,8 @@
             </div>
           </div>
           <div class="pro-data-head-number">
-            <div><i class="iconfont iconshouji main-color"></i>{{listData.loginId}}</div>
-            <div><i class="iconfont iconyouxiang main-color"></i>{{listData.email}}</div>
+            <div><i class="iconfont iconshouji main-color"></i></div>
+            <div><i class="iconfont iconyouxiang main-color"></i></div>
           </div>
         </div>
         <div class="pro-data-intention padding-20 pro-data-border">
@@ -40,7 +40,7 @@
             <div><i class="iconfont iconbianji main-color"></i></div>
           </div>
           <div class="pro-data-introduce-cont">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravi dadolor sit amet lacus accumsan et viverra justo commodo.
+            {{listData.introduction}}
           </div>
         </div>
         <div class="pro-data-class padding-20 pro-data-border">
@@ -83,7 +83,19 @@ export default {
   data () {
     return {
       titleMsg: '个人资料',
-      listData: null
+      listData: {
+        name: '',
+        photo: '',
+        serialNumber: '',
+        skillLevel: '',
+        livingLocation: '',
+        bouns: '',
+        balance: '',
+        introduction: '',
+        sdg: '',
+        authStatus: '',
+        sex: ''
+      }
     }
   },
   created () {},

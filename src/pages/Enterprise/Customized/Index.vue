@@ -60,6 +60,7 @@
 <script>
 import TabbarEnt from '../../../views/Tabbar/TabbarEnt'
 import TipsTools from '../../../common/TipsTools'
+
 let lib = new TipsTools()
 export default {
   name: 'CustomizedIndex',

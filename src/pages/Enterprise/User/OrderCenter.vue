@@ -86,6 +86,7 @@ export default {
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
+          console.log(_this.listData)
         } else {
           lib.MessageAlert_None(res.message)
         }
@@ -112,10 +113,10 @@ export default {
       let formData = new FormData()
       formData.append('payType', 1)
       formData.append('orderId', item.orderEntity.id)
-      formData.append('companyId', item.orderEntity.companyId)
+      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
       _this.$_HTTPData.getCompanyPay(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          console.log(res.result)
+          _this.loadData()
           lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)

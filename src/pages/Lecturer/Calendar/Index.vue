@@ -10,7 +10,7 @@
             <div class="caozuo">
               <div>
                 <div class="flex-row-between">
-                  <div></div>
+                  <div @click="clickedToday">回到今天</div>
                   <div @click="noneCalendarClick" v-if="this.listData.sex !== '' && this.listData.sex !== null">存储时间</div>
                   <div @click="noneCalendarClicked" v-if="this.listData.sex === '' || this.listData.sex === null">存储时间</div>
                 </div>
@@ -18,12 +18,10 @@
                   <Calendar
                     ref='Calendar'
                     :markDateMore='timeList'
-                    v-on:isToday='clickToday'
                     agoDayHide='1554048000'
                     futureDayHide='1561910399'
                     :sundayStart = 'true'
                     v-on:choseDay='clickDay'
-                    v-on:changeMonth='changeDate'
                   ></Calendar>
                 </div>
               </div>
@@ -44,43 +42,61 @@
             <div class="btn-border-black" v-if="this.listData.sex === '' || this.listData.sex === null" @click="$router.push('/personal/information/basedata')">完善信息</div>
           </div>
         </div>
-        <div v-if="this.listData.authStatus === 1" style="background:rgba(255,255,255,1);">
-          <div class="flex-row-between caozuo">
-            <div></div>
-            <div @click="addCalendarClick">存储时间</div>
+        <div v-if="this.listData.authStatus === 1">
+          <div style="background:rgba(255,255,255,1);">
+            <div class="flex-row-between caozuo">
+              <div @click="clickedToday">回到今天</div>
+              <div @click="addCalendarClick">存储时间</div>
+            </div>
+            <Calendar
+              ref='Calendar'
+              :markDateMore='timeList'
+              agoDayHide='1554048000'
+              futureDayHide='1561910399'
+              :sundayStart = 'true'
+              v-on:choseDay='clickDay'
+            ></Calendar>
+            <div class="flex-row-between mingci" @click="clickDefinitions">
+              <div><span class="color-999">D</span> 未存储</div>
+              <div><span class="main-color">D</span> 存储未约</div>
+              <div><span class="main-color borderRadius">D</span> 有约需确认</div>
+              <div><span class="main-color borderRadius borderRadiusBack">D</span> 已约 <i class="iconfont iconjiantou" style="font-size: 0.15rem"></i></div>
+            </div>
           </div>
-          <Calendar
-            ref='Calendar'
-            :markDateMore='timeList'
-            v-on:isToday='clickToday'
-            agoDayHide='1554048000'
-            futureDayHide='1561910399'
-            :sundayStart = 'true'
-            v-on:choseDay='clickDay'
-            v-on:changeMonth='changeDate'
-          ></Calendar>
-          <div class="flex-row-between mingci" @click="clickDefinitions">
-            <div><span class="color-999">D</span> 未存储</div>
-            <div><span class="main-color">D</span> 存储未约</div>
-            <div><span class="main-color borderRadius">D</span> 有约需确认</div>
-            <div><span class="main-color borderRadius borderRadiusBack">D</span> 已约 <i class="iconfont iconjiantou" style="font-size: 0.15rem"></i></div>
+          <div class="calendarMsg" v-show="storageDiv">
+            <div class="calendarMsg-list">
+              <div class="flex-row-between padding-bottom-15">
+                <div>存储时间</div>
+                <div>是</div>
+              </div>
+              <div class="flex-row-between padding-bottom-15">
+                <div>时间段</div>
+                <div>
+                  <div>{{begin}} 至</div>
+                  <div>{{end}}</div>
+                </div>
+              </div>
+              <div class="flex-row-between">
+                <div>约讲</div>
+                <div v-if="this.statuss === 0">已存</div>
+                <div v-if="this.statuss === 1">已约</div>
+                <div v-if="this.statuss === 2">已讲</div>
+              </div>
+            </div>
+            <div class="calendarMsg-msg" v-if="this.order !== null">
+              <div class="main-color flex-row-between">
+                <div>约讲编号：21982235666664392</div>
+                <div>待开课</div>
+              </div>
+              <label>约讲企业：青岛赛雷科技有限公司</label>
+              <p>约讲地址：市北区敦化路诺德广场A座</p>
+              <p>约讲时间：市北区敦化路诺德广场A座</p>
+              <p>约讲人数：30人</p>
+              <p>需求：30人</p>
+            </div>
           </div>
         </div>
       </div>
-      <!--<div class="calendarMsg">-->
-        <!--<div class="flex-row-between">-->
-          <!--<div>存储时间</div>-->
-          <!--<div>是</div>-->
-        <!--</div>-->
-        <!--<div class="flex-row-between">-->
-          <!--<div>时间段</div>-->
-          <!--<div></div>-->
-        <!--</div>-->
-        <!--<div class="flex-row-between">-->
-          <!--<div>约讲</div>-->
-          <!--<div>已存</div>-->
-        <!--</div>-->
-      <!--</div>-->
     </div>
     <tabbar :idx="0"></tabbar>
   </div>
@@ -101,8 +117,15 @@ export default {
     return {
       timeList: [],
       authStatus: 0,
-      className: 'mark1',
-      listData: []
+      listData: [],
+      storageList: {
+        timeSave: {}
+      },
+      begin: '',
+      end: '',
+      statuss: '',
+      order: '',
+      storageDiv: false
     }
   },
   computed: {},
@@ -138,9 +161,20 @@ export default {
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
       _this.$_HTTPData.getSavedTime(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          _this.timeList = res.result
+          let temp = JSON.stringify(res.result)
+          let temp2 = temp.replace(/status/g, 'className')
+          _this.timeList = JSON.parse(temp2)
           for (let i = 0; i < _this.timeList.length; i++) {
-            _this.$set(_this.timeList[i], 'className', 'mark1')
+            let item = _this.timeList[i]
+            if (item.className === 0) {
+              item.className = 'mark1'
+            }
+            if (item.className === 1) {
+              item.className = 'mark2'
+            }
+            if (item.className === 2) {
+              item.className = 'mark3'
+            }
           }
           console.log(_this.timeList)
         } else {
@@ -155,13 +189,34 @@ export default {
       this.$router.push('/calendar/definitions')
     },
     clickDay (data) {
-      console.log('选中了', data)
+      let calendarTime = Date.parse(data)
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('date', calendarTime)
+      _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.storageList = res.result
+          if (_this.storageList !== null) {
+            _this.storageDiv = true
+          } else {
+            _this.storageDiv = false
+          }
+          _this.storageList.timeSave = res.result.timeSave
+          _this.end = res.result.timeSave.end
+          _this.begin = res.result.timeSave.begin
+          _this.statuss = res.result.timeSave.status
+          _this.order = res.result.order
+          console.log(_this.storageList)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
     },
-    clickToday (data) {
-      console.log('跳到了本月今天', data)
-    },
-    changeDate (data) {
-      console.log('左右点击切换月份', data)
+    clickedToday () {
+      let myDate = new Date()
+      myDate.toLocaleDateString()
+      this.$refs.Calendar.ChoseMonth(myDate)
     }
   }
 }
@@ -176,8 +231,15 @@ export default {
   .borderRadius{border:0.01rem solid rgba(249,91,64,1);border-radius: 1rem;padding: 0 0.05rem;}
   .borderRadiusBack{background: rgba(249,91,64,1);color: #fff;}
   .wh_container >>> .mark1 {color: rgba(249,91,64,1);}
-  .wh_container >>> .mark2 {background: rgba(249,91,64,1);color: #fff;border-radius: 1rem;width: 0.4rem!important;}
-  .wh_container >>> .mark3 {color: rgba(249,91,64,1);border: 0.01rem solid rgba(249,91,64,1);border-radius: 1rem;width: 0.4rem!important;}
+  .wh_container >>> .mark3 {background: rgba(249,91,64,1);color: #fff;border-radius: 1rem;width: 0.4rem!important;}
+  .wh_container >>> .mark2 {color: rgba(249,91,64,1);border: 0.01rem solid rgba(249,91,64,1);border-radius: 1rem;width: 0.4rem!important;}
   .none-rili{text-align: center;padding: 0 0 1rem 0;}
   .none-rili p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);}
+  .calendarMsg{background:rgba(255,255,255,1);margin: 0.1rem 0;padding: 0 0.15rem 00.15rem;}
+  .calendarMsg .calendarMsg-list{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);padding: 0.2rem 0;}
+  .padding-bottom-15{padding-bottom: 0.15rem;}
+  .calendarMsg-msg{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;border-top: 0.01rem solid #E8E8E8;padding-bottom: 1rem}
+  .calendarMsg-msg .main-color{padding: 0.1rem 0;}
+  .calendarMsg-msg label{font-size:0.16rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.16rem;display: block;}
+  .calendarMsg-msg p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);padding-bottom: 0.1rem;}
 </style>

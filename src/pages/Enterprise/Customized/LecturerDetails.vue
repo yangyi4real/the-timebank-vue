@@ -18,7 +18,9 @@
           </div>
           <div class="lecturer-data-div3 clearfix">
             <div class="lecturer-data-div3-left fl">
-              <label><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i></label>
+              <div style="padding-left: 0.2rem">
+                <yd-rate slot="left" v-model="rate" color="#E2E2E2" active-color="#FED500" size="0.2rem"></yd-rate>
+              </div>
               <p>综合评分</p>
             </div>
             <div class="lecturer-data-div3-right fr">
@@ -33,7 +35,9 @@
               {{ tag.name }}
             </div>
           </div>
-          <div v-show="show1" class="lecturer-skill-div">1</div>
+          <div v-show="show1" class="lecturer-skill-div">
+            {{listDatas.introduction}}
+          </div>
           <div v-show="show2" class="lecturer-skill-div">
             <div class="lecturer-skill-div-class">
               <div class="lecturer-skill-div-class-title">产品设计的思路</div>
@@ -96,6 +100,7 @@ export default {
         {name: '服务案例'},
         {name: '评价 20'}
       ],
+      rate: 5,
       changeTab: 0,
       show1: true,
       show2: false,

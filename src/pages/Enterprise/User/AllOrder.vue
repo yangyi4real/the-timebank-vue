@@ -83,6 +83,7 @@ export default {
       formData.append('companyId', item.orderEntity.companyId)
       _this.$_HTTPData.getCompanyPay(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
+          _this.loadData()
           console.log(res.result)
         } else {
           lib.MessageAlert_None(res.message)

@@ -89,6 +89,11 @@ export default {
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listRecord = res.result
+          for (let i = _this.listRecord.length - 1; i > 0; i--) {
+            if (_this.listRecord[i].companyEntity.status === 1) {
+              _this.listRecord.splice(i, 1)
+            }
+          }
           if (_this.listRecord === '') {
             _this.Tips = true
             _this.listItem = false
@@ -109,10 +114,14 @@ export default {
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
       formData.append('status', _this.changeTab + 1)
       formData.append('type', 1)
-      console.log(this.changeTab + 2)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listRecord = res.result
+          for (let i = _this.listRecord.length - 1; i > 0; i--) {
+            if (_this.listRecord[i].companyEntity.status === 1) {
+              _this.listRecord.splice(i, 1)
+            }
+          }
           console.log(_this.listRecord)
         } else {
           lib.MessageAlert_None(res.message)
@@ -127,6 +136,7 @@ export default {
       formData.append('orderId', item.orderEntity.id)
       _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
+          _this.loadData()
           lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)
@@ -141,6 +151,7 @@ export default {
       formData.append('orderId', this.getOrderId)
       _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
+          _this.loadData()
           lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)

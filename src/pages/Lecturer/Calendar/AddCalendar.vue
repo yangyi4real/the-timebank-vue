@@ -18,9 +18,9 @@
         <div class="calebdar-time">
           <p>时间段</p>
           <div class="calebdar-time-div flex-row-around">
-            <div class="calebdar-time-div-border"><yd-datetime type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
+            <div class="calebdar-time-div-border"><yd-datetime start-date="09:00" end-date="23:59" type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
             <div class="calebdar-time-div-block">—</div>
-            <div class="calebdar-time-div-border"><yd-datetime type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
+            <div class="calebdar-time-div-border"><yd-datetime start-date="09:00" end-date="23:59" type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
           </div>
         </div>
       </div>
@@ -53,16 +53,47 @@ export default {
       titleMsg: '存储时间',
       calendarList: [],
       calendarData: '',
-      dateTimeBegin: '00:00',
-      dateTimeEnd: '00:00'
+      dateTimeBegin: '',
+      dateTimeEnd: ''
     }
   },
-  computed: {},
-  mounted () {},
+  computed: {
+  },
+  mounted () {
+    // this.loadDataList()
+  },
   methods: {
     clickDay (data) {
       this.calendarData = data
     },
+    // loadDataList () {
+    //   let _this = this
+    //   let formData = new FormData()
+    //   formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+    //   _this.$_HTTPData.getSavedTime(_this, formData, function (res) {
+    //     if (res.code === 0 || res.code === '000') {
+    //       let temp = JSON.stringify(res.result)
+    //       let temp2 = temp.replace(/status/g, 'className')
+    //       _this.calendarList = JSON.parse(temp2)
+    //       for (let i = 0; i < _this.calendarList.length; i++) {
+    //         let item = _this.calendarList[i]
+    //         console.log(item)
+    //         if (item.className === 0) {
+    //           item.className = 'mark1'
+    //         }
+    //         if (item.className === 1) {
+    //           item.className = 'mark2'
+    //         }
+    //         if (item.className === 2) {
+    //           item.className = 'mark3'
+    //         }
+    //       }
+    //       console.log(_this.calendarList)
+    //     } else {
+    //       lib.MessageAlert_None(res.message)
+    //     }
+    //   })
+    // },
     subClick () {
       let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
       let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()

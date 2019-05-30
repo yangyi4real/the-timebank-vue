@@ -21,15 +21,23 @@
           <i class="iconfont iconlingdang main-color" @click="msgClick"></i>
         </div>
       </div>
-      <div class="modular-already">
+      <div class="modular-already" v-if="listData.sex === 0 || listData.sex === null">
+        完善个人资料
+      </div>
+      <div class="modular-already" v-if="listData.sex !== 0 && listData.sex !== null">
         <div class="flex-row-between">
-          <div>产品经理<span>|</span></div>
-          <div><i class="iconfont iconditu main-color"></i>{{listData.livingLocation}}<span>|</span></div>
-          <div @click="baseDataClick">完善资料<span>|</span></div>
-          <div v-if="listData.authStatus === 0" @click="authenticationClicked">去认证<span></span></div>
-          <div v-if="listData.authStatus === 1" @click="authenticationClicked">已认证<span></span></div>
+          <div  style="min-width: 0;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;width: 0.6rem">{{listData.introduction}}</div>
+          <div><i class="iconfont iconjiantou"></i><span>|</span></div>
+          <div style="min-width: 0;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;width: 0.6rem"><i class="iconfont iconditu main-color"></i>{{listData.livingLocation}}</div>
+          <div><i class="iconfont iconjiantou"></i><span>|</span></div>
+          <div @click="baseDataClick">完善资料</div>
+          <div><i class="iconfont iconjiantou"></i><span>|</span></div>
+          <div>
+            <div v-if="listData.authStatus === 0 || listData.authStatus === null" @click="authenticationClicked">去认证<i class="iconfont iconjiantou"></i><span></span></div>
+            <div v-if="listData.authStatus === 1" @click="authenticationClicked">已认证<i class="iconfont iconjiantou"></i><span></span></div>
+          </div>
         </div>
-        <p v-if="listData.skillLevel === ''">添加个人描述，可让企业更好地认识你</p>
+        <p v-if="listData.skillLevel === '' || listData.skillLevel === null" @click="skillLevelClicked">添加个人描述，可让企业更好地认识你</p>
         <p>{{listData.skillLevel}}</p>
       </div>
     </div>
@@ -72,6 +80,7 @@
 
 <script>
 import Tabbar from '../../../views/Tabbar/Tabbar'
+import icon from '../../../assets/icon/user_icon.png'
 // import TipsTools from '../../../common/TipsTools'
 // let lib = new TipsTools()
 
@@ -82,7 +91,7 @@ export default {
   },
   data () {
     return {
-      src: '',
+      src: icon,
       listData: {
         name: '',
         photo: '',
@@ -125,9 +134,6 @@ export default {
       _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
-          _this.src = res.result.photo
-          _this.authStatus = res.result.authStatus
-          _this.sex = res.result.sex
           console.log(res.result)
         } else {
           console.log(res.message)
@@ -137,6 +143,7 @@ export default {
     msgClick () {
       this.$router.push('/personal/msg')
     },
+    skillLevelClicked () {},
     // 钱包
     walletClick () {
       this.$router.push('/personal/wallet/index')
@@ -151,7 +158,7 @@ export default {
     },
     // 完善资料
     baseDataClick () {
-      this.$router.push('/personal/information/basedata')
+      this.$router.push('/personal/personaldata')
     }
   }
 }
