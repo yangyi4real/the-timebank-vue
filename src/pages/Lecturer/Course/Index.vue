@@ -101,7 +101,6 @@ export default {
             _this.Tips = false
             _this.listItem = true
           }
-          console.log(_this.listRecord)
         } else {
           lib.MessageAlert_None(res.message)
         }
