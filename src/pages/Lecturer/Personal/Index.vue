@@ -13,7 +13,8 @@
             </div>
           </div>
           <div>
-            <p class="head-text">{{listData.name}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></p>
+            <p class="head-text" v-if="this.listData.name === null">{{listData.nickname}}</p>
+            <p class="head-text" v-if="this.listData.name !== null">{{listData.name}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></p>
             <p class="head-text2">编号：{{listData.serialNumber}}</p>
           </div>
         </div>
@@ -21,7 +22,7 @@
           <i class="iconfont iconlingdang main-color" @click="msgClick"></i>
         </div>
       </div>
-      <div class="modular-already" v-if="listData.sex === 0 || listData.sex === null">
+      <div class="modular-already" v-if="listData.sex === 0 || listData.sex === null" @click="addInfoClicked">
         完善个人资料
       </div>
       <div class="modular-already" v-if="listData.sex !== 0 && listData.sex !== null">
@@ -123,6 +124,9 @@ export default {
     //     _this.src = this.result
     //   }
     // },
+    addInfoClicked () {
+      this.$router.push('/personal/information/basedata')
+    },
     authenticationClicked () {
       this.$router.push('/personal/information/authentication-center')
     },

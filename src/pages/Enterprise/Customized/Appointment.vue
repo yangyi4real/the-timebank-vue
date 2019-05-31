@@ -21,24 +21,27 @@
               <div class="choice-time-list-left">所选时间</div>
               <div>{{calendarData}}</div>
             </div>
-            <div class="flex-row-between choice-time-list-div">
-              <div class="choice-time-list-left">可预约时间范围</div>
-              <div>
-                <p>{{timeSaveBegin}}至</p>
-                <p>{{timeSaveEnd}}</p>
+            <div v-show="choseDiv">
+              <div class="flex-row-between choice-time-list-div">
+                <div class="choice-time-list-left">可预约时间范围</div>
+                <div>
+                  <p>{{timeSaveBegin}}至</p>
+                  <p>{{timeSaveEnd}}</p>
+                </div>
               </div>
-            </div>
-            <div class="flex-row-between choice-time-list-div padding-top-15">
-              <div class="choice-time-list-left">约讲时间</div>
-              <div class="choice-time-list-right flex-row-between">
-                <div class="choice-time-list-right-border"><yd-datetime type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
-                <div class="">&nbsp;—&nbsp;</div>
-                <div class="choice-time-list-right-border"> <yd-datetime type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
+              <div class="flex-row-between choice-time-list-div padding-top-15">
+                <div class="choice-time-list-left">约讲时间</div>
+                <div class="choice-time-list-right flex-row-between">
+                  <div class="choice-time-list-right-border"><yd-datetime type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
+                  <div class="">&nbsp;—&nbsp;</div>
+                  <div class="choice-time-list-right-border"> <yd-datetime type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
+                </div>
               </div>
             </div>
           </div>
           <div class="choice-btn">
-            <div class="btn-border" @click="appointmentClick">下一步</div>
+            <div class="btn-border" @click="appointmentClick" v-if="this.choseList.message !== '当日无储存时间'">下一步</div>
+            <div class="btn-border-opacity" v-if="this.choseList.message === '当日无储存时间'">下一步</div>
           </div>
         </div>
       </div>
@@ -140,7 +143,8 @@ export default {
       appointmentList: [],
       choseList: [],
       timeSaveBegin: '',
-      timeSaveEnd: ''
+      timeSaveEnd: '',
+      choseDiv: false
     }
   },
   computed: {
@@ -211,9 +215,14 @@ export default {
           _this.listDatasTime = JSON.parse(temp2)
           for (let i = 0; i < _this.listDatasTime.length; i++) {
             let item = _this.listDatasTime[i]
-            console.log(item)
             if (item.className === 0) {
               item.className = 'mark1'
+            }
+            if (item.className === 1) {
+              item.className = 'mark2'
+            }
+            if (item.className === 2) {
+              item.className = 'mark3'
             }
           }
           console.log(_this.listDatasTime)
@@ -230,18 +239,23 @@ export default {
       formData.append('userId', _this.getId)
       formData.append('date', calendarTime)
       _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
-        lib.MessageAlert_None(res.message)
-        _this.choseList = res
-        _this.chose = res.result
-        _this.chose.timeSave = res.result.timeSave
-        if (res.message === '当日无储存时间') {
-          _this.timeSaveBegin = ''
-          _this.timeSaveEnd = ''
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_None(res.message)
+          _this.choseList = res
+          if (_this.choseList.message === '当日无储存时间') {
+            _this.choseDiv = false
+            console.log('111')
+          } else {
+            _this.timeSaveBegin = res.result.timeSave.begin
+            _this.timeSaveEnd = res.result.timeSave.end
+            _this.choseDiv = true
+            console.log('222')
+          }
+          _this.chose = res.result
+          _this.chose.timeSave = res.result.timeSave
         } else {
-          _this.timeSaveBegin = res.result.timeSave.begin
-          _this.timeSaveEnd = res.result.timeSave.end
+          lib.MessageAlert_Error(res.message)
         }
-        console.log(res.result)
       })
     },
     appointmentClick () {

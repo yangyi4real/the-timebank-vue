@@ -38,7 +38,7 @@
               <p class="text-right">合计：{{item.orderEntity.price}}</p>
               <div class="opt-btn flex-row-end">
                 <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
-                <div v-if="item.orderEntity.orderStatus === 4">评价</div>
+                <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
                 <div>取消订单</div>
                 <div>联系客服</div>
               </div>
@@ -136,6 +136,9 @@ export default {
           lib.MessageAlert_None(res.message)
         }
       })
+    },
+    evaluateClicked (item) {
+      this.$router.push(`/user/evaluate/${item.orderEntity.id}`)
     },
     OrderDetailClick (item) {
       this.$router.push(`/user/OrderDetails/${item.orderEntity.id}`)
