@@ -110,7 +110,7 @@ export default {
             let newBirthday = _this.listData[i].birthday
             let birthday = new Date(newBirthday.replace(/-/g, '/'))
             let d = new Date()
-            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
             _this.listData[i].birthday = age
           }
         } else {
@@ -130,7 +130,7 @@ export default {
             let newBirthday = _this.listData[i].birthday
             let birthday = new Date(newBirthday.replace(/-/g, '/'))
             let d = new Date()
-            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
             _this.listData[i].birthday = age
           }
         } else {
@@ -150,7 +150,7 @@ export default {
             let newBirthday = _this.listData[i].birthday
             let birthday = new Date(newBirthday.replace(/-/g, '/'))
             let d = new Date()
-            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
             _this.listData[i].birthday = age
           }
         } else {
@@ -170,7 +170,7 @@ export default {
             let newBirthday = _this.listData[i].birthday
             let birthday = new Date(newBirthday.replace(/-/g, '/'))
             let d = new Date()
-            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
             _this.listData[i].birthday = age
           }
         } else {
