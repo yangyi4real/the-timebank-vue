@@ -13,7 +13,7 @@
             </div>
           </div>
           <div>
-            <p class="head-text">{{listData.nickname}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></p>
+            <p class="head-text">{{listData.name}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></p>
             <p class="head-text2">编号：{{listData.serialNumber}}</p>
           </div>
         </div>

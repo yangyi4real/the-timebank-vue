@@ -83,16 +83,21 @@
                 <div v-if="this.statuss === 2">已讲</div>
               </div>
             </div>
-            <div class="calendarMsg-msg" v-if="this.order !== null">
-              <div class="main-color flex-row-between">
-                <div>约讲编号：21982235666664392</div>
-                <div>待开课</div>
+            <div class="calendarMsg-msg" v-if="this.storage.message !== '当日无储存时间'">
+              <div v-if="this.storageList.order !== null">
+                <div class="main-color flex-row-between">
+                  <div>约讲编号：{{storageList.order.id}}</div>
+                  <div v-if="this.storageList.order.orderStatus === 1">待确认</div>
+                  <div v-if="this.storageList.order.orderStatus === 3">待开课</div>
+                  <div v-if="this.storageList.order.orderStatus === 4">待评价</div>
+                  <div v-if="this.storageList.order.orderStatus === 5">已完成</div>
+                </div>
+                <label>约讲企业：{{storageList.company.companyName}}</label>
+                <p>约讲地址：{{storageList.order.address}}</p>
+                <p>约讲时间：{{storageList.order.begin}} 至 {{storageList.order.end}}</p>
+                <p>约讲人数：{{storageList.order.joinNum}}人</p>
+                <p>需求：{{storageList.order.purpose}}</p>
               </div>
-              <label>约讲企业：青岛赛雷科技有限公司</label>
-              <p>约讲地址：市北区敦化路诺德广场A座</p>
-              <p>约讲时间：市北区敦化路诺德广场A座</p>
-              <p>约讲人数：30人</p>
-              <p>需求：30人</p>
             </div>
           </div>
         </div>
@@ -119,13 +124,17 @@ export default {
       authStatus: 0,
       listData: [],
       storageList: {
+        company: {},
+        order: {},
         timeSave: {}
       },
       begin: '',
       end: '',
       statuss: '',
-      order: '',
-      storageDiv: false
+      storageDiv: false,
+      storage: {
+        message: ''
+      }
     }
   },
   computed: {},
@@ -196,8 +205,11 @@ export default {
       formData.append('date', calendarTime)
       _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
+          _this.storage = res
+          _this.storage.message = res.message
           _this.storageList = res.result
           if (_this.storageList !== null) {
+            console.log('1111')
             _this.storageDiv = true
           } else {
             _this.storageDiv = false
@@ -206,7 +218,6 @@ export default {
           _this.end = res.result.timeSave.end
           _this.begin = res.result.timeSave.begin
           _this.statuss = res.result.timeSave.status
-          _this.order = res.result.order
           console.log(_this.storageList)
         } else {
           lib.MessageAlert_None(res.message)

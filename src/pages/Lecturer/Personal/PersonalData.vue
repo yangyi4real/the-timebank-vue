@@ -11,7 +11,7 @@
               </div>
               <div>
                 <label>{{listData.name}}<i class="iconfont iconnv main-color"></i></label>
-                <p>24岁 | 工作{{listData.workingAge}}年 | 青岛</p>
+                <p>{{listData.birthday}}岁 | 工作{{listData.workingAge}}年 | {{listData.livingLocation}}</p>
               </div>
             </div>
             <div class="fr">
@@ -19,8 +19,8 @@
             </div>
           </div>
           <div class="pro-data-head-number">
-            <div><i class="iconfont iconshouji main-color"></i></div>
-            <div><i class="iconfont iconyouxiang main-color"></i></div>
+            <div><i class="iconfont iconshouji main-color"></i>{{listData.phone}}</div>
+            <div><i class="iconfont iconyouxiang main-color"></i>{{listData.email}}</div>
           </div>
         </div>
         <div class="pro-data-intention padding-20 pro-data-border">
@@ -30,8 +30,8 @@
           </div>
           <div class="pro-data-introduce-cont">
             <div><i class="iconfont iconqiwangzhiwei main-color"></i>{{listData.skillLevel}}</div>
-            <div class="padding-20"><i class="iconfont iconditu main-color"></i>{{listData.expectedLocation}}</div>
-            <div><i class="iconfont icongongzi main-color"></i>{{listData.expectedSalary}}元/小时</div>
+            <div class="padding-20"><i class="iconfont iconditu main-color"></i>{{listData.expectLocation}}</div>
+            <div><i class="iconfont icongongzi main-color"></i>{{listData.price}}元/小时</div>
           </div>
         </div>
         <div class="pro-data-introduce padding-20 pro-data-border">
@@ -113,6 +113,10 @@ export default {
       _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
+          let birthday = new Date(_this.listData.birthday.replace(/-/g, '/'))
+          let d = new Date()
+          let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+          _this.listData.birthday = age
         } else {
           lib.MessageAlert_None(res.message)
         }

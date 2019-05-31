@@ -4,7 +4,7 @@
     <div class="wapper">
       <div class="payment-title">
         <label>支付金额</label>
-        <p><span>￥</span>300.00</p>
+        <p><span>￥</span>{{getPrice}}</p>
       </div>
       <div class="payment-mode">
         <p>支付方式</p>
@@ -79,6 +79,9 @@ export default {
   mounted () {
   },
   computed: {
+    getPrice () {
+      return this.$route.params.price
+    }
   },
   methods: {
     affirmPay () {

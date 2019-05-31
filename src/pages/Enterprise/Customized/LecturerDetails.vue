@@ -7,7 +7,7 @@
             <div><img src=""/></div>
             <div>
               <label>{{listDatas.name}}<i class="iconfont iconnv main-color" v-if="listDatas.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="listDatas.sexuality === 2"></i></label>
-              <p>24岁 | 工作{{listDatas.workingAge}}年 | 青岛</p>
+              <p>{{listDatas.birthday}}岁 | 工作{{listDatas.workingAge}}年 | 青岛</p>
               <p>{{listDatas.introduction}}</p>
             </div>
           </div>
@@ -39,38 +39,40 @@
             {{listDatas.introduction}}
           </div>
           <div v-show="show2" class="lecturer-skill-div">
-            <div class="lecturer-skill-div-class">
-              <div class="lecturer-skill-div-class-title">产品设计的思路</div>
-              <div class="flex-row-start">
-                <div class="tip">产品经理</div>
-                <div class="tip">UI设计</div>
-              </div>
-              <div class="lecturer-skill-div-class-text">
-                内容介绍介绍介绍介绍：讲师介绍，课程介绍、服务案例 （历史案例、平台案例）、评价，若点击每个菜单按钮直 接切换至此模块；4.咨询：咨询客服，点击弹出电话，可 以进行拨打。。
-              </div>
+            <div class="lecturer-skill-div-class" v-for="(item,index) in listDatas.classExampleList" :key="index" >
+              <!--<div class="lecturer-skill-div-class-title">产品设计的思路</div>-->
+              <!--<div class="flex-row-start">-->
+                <!--<div class="tip">产品经理</div>-->
+                <!--<div class="tip">UI设计</div>-->
+              <!--</div>-->
+              <!--<div class="lecturer-skill-div-class-text">-->
+                <!--内容介绍介绍介绍介绍：讲师介绍，课程介绍、服务案例 （历史案例、平台案例）、评价，若点击每个菜单按钮直 接切换至此模块；4.咨询：咨询客服，点击弹出电话，可 以进行拨打。。-->
+              <!--</div>-->
             </div>
           </div>
           <div v-show="show3" class="lecturer-skill-div">
-            <div class="lecturer-skill-div-case">
-              <p>历史案例</p>
-              <label>课程名称</label>
-              <label>企业名称</label>
-            </div>
-            <div class="lecturer-skill-div-case">
-              <p>平台案例</p>
-              <label>课程名称</label>
-              <label>企业名称</label>
+            <div v-for="(item,index) in listDatas.classIntroEntityList" :key="index">
+              <!--<div class="lecturer-skill-div-case" >-->
+                <!--<p>历史案例</p>-->
+                <!--<label>课程名称</label>-->
+                <!--<label>企业名称</label>-->
+              <!--</div>-->
+              <!--<div class="lecturer-skill-div-case">-->
+                <!--<p>平台案例</p>-->
+                <!--<label>课程名称</label>-->
+                <!--<label>企业名称</label>-->
+              <!--</div>-->
             </div>
           </div>
           <div v-show="show4" class="lecturer-skill-div">
-            <div class="lecturer-skill-evaluate flex-row-start">
-              <div class="lecturer-skill-evaluate-left"><img src=""/></div>
-              <div class="lecturer-skill-evaluate-right">
-                <label>青岛赛雷科技有限公司</label>
-                <span>2019-04-21</span>
-                <p><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i> 非常推荐</p>
-                <div class="right-text"></div>
-              </div>
+            <div class="lecturer-skill-evaluate flex-row-start" v-for="(item,index) in listDatas.evaluationEntityList" :key="index" >
+              <!--<div class="lecturer-skill-evaluate-left"><img src=""/></div>-->
+              <!--<div class="lecturer-skill-evaluate-right">-->
+                <!--<label>青岛赛雷科技有限公司</label>-->
+                <!--<span>2019-04-21</span>-->
+                <!--<p><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i> 非常推荐</p>-->
+                <!--<div class="right-text"></div>-->
+              <!--</div>-->
             </div>
           </div>
         </div>
@@ -98,7 +100,7 @@ export default {
         {name: '讲师介绍'},
         {name: '课程介绍'},
         {name: '服务案例'},
-        {name: '评价 20'}
+        {name: '评价'}
       ],
       rate: 5,
       changeTab: 0,
@@ -106,7 +108,11 @@ export default {
       show2: false,
       show3: false,
       show4: false,
-      listDatas: []
+      listDatas: {
+        classExampleList: [],
+        classIntroEntityList: [],
+        evaluationEntityList: []
+      }
     }
   },
   computed: {
@@ -152,7 +158,10 @@ export default {
       _this.$_HTTPData.getLectureDetail(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listDatas = res.result
-          console.log(_this.listDatas)
+          let birthday = new Date(_this.listDatas.birthday.replace(/-/g, '/'))
+          let d = new Date()
+          let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+          _this.listDatas.birthday = age
         } else {
           lib.MessageAlert_None(res.message)
         }

@@ -7,7 +7,7 @@
           <div class="order-info-left"><img :src="listDatas.userEntity.photo"/></div>
           <div class="order-info-right">
             <label>{{listDatas.userEntity.name}}<i class="iconfont iconnv main-color" v-if="listDatas.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="listDatas.userEntity.sexuality === 2"></i></label>
-            <p>24岁 | 工作{{listDatas.userEntity.workingAge}}年 | {{listDatas.userEntity.livingLocation}}</p>
+            <p>{{listDatas.userEntity.birthday}}岁 | 工作{{listDatas.userEntity.workingAge}}年 | {{listDatas.userEntity.livingLocation}}</p>
             <p>{{listDatas.userEntity.skillLevel}}</p>
           </div>
         </div>
@@ -81,9 +81,12 @@ export default {
       _this.$_HTTPData.getOrderDetail(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listDatas = res.result
-          console.log(_this.listDatas)
           _this.listDatas.orderEntity = res.result.orderEntity
           _this.listDatas.userEntity = res.result.userEntity
+          let birthday = new Date(_this.listDatas.userEntity.birthday.replace(/-/g, '/'))
+          let d = new Date()
+          let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+          _this.listDatas.userEntity.birthday = age
         } else {
           lib.MessageAlert_None(res.message)
         }

@@ -9,7 +9,7 @@
               <div class="msg-left"><img :src="item.userEntity.photo"/></div>
               <div class="msg-right">
                 <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
-                <p>24岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
+                <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
                 <p>专注研究产品设计</p>
               </div>
             </div>
@@ -70,6 +70,13 @@ export default {
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
+          for (let i = 0; i < _this.listData.length; i++) {
+            let newBirthday = _this.listData[i].userEntity.birthday
+            let birthday = new Date(newBirthday.replace(/-/g, '/'))
+            let d = new Date()
+            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+            _this.listData[i].userEntity.birthday = age
+          }
         } else {
           lib.MessageAlert_None(res.message)
         }

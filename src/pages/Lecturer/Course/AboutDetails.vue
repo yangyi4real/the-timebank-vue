@@ -3,13 +3,16 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="number-code flex-row-between">
-        <div>约讲编号：21982235666664392</div>
-        <div>待确认</div>
+        <div>约讲编号：{{listDatas.orderEntity.id}}</div>
+        <div v-if="this.listDatas.orderEntity.orderStatus === 2">待确认</div>
+        <div v-if="this.listDatas.orderEntity.orderStatus === 3">待开课</div>
+        <div v-if="this.listDatas.orderEntity.orderStatus === 4">待评价</div>
+        <div v-if="this.listDatas.orderEntity.orderStatus === 5">已退款</div>
       </div>
       <div class="about-details-main">
         <div class="about-details-main-text">
-          <label>约讲企业：青岛赛雷信息科技有限公司</label>
-          <div class="flex-row-start">
+          <label>约讲企业：{{listDatas.companyEntity.companyName}}</label>
+          <div class="flex-row-start" v-if="this.listDatas.orderEntity.orderStatus === 5">
             <div>企业评分：</div>
             <div>
               <yd-cell-item>
@@ -17,27 +20,29 @@
               </yd-cell-item>
             </div>
           </div>
-          <div class="clearfix">
+          <div class="clearfix padding-top-10">
             <div class="fl">约讲时间：</div>
-            <div class="fl"><p>2019-04-24 9:00-18:00</p><p>2019-04-24 9:00-18:00</p></div>
+            <div class="fl"><p>{{listDatas.orderEntity.begin}}</p><p>{{listDatas.orderEntity.end}}</p></div>
           </div>
-          <div class="padding-top-10">约讲地址：市北区诺德广场A座1606室</div>
-          <div class="padding-top-10">参与人数：30人</div>
-          <div class="padding-top-10">需求：市北区诺德广场A座1606室</div>
+          <div class="padding-top-10">约讲地址：{{listDatas.orderEntity.location}}</div>
+          <div class="padding-top-10">参与人数：{{listDatas.orderEntity.joinNum}}</div>
+          <div class="padding-top-10">需求：{{listDatas.orderEntity.purpose}}</div>
         </div>
         <div class="about-details-main-msg">
           <p>时间信息</p>
-          <div>订单时间：2019-04-21 9:21:23</div>
-          <div>确认时间：2019-04-21 9:21:23</div>
-          <div>取消时间：2019-04-21 9:21:23</div>
-          <div>拒绝/取消原因：市北区诺德广场A座1606室市北区诺 </div>
+          <div>订单时间：{{listDatas.orderEntity.confirmDate}}</div>
+          <div>确认时间：{{listDatas.orderEntity.confirmDate}}</div>
+          <div v-if="this.listDatas.orderEntity.cancelDate !== null">取消时间：{{listDatas.orderEntity.cancelDate}}</div>
+          <div v-if="this.listDatas.orderEntity.cancelDate !== null">拒绝/取消原因：</div>
         </div>
       </div>
       <div class="order-center-list-opt">
-        <p class="text-right">合计：<span>2000.00</span>元</p>
+        <p class="text-right">合计：<span>{{listDatas.orderEntity.price}}</span> 元</p>
         <div class="opt-btn flex-row-end">
-          <div @click="acceptType">接受</div>
-          <div @click="refuseType">拒绝</div>
+          <div @click="acceptType" v-if="this.listDatas.orderEntity.orderStatus === 2">接受</div>
+          <div @click="refuseType" v-if="this.listDatas.orderEntity.orderStatus === 2">拒绝</div>
+          <div @click="cancelType" v-if="this.listDatas.orderEntity.orderStatus === 3">取消行程</div>
+          <div @click="evaluateType" v-if="this.listDatas.orderEntity.orderStatus === 4">评价</div>
           <div>联系客服</div>
         </div>
       </div>
@@ -57,7 +62,11 @@ export default {
   data () {
     return {
       titleMsg: '约讲详情',
-      rate: 4
+      rate: 4,
+      listDatas: {
+        companyEntity: {},
+        orderEntity: {}
+      }
     }
   },
   computed: {
@@ -75,7 +84,8 @@ export default {
       formData.append('orderId', this.getOrderId)
       _this.$_HTTPData.getOrderDetail(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          _this.listDatas = res
+          _this.listDatas = res.result
+          console.log(_this.listDatas)
         } else {
           lib.MessageAlert_None(res.message)
         }
@@ -108,6 +118,10 @@ export default {
           lib.MessageAlert_None(res.message)
         }
       })
+    },
+    cancelType () {},
+    evaluateType () {
+      this.$router.push(`/course/evaluate/${this.getOrderId}`)
     }
   }
 }

@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="setUp-btn">
-        <div class="btn-border-black margin-30" @click="switchClicked">切换讲师身份</div>
+        <div class="btn-border-black margin-30" @click="switchClicked">切换企业身份</div>
         <div class="btn-border-black margin" @click="SignOutClicked">退出登录</div>
       </div>
     </div>

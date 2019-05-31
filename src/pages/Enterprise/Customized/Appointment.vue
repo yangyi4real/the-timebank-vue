@@ -24,8 +24,8 @@
             <div class="flex-row-between choice-time-list-div">
               <div class="choice-time-list-left">可预约时间范围</div>
               <div>
-                <p>{{chose.timeSave.begin}}至</p>
-                <p>{{chose.timeSave.end}}</p>
+                <p>{{timeSaveBegin}}至</p>
+                <p>{{timeSaveEnd}}</p>
               </div>
             </div>
             <div class="flex-row-between choice-time-list-div padding-top-15">
@@ -90,7 +90,7 @@
           </div>
         </div>
         <div class="CoData-btn">
-          <div @click="formDataClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">确定</div>
+          <div @click="appointmentFormDataClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">确定</div>
         </div>
       </div>
     </div>
@@ -136,7 +136,11 @@ export default {
       chose: {
         order: '',
         timeSave: {}
-      }
+      },
+      appointmentList: [],
+      choseList: [],
+      timeSaveBegin: '',
+      timeSaveEnd: ''
     }
   },
   computed: {
@@ -226,21 +230,25 @@ export default {
       formData.append('userId', _this.getId)
       formData.append('date', calendarTime)
       _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.chose = res.result
-          _this.chose.timeSave = res.result.timeSave
-          console.log(res.result)
-          lib.MessageAlert_Success(res.message)
+        lib.MessageAlert_None(res.message)
+        _this.choseList = res
+        _this.chose = res.result
+        _this.chose.timeSave = res.result.timeSave
+        if (res.message === '当日无储存时间') {
+          _this.timeSaveBegin = ''
+          _this.timeSaveEnd = ''
         } else {
-          lib.MessageAlert_None(res.message)
+          _this.timeSaveBegin = res.result.timeSave.begin
+          _this.timeSaveEnd = res.result.timeSave.end
         }
+        console.log(res.result)
       })
     },
     appointmentClick () {
       this.calendarShow = false
       this.formDataShow = true
     },
-    formDataClick () {
+    appointmentFormDataClick () {
       let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
       let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
       let calendarTime = Date.parse(this.calendarData)
@@ -254,6 +262,7 @@ export default {
       formData.append('date', calendarTime)
       formData.append('begin', beginDateTime)
       formData.append('end', endDateTime)
+      formData.append('address', _this.address)
       formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
       formData.append('joinNum', _this.number)
       formData.append('purpose', _this.demand)
@@ -261,7 +270,9 @@ export default {
       formData.append('phone', _this.phone)
       _this.$_HTTPData.getAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          _this.$router.push('/customized/index')
+          _this.appointmentList = res.result
+          console.log(_this.appointmentList.price)
+          _this.$router.push(`/personal/payment/${_this.appointmentList.price}`)
           lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)

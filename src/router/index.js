@@ -230,7 +230,7 @@ export default new Router({
     },
     // 支付
     {
-      path: '/personal/payment',
+      path: '/personal/payment/:price',
       name: 'Payment',
       component: Payment
     },
