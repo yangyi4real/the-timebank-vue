@@ -110,6 +110,13 @@ export default {
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
+          for (let i = 0; i < _this.listData.length; i++) {
+            let newBirthday = _this.listData[i].userEntity.birthday
+            let birthday = new Date(newBirthday.replace(/-/g, '/'))
+            let d = new Date()
+            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() && d.getDate() < birthday.getDate()) ? 1 : 0)
+            _this.listData[i].userEntity.birthday = age
+          }
         } else {
           lib.MessageAlert_None(res.message)
         }
