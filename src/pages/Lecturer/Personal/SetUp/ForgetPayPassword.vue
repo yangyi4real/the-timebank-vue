@@ -27,7 +27,7 @@ import Navbar from '../../../../views/navbar/navbar'
 import TipsTools from '../../../../common/TipsTools'
 let lib = new TipsTools()
 export default {
-  name: 'NewPayPassword',
+  name: 'f',
   components: {
     Navbar
   },

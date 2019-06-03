@@ -45,6 +45,13 @@ export default {
     },
     ResetPwd () {
       this.$router.push('/personal/setup/newpaypassword')
+    },
+    getPush () {
+      setTimeout(() => {
+        this.$dialog.loading.close()
+        this.$router.push('/personal/setup/newpaypassword')
+      }, 2000)
+      this.show1 = false
     }
   },
   mounted () {},
@@ -54,6 +61,9 @@ export default {
         this.msg = this.msg.replace(/[^\d]/g, '')
       } else {
         this.msgLength = curVal.length
+        if (this.msgLength === 6) {
+          this.getPush()
+        }
       }
     }
   }

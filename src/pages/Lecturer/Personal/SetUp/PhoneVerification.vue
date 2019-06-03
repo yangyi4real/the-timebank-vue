@@ -4,7 +4,7 @@
     <div class="wapper">
       <div class="phone-title">
         <p>本操作需要短信确认</p>
-        <p>请输入<span>158****9968</span>收到的短信验证码</p>
+        <p>请输入<span>{{this.$SaiLei.cookiesGet('user_loginId')}}</span>收到的短信验证码</p>
       </div>
       <div class="phone-form-div">
         <input type="text" v-model="phoneNumberCode" placeholder="请输入验证码" v-on:input="inputValue"/>
@@ -89,7 +89,9 @@ export default {
       if (!this.checkInputValue()) { return }
       this.startTimer()
     },
-    confirmClick () {}
+    confirmClick () {
+      this.$router.push('/personal/setup/newphone')
+    }
   },
   mounted () {},
   watch: {

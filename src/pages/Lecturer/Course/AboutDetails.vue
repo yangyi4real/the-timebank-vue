@@ -3,7 +3,7 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="number-code flex-row-between">
-        <div>约讲编号：{{listDatas.orderEntity.id}}</div>
+        <div @click="distributionCopy">约讲编号：<input type="text" readonly class="g-table-url main-color" :value="listDatas.orderEntity.id" ref="distributionUrl"/></div>
         <div v-if="this.listDatas.orderEntity.orderStatus === 2">待确认</div>
         <div v-if="this.listDatas.orderEntity.orderStatus === 3">待开课</div>
         <div v-if="this.listDatas.orderEntity.orderStatus === 4">待评价</div>
@@ -24,7 +24,7 @@
             <div class="fl">约讲时间：</div>
             <div class="fl"><p>{{listDatas.orderEntity.begin}}</p><p>{{listDatas.orderEntity.end}}</p></div>
           </div>
-          <div class="padding-top-10">约讲地址：{{listDatas.orderEntity.location}}</div>
+          <div class="padding-top-10">约讲地址：{{listDatas.orderEntity.address}}</div>
           <div class="padding-top-10">参与人数：{{listDatas.orderEntity.joinNum}}</div>
           <div class="padding-top-10">需求：{{listDatas.orderEntity.purpose}}</div>
         </div>
@@ -66,7 +66,8 @@ export default {
       listDatas: {
         companyEntity: {},
         orderEntity: {}
-      }
+      },
+      distributionUrl: 'broker'
     }
   },
   computed: {
@@ -78,6 +79,11 @@ export default {
     this.loadData()
   },
   methods: {
+    distributionCopy () {
+      this.$refs.distributionUrl.select()
+      document.execCommand('Copy')
+      this.$_lib.MessageAlert_Success('复制成功')
+    },
     loadData () {
       let _this = this
       let formData = new FormData()
@@ -144,4 +150,5 @@ export default {
   .msg-time div{padding-bottom: 0.07rem;}
   .msg-time div p{padding-bottom: 0.05rem;}
   .opt-btn div{width:0.79rem;height:0.32rem;border-radius:0.05rem;border:0.01rem solid rgba(249,91,64,1);text-align: center;line-height: 0.32rem;font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);margin-left: 0.2rem;}
+  .g-table-url{-webkit-appearance: none;border: 0;background: 0;outline: none}
 </style>

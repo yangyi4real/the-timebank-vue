@@ -1,10 +1,13 @@
 <template>
   <div class="body">
-    <navbar :title="titleMsg" @click="click"></navbar>
+    <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="feedback">
         <div class="feedback-title">
-          您的宝贵意见会让我们做的越来越好
+          <p>您的宝贵意见会让我们做的越来越好</p>
+          <div class="feedback-title-msg">
+            <textarea></textarea>
+          </div>
         </div>
         <div class="feedback-btn">
           <div class="btn-border-opacity" @click="subClick">提交</div>
@@ -28,9 +31,8 @@ export default {
   },
   computed: {},
   methods: {
-    subClick () {},
-    click () {
-      this.$router.push('/personal/setup/newpaypassword')
+    subClick () {
+      this.$router.push('/personal/setup/index')
     }
   },
   mounted () {},
@@ -51,6 +53,8 @@ export default {
 <style scoped>
   .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
   .feedback{padding: 0 0.2rem}
-  .feedback-title{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(167,167,167,1);border-bottom: 0.01rem solid #E8E8E8;padding: 0.4rem 0}
+  .feedback-title{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(167,167,167,1);}
+  .feedback-title p{padding: 0.4rem 0}
+  .feedback-title-msg textarea{width: 100%;height: 2rem;padding: 0.2rem}
   .feedback-btn{padding-top: 1.77rem;padding-bottom: 1.5rem;}
 </style>

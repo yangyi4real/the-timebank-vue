@@ -18,9 +18,9 @@
         <div class="calebdar-time">
           <p>时间段</p>
           <div class="calebdar-time-div flex-row-around">
-            <div class="calebdar-time-div-border"><yd-datetime start-date="09:00" end-date="23:59" type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
+            <div class="calebdar-time-div-border"><yd-datetime start-hour="9" end-hour="23" type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
             <div class="calebdar-time-div-block">—</div>
-            <div class="calebdar-time-div-border"><yd-datetime start-date="09:00" end-date="23:59" type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
+            <div class="calebdar-time-div-border"><yd-datetime start-hour="10" end-hour="23" type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
           </div>
         </div>
       </div>

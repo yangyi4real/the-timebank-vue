@@ -24,7 +24,7 @@ export default{
       items: [
         {
           cls: 'CalendarIndex',
-          name: '日历',
+          name: '排课',
           push: '/calendar/index',
           icon: yuke,
           iconSelect: yukeActive

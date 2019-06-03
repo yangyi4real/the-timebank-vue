@@ -4,7 +4,7 @@
       约讲记录
     </div>
     <div class="tab flex-row-around">
-      <div v-for="(item,index) in tabItems" :key="index" class="s-tab" :class="{ active: changeTab === index}" @click="tabsClicked(index)">
+      <div v-for="(item,index) in tabItems" :key="index" class="s-tab" :class="{active: changeTab === index}" @click="tabsClicked(index)">
         {{ item.name }}
       </div>
     </div>
@@ -110,22 +110,76 @@ export default {
       this.changeTab = index
       let _this = this
       let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', _this.changeTab + 1)
-      formData.append('type', 1)
-      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.listRecord = res.result
-          for (let i = _this.listRecord.length - 1; i > 0; i--) {
-            if (_this.listRecord[i].companyEntity.status === 1) {
-              _this.listRecord.splice(i, 1)
+      if (this.changeTab === 0) {
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', '')
+        formData.append('type', 1)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            _this.listRecord = res.result
+            for (let i = _this.listRecord.length - 1; i > 0; i--) {
+              if (_this.listRecord[i].companyEntity.status === 1) {
+                _this.listRecord.splice(i, 1)
+              }
             }
+            console.log(_this.listRecord)
+          } else {
+            lib.MessageAlert_None(res.message)
           }
-          console.log(_this.listRecord)
-        } else {
-          lib.MessageAlert_None(res.message)
-        }
-      })
+        })
+      }
+      if (this.changeTab === 1) {
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 2)
+        formData.append('type', 1)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            _this.listRecord = res.result
+            console.log(_this.listRecord)
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      }
+      if (this.changeTab === 2) {
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 3)
+        formData.append('type', 1)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            _this.listRecord = res.result
+            console.log(_this.listRecord)
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      }
+      if (this.changeTab === 3) {
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 4)
+        formData.append('type', 1)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            _this.listRecord = res.result
+            console.log(_this.listRecord)
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      }
+      if (this.changeTab === 4) {
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 5)
+        formData.append('type', 1)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            _this.listRecord = res.result
+            console.log(_this.listRecord)
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      }
     },
     // 接受
     acceptType (item) {

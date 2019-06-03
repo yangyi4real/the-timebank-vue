@@ -5,6 +5,7 @@ import CalendarIndex from '../pages/Lecturer/Calendar/Index' // 日历
 import AddCalendar from '../pages/Lecturer/Calendar/AddCalendar' // 添加日历
 import ceshi from '../pages/Lecturer/Calendar/ceshi' // 测试
 import ceshiSelect from '../pages/Home/ceshiSelect'
+import LoginAgreement from '../pages/Home/Agreement/LoginAgreement' // 注册协议
 import selectItem from '../pages/Home/selectItem'
 import Definitions from '../pages/Lecturer/Calendar/Definitions' // 名词解释
 import CourseIndex from '../pages/Lecturer/Course/Index' // 约讲记录
@@ -107,6 +108,12 @@ export default new Router({
       path: '/calendar/addcalendat',
       name: 'AddCalendar',
       component: AddCalendar
+    },
+    // 注册协议
+    {
+      path: '/login-agreement',
+      name: 'LoginAgreement',
+      component: LoginAgreement
     },
     // 名词解释
     {
@@ -236,7 +243,7 @@ export default new Router({
     },
     // 钱包
     {
-      path: '/personal/wallet/index',
+      path: '/personal/wallet/index/:balance',
       name: 'WalletIndex',
       component: WalletIndex
     },

@@ -88,7 +88,9 @@ export default {
       if (!this.getMsgCodeButtonCanTap) { return }
       this.startTimer()
     },
-    confirmClick () {}
+    confirmClick () {
+      this.$router.push('/personal/setup/index')
+    }
   },
   mounted () {},
   watch: {

@@ -8,7 +8,7 @@
           <img src="" alt=""/>
           <div class="wallet-index-sum-padding">
             <p>我的余额</p>
-            <label>￥ 300.00</label>
+            <label>￥ {{getBalance}}.00</label>
           </div>
         </div>
       </div>
@@ -34,6 +34,9 @@ export default {
   },
   created () {},
   computed: {
+    getBalance () {
+      return this.$route.params.balance
+    }
   },
   methods: {
     rechargeClick () {

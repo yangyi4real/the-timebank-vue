@@ -13,7 +13,7 @@
           <input type="text" v-model="phoneNumberCode" placeholder="请输入验证码" v-on:input="inputValue"/>
         </div>
       </div>
-      <p class="agreement">新用户登录默认同意<span>《协议》</span>并注册</p>
+      <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span>并注册</p>
       <div class="login-btn">
         <div @click="loginBtnClicked" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">登录</div>
       </div>
@@ -60,6 +60,9 @@ export default {
     }
   },
   methods: {
+    loginAgreementClicked () {
+      this.$router.push('/login-agreement')
+    },
     inputValue () {
       if (this.phoneNumber !== '' && this.phoneNumberCode !== '') {
         this.inOperation = false
@@ -123,9 +126,7 @@ export default {
       }
       let formData = new FormData()
       formData.append('phone', _this.phoneNumber)
-      _this['isButtonAlert'] = true
       _this.$_HTTPData.getAuthCode(_this, formData, function (res) {
-        _this['isButtonAlert'] = false
         if (res.code === 0 || res.code === '000') {
           _this.startTimer()
           lib.MessageAlert_Success(res.message)

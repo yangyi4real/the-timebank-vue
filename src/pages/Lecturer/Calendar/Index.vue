@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <div class="home-nav text-center">
-      日历
+      排课
     </div>
     <div class="wapper">
       <div class="calendar">

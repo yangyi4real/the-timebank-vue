@@ -49,7 +49,7 @@
       </div>
       <div>
         <label>{{listData.bouns}}</label>
-        <p class="border">奖励分红</p>
+        <p class="border">报酬</p>
       </div>
       <div>
         <label>{{listData.sdg}}</label>
@@ -66,8 +66,10 @@
           <p>邀请好友</p>
         </div>
         <div>
-          <img src="../../../assets/icon/kefu.png"/>
-          <p>联系客服</p>
+          <a :href="'tel:' + '05328888888'">
+            <img src="../../../assets/icon/kefu.png"/>
+            <p>联系客服</p>
+          </a>
         </div>
         <div @click="linkSetUp">
           <img src="../../../assets/icon/shezhi.png"/>
@@ -150,7 +152,7 @@ export default {
     skillLevelClicked () {},
     // 钱包
     walletClick () {
-      this.$router.push('/personal/wallet/index')
+      this.$router.push(`/personal/wallet/index/${this.listData.balance}`)
     },
     // 邀请好友
     linkInvitation () {
