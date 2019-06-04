@@ -63,7 +63,74 @@
               <div><span class="main-color borderRadius borderRadiusBack">D</span> 已约 <i class="iconfont iconjiantou" style="font-size: 0.15rem"></i></div>
             </div>
           </div>
-          <div class="calendarMsg" v-show="storageDiv">
+          <!--过时未储存-->
+          <div class="calendarMsg" v-show="notChoseEd">
+            <div class="calendarMsg-list">
+              <div class="flex-row-between padding-bottom-15">
+                <div>存储时间</div>
+                <div>
+                  否
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--未储存-->
+          <div class="calendarMsg" v-show="notChose">
+            <div class="calendarMsg-list">
+              <div class="flex-row-between padding-bottom-15">
+                <div>存储时间</div>
+                <div class="choseItems clearfix">
+                  <div v-for="(item,index) in choseItems" :key="index" class="s-tab" :class="{active: choseItem === index}" @click="choseClicked(index)">
+                    {{ item.name }}
+                  </div>
+                </div>
+              </div>
+              <div v-show="storageTime">
+                <div class="flex-row-between padding-bottom-15">
+                  <div>时间段</div>
+                  <div class="clearfix">
+                    <div class="fl main-color"><yd-datetime start-hour="9" end-hour="23" type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
+                    <div class="fl" style="padding: 0 0.1rem;"> - </div>
+                    <div class="fl main-color"><yd-datetime start-hour="10" end-hour="23" type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
+                  </div>
+                  <div class="btn-main" @click="addTime">保存时间</div>
+                </div>
+                <div class="flex-row-between">
+                  <div>约讲</div>
+                  <div>未约</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--储存未约-->
+          <div class="calendarMsg" v-show="ChoseNotAbout">
+            <div class="calendarMsg-list">
+              <div class="flex-row-between padding-bottom-15">
+                <div>存储时间</div>
+                <div class="choseItems clearfix">
+                  <div v-for="(item,index) in choseItems2" :key="index" class="s-tab" :class="{active2: choseItem2 === index}" @click="choseClicked2(index)">
+                    {{ item.name }}
+                  </div>
+                </div>
+              </div>
+              <div v-show="ChoseNotAboutTiem">
+                <div class="flex-row-between padding-bottom-15">
+                  <div>时间段</div>
+                  <div class="clearfix">
+                    <div>{{begin}} 至</div>
+                    <div>{{end}}</div>
+                  </div>
+                  <div class="btn-main" @click="cancelTime">取消</div>
+                </div>
+                <div class="flex-row-between">
+                  <div>约讲</div>
+                  <div>已存</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--已约-->
+          <div class="calendarMsg" v-show="ChoseAbout">
             <div class="calendarMsg-list">
               <div class="flex-row-between padding-bottom-15">
                 <div>存储时间</div>
@@ -78,9 +145,7 @@
               </div>
               <div class="flex-row-between">
                 <div>约讲</div>
-                <div v-if="this.statuss === 0">已存</div>
-                <div v-if="this.statuss === 1">已约</div>
-                <div v-if="this.statuss === 2">已讲</div>
+                <div>已约</div>
               </div>
             </div>
             <div class="calendarMsg-msg" v-if="this.storage.message !== '当日无储存时间'">
@@ -111,6 +176,7 @@
 import Tabbar from '../../../views/Tabbar/Tabbar'
 import Calendar from 'vue-calendar-component'
 import TipsTools from '../../../common/TipsTools'
+import moment from 'moment'
 let lib = new TipsTools()
 export default {
   name: 'CalendarIndex',
@@ -128,19 +194,40 @@ export default {
         order: {},
         timeSave: {}
       },
-      begin: '',
-      end: '',
       statuss: '',
-      storageDiv: false,
       storage: {
         message: ''
-      }
+      },
+      begin: '',
+      end: '',
+      dateTimeBegin: '',
+      dateTimeEnd: '',
+      dateTimeBegin2: '',
+      dateTimeEnd2: '',
+      choseItem: 0,
+      choseItem2: 1,
+      choseItems: [
+        {name: '否'},
+        {name: '是'}
+      ],
+      choseItems2: [
+        {name: '否'},
+        {name: '是'}
+      ],
+      calendarTime: '',
+      notChose: false, // 未来未储存
+      ChoseNotAbout: false, // 已存未约
+      ChoseAbout: false, // 已约
+      notChoseEd: false, // 过去未储存
+      storageTime: false, // 未来未储存time
+      ChoseNotAboutTiem: true // 已存未约time
     }
   },
   computed: {},
   mounted () {
     this.loadDataList()
     this.loadData()
+    this.loadDataToday()
   },
   methods: {
     noneCalendarClick () {
@@ -197,23 +284,132 @@ export default {
     clickDefinitions () {
       this.$router.push('/calendar/definitions')
     },
+    loadDataToday () {
+      let calendarTime = Date.parse(new Date())
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('date', calendarTime)
+      _this.calendarTime = calendarTime
+      _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.storage = res
+          _this.storage.message = res.message
+          _this.storageList = res.result
+          if (_this.storageList === null) {
+            _this.notChose = false
+            _this.ChoseNotAbout = false
+            _this.ChoseAbout = false
+            _this.notChoseEd = true
+          } else if (_this.storageList !== null && _this.storageList.order === null) {
+            _this.ChoseNotAbout = true
+            _this.notChose = false
+            _this.ChoseAbout = false
+            _this.notChoseEd = false
+          } else if (_this.storageList.order !== null && _this.storageList.order.orderStatus === 1) {
+            _this.ChoseAbout = true
+            _this.ChoseNotAbout = false
+            _this.notChose = false
+            _this.notChoseEd = false
+          }
+        }
+      })
+    },
     clickDay (data) {
       let calendarTime = Date.parse(data)
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
       formData.append('date', calendarTime)
+      _this.calendarTime = calendarTime
       _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.storage = res
           _this.storage.message = res.message
           _this.storageList = res.result
-          if (_this.storageList !== null) {
-            console.log('1111')
-            _this.storageDiv = true
-          } else {
-            _this.storageDiv = false
+          let myDate = new Date()
+          myDate.toLocaleDateString()
+          let myDateDay = Date.parse(myDate.toLocaleDateString())
+          if (myDateDay > calendarTime) { // 今天之前
+            console.log('今天之前')
+            if (_this.storageList === null) {
+              _this.notChose = false
+              _this.ChoseNotAbout = false
+              _this.ChoseAbout = false
+              _this.notChoseEd = true
+              _this.storageTime = false
+              _this.choseItem = 0
+              _this.choseItem2 = 1
+            } else if (_this.storageList !== null && _this.storageList.order === null) {
+              _this.ChoseNotAbout = true
+              _this.notChose = false
+              _this.ChoseAbout = false
+              _this.notChoseEd = false
+              _this.storageTime = false
+              _this.choseItem = 0
+              _this.choseItem2 = 1
+            } else if (_this.storageList.order !== null && _this.storageList.order.orderStatus === 1) {
+              _this.ChoseAbout = true
+              _this.ChoseNotAbout = false
+              _this.notChose = false
+              _this.notChoseEd = false
+              _this.storageTime = false
+              _this.choseItem = 0
+              _this.choseItem2 = 1
+            }
+          } else if (myDateDay === calendarTime) { // 今天
+            console.log('今天')
+            if (_this.storageList === null) {
+              _this.notChoseEd = true
+              _this.ChoseNotAbout = false
+              _this.ChoseAbout = false
+              _this.notChose = false
+              _this.storageTime = false
+              _this.choseItem = 0
+              _this.choseItem2 = 1
+            } else if (_this.storageList !== null && _this.storageList.order === null) {
+              _this.ChoseNotAbout = true
+              _this.notChose = false
+              _this.ChoseAbout = false
+              _this.notChoseEd = false
+              _this.storageTime = false
+              _this.choseItem = 0
+              _this.choseItem2 = 1
+            } else if (_this.storageList.order !== null && _this.storageList.order.orderStatus === 1) {
+              _this.ChoseAbout = true
+              _this.ChoseNotAbout = false
+              _this.notChose = false
+              _this.notChoseEd = false
+              _this.storageTime = false
+              _this.choseItem = 0
+              _this.choseItem2 = 1
+            }
+          } else if (myDateDay < calendarTime) { // 今天之后
+            if (_this.storageList === null) {
+              console.log('今天之后')
+              _this.notChose = true
+              _this.notChoseEd = false
+              _this.ChoseNotAbout = false
+              _this.ChoseAbout = false
+              _this.storageTime = false
+              _this.choseItem = 0
+            } else if (_this.storageList !== null && _this.storageList.order === null) {
+              _this.ChoseNotAbout = true
+              _this.notChose = false
+              _this.ChoseAbout = false
+              _this.notChoseEd = false
+              _this.storageTime = false
+              _this.choseItem = 0
+            } else {
+              _this.ChoseAbout = true
+              _this.ChoseNotAbout = false
+              _this.notChose = false
+              _this.notChoseEd = false
+              _this.storageTime = false
+              _this.choseItem = 0
+            }
           }
+          _this.storageList.order = res.result.order
           _this.storageList.timeSave = res.result.timeSave
           _this.end = res.result.timeSave.end
           _this.begin = res.result.timeSave.begin
@@ -228,6 +424,79 @@ export default {
       let myDate = new Date()
       myDate.toLocaleDateString()
       this.$refs.Calendar.ChoseMonth(myDate)
+    },
+    choseClicked (index) {
+      this.choseItem = index
+      if (this.choseItem === 0) {
+        this.notChose = true
+        this.storageTime = false
+      } else {
+        this.storageTime = true
+      }
+    },
+    addTime () {
+      let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let calendarTime = Date.parse(this.calendarData)
+      let beginDateTime = Date.parse(beginDate)
+      let endDateTime = Date.parse(endDate)
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('date', calendarTime)
+      formData.append('begin', beginDateTime)
+      formData.append('end', endDateTime)
+      _this.$_HTTPData.getStoreTime(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_None('储存成功，刷新日历')
+          _this.loadDataList()
+          _this.loadData()
+          _this.loadDataToday()
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    choseClicked2 (index) {
+      this.choseItem2 = index
+      if (this.choseItem2 === 0) {
+        this.ChoseNotAbout = true
+        this.ChoseNotAboutTiem = false
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('date', _this.calendarTime)
+        _this.$_HTTPData.getCancelSave(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_None('取消成功，刷新日历')
+            _this.loadDataList()
+            _this.loadData()
+            _this.loadDataToday()
+          } else {
+            lib.MessageAlert_Error(res.message)
+          }
+        })
+      } else {
+        this.ChoseNotAbout = true
+        this.ChoseNotAboutTiem = true
+        console.log('tianjia')
+      }
+    },
+    cancelTime () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('date', _this.calendarTime)
+      _this.$_HTTPData.getCancelSave(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_None('取消成功，刷新日历')
+          _this.loadDataList()
+          _this.loadData()
+          _this.loadDataToday()
+        } else {
+          lib.MessageAlert_Error(res.message)
+        }
+      })
     }
   }
 }
@@ -253,4 +522,9 @@ export default {
   .calendarMsg-msg .main-color{padding: 0.1rem 0;}
   .calendarMsg-msg label{font-size:0.16rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.16rem;display: block;}
   .calendarMsg-msg p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);padding-bottom: 0.1rem;}
+  .choseItems{background: #ddd;}
+  .choseItems div{height: 0.24rem;float: left;font-size: 0.14rem;color: #fff;padding: 0 0.05rem;}
+  .active{background: rgba(249,91,64,1);}
+  .active2{background: rgba(249,91,64,1);}
+  .btn-main{color: #fff;background: rgba(249,91,64,1);padding: 0.03rem;border-radius: 0.05rem;}
 </style>

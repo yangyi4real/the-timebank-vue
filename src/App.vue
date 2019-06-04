@@ -153,7 +153,8 @@ export default {
   .wh_content_item .wh_chose_day{
     background: none!important;
     border-radius: 0!important;
-    border: 0.02rem solid rgba(249,91,64,1)!important
+    border: 0.02rem solid rgba(249,91,64,1)!important;
+    color: #999!important
   }
   .wh_item_date, .wh_top_tag{
     width: 100%!important;
@@ -168,6 +169,7 @@ export default {
   .calendar .wh_content_item .wh_isToday {
     background: none!important;
     border-radius: 0.05rem!important;
-    border: 0.01rem solid rgba(249,91,64,1)!important
+    border: 0.01rem solid rgba(249,91,64,1)!important;
+    color: rgba(249,91,64,1)!important;
   }
 </style>
