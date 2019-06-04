@@ -2,7 +2,72 @@
   <div class="body">
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
-      <div class="pro-data">
+      <div class="pro-data" v-if="this.listData.sex === '' || this.listData.sex === null">
+        <div class="pro-data-head padding-20">
+          <div class="clearfix">
+            <div class="head flex-row-start fl">
+              <div class="head-img">
+                <img src="../../../assets/icon/user_icon.png"/>
+              </div>
+              <div>
+                <label>{{listData.nickname}}</label>
+                <!--<p>{{listData.birthday}}岁 | 工作{{listData.workingAge}}年 | {{listData.livingLocation}}</p>-->
+              </div>
+            </div>
+            <div class="fr">
+              <i class="iconfont iconbianji main-color" @click="modifyDase"></i>
+            </div>
+          </div>
+          <div class="pro-data-head-number">
+            <div><i class="iconfont iconshouji main-color"></i></div>
+            <div><i class="iconfont iconyouxiang main-color"></i></div>
+          </div>
+        </div>
+        <div class="pro-data-intention padding-20 pro-data-border">
+          <div class="flex-row-between pro-data-title">
+            <div>存储意向</div>
+            <div><i class="iconfont iconbianji main-color" @click="modifyIntention"></i></div>
+          </div>
+          <div class="pro-data-introduce-cont">
+            <div><i class="iconfont iconqiwangzhiwei main-color"></i>技能标签</div>
+            <div class="padding-20"><i class="iconfont iconditu main-color"></i>意向地点</div>
+            <div><i class="iconfont icongongzi main-color"></i>意向薪酬</div>
+          </div>
+        </div>
+        <div class="pro-data-introduce padding-20 pro-data-border">
+          <div class="flex-row-between pro-data-title">
+            <div>个人介绍</div>
+            <div><i class="iconfont iconbianji main-color" @click="modifyFrofile"></i></div>
+          </div>
+          <div class="pro-data-introduce-cont">
+            添加个人描述，可让企业更好地认识你
+          </div>
+        </div>
+        <!--<div class="pro-data-class padding-20 pro-data-border">-->
+        <!--<div class="flex-row-between pro-data-title">-->
+        <!--<div>课程介绍</div>-->
+        <!--<div class="main-color">添加</div>-->
+        <!--</div>-->
+        <!--<div class="flex-row-between padding-15-top">-->
+        <!--<div>课程名称</div>-->
+        <!--<div><i class="iconfont iconbianji main-color"></i></div>-->
+        <!--</div>-->
+        <!--<div class="padding-15-top">课程标签</div>-->
+        <!--<div class="padding-15-top">课程内容/描述</div>-->
+        <!--</div>-->
+        <!--<div class="pro-data-service padding-20 pro-data-border">-->
+        <!--<div class="flex-row-between pro-data-title">-->
+        <!--<div>服务案例</div>-->
+        <!--<div class="main-color">添加</div>-->
+        <!--</div>-->
+        <!--<div class="flex-row-between">-->
+        <!--<div>课程名称</div>-->
+        <!--<div><i class="iconfont iconbianji main-color"></i></div>-->
+        <!--</div>-->
+        <!--<div class="padding-15-top">企业名称</div>-->
+        <!--</div>-->
+      </div>
+      <div class="pro-data" v-if="this.listData.sex !== '' && this.listData.sex !== null">
         <div class="pro-data-head padding-20">
           <div class="clearfix">
             <div class="head flex-row-start fl">
@@ -10,12 +75,12 @@
                 <img :src="listData.photo"/>
               </div>
               <div>
-                <label>{{listData.name}}<i class="iconfont iconnv main-color"></i></label>
+                <label>{{listData.name}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></label>
                 <p>{{listData.birthday}}岁 | 工作{{listData.workingAge}}年 | {{listData.livingLocation}}</p>
               </div>
             </div>
             <div class="fr">
-              <i class="iconfont iconbianji main-color"></i>
+              <i class="iconfont iconbianji main-color" @click="modifyDase"></i>
             </div>
           </div>
           <div class="pro-data-head-number">
@@ -26,7 +91,7 @@
         <div class="pro-data-intention padding-20 pro-data-border">
           <div class="flex-row-between pro-data-title">
             <div>存储意向</div>
-            <div><i class="iconfont iconbianji main-color"></i></div>
+            <div><i class="iconfont iconbianji main-color" @click="modifyIntention"></i></div>
           </div>
           <div class="pro-data-introduce-cont">
             <div><i class="iconfont iconqiwangzhiwei main-color"></i>{{listData.skillLevel}}</div>
@@ -37,35 +102,35 @@
         <div class="pro-data-introduce padding-20 pro-data-border">
           <div class="flex-row-between pro-data-title">
             <div>个人介绍</div>
-            <div><i class="iconfont iconbianji main-color"></i></div>
+            <div><i class="iconfont iconbianji main-color" @click="modifyFrofile"></i></div>
           </div>
           <div class="pro-data-introduce-cont">
             {{listData.introduction}}
           </div>
         </div>
-        <div class="pro-data-class padding-20 pro-data-border">
-          <div class="flex-row-between pro-data-title">
-            <div>课程介绍</div>
-            <div class="main-color">添加</div>
-          </div>
-          <div class="flex-row-between padding-15-top">
-            <div>课程名称</div>
-            <div><i class="iconfont iconbianji main-color"></i></div>
-          </div>
-          <div class="padding-15-top">课程标签</div>
-          <div class="padding-15-top">课程内容/描述</div>
-        </div>
-        <div class="pro-data-service padding-20 pro-data-border">
-          <div class="flex-row-between pro-data-title">
-            <div>服务案例</div>
-            <div class="main-color">添加</div>
-          </div>
-          <div class="flex-row-between">
-            <div>课程名称</div>
-            <div><i class="iconfont iconbianji main-color"></i></div>
-          </div>
-          <div class="padding-15-top">企业名称</div>
-        </div>
+        <!--<div class="pro-data-class padding-20 pro-data-border">-->
+          <!--<div class="flex-row-between pro-data-title">-->
+            <!--<div>课程介绍</div>-->
+            <!--<div class="main-color">添加</div>-->
+          <!--</div>-->
+          <!--<div class="flex-row-between padding-15-top">-->
+            <!--<div>课程名称</div>-->
+            <!--<div><i class="iconfont iconbianji main-color"></i></div>-->
+          <!--</div>-->
+          <!--<div class="padding-15-top">课程标签</div>-->
+          <!--<div class="padding-15-top">课程内容/描述</div>-->
+        <!--</div>-->
+        <!--<div class="pro-data-service padding-20 pro-data-border">-->
+          <!--<div class="flex-row-between pro-data-title">-->
+            <!--<div>服务案例</div>-->
+            <!--<div class="main-color">添加</div>-->
+          <!--</div>-->
+          <!--<div class="flex-row-between">-->
+            <!--<div>课程名称</div>-->
+            <!--<div><i class="iconfont iconbianji main-color"></i></div>-->
+          <!--</div>-->
+          <!--<div class="padding-15-top">企业名称</div>-->
+        <!--</div>-->
       </div>
     </div>
   </div>
@@ -121,8 +186,16 @@ export default {
           lib.MessageAlert_None(res.message)
         }
       })
+    },
+    modifyDase () {
+      this.$router.push('/personal/information/basedata-show')
+    },
+    modifyIntention () {
+      this.$router.push('/personal/information/intention-show')
+    },
+    modifyFrofile () {
+      this.$router.push('/personal/information/profile-show')
     }
-    // cancelClick () {},
     // pushClick () {
     //   this.$router.push('')
     // }

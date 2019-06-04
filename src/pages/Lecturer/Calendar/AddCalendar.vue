@@ -8,8 +8,8 @@
             ref='Calendar'
             :markDateMore='calendarList'
             v-on:isToday='clickToday'
-            agoDayHide='1554048000'
-            futureDayHide='1561910399'
+            agoDayHide='1559635471'
+            futureDayHide='1567267200'
             :sundayStart = 'true'
             v-on:choseDay='clickDay'
             v-on:changeMonth='changeDate'
@@ -54,46 +54,65 @@ export default {
       calendarList: [],
       calendarData: '',
       dateTimeBegin: '',
-      dateTimeEnd: ''
+      dateTimeEnd: '',
+      dateInfo: [],
+      calendarTimeToday: '1559635453'
     }
   },
   computed: {
   },
   mounted () {
-    // this.loadDataList()
+    this.loadDataList()
   },
   methods: {
     clickDay (data) {
-      this.calendarData = data
+      this.calendarData = Date.parse(data)
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('date', _this.calendarData)
+      _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.dateInfo = res.result
+          if (_this.dateInfo === null) {
+            lib.MessageAlert_Success('当前日期可储存')
+          } else {
+            lib.MessageAlert_Error('当前日期已储存')
+          }
+        }
+      })
     },
-    // loadDataList () {
-    //   let _this = this
-    //   let formData = new FormData()
-    //   formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-    //   _this.$_HTTPData.getSavedTime(_this, formData, function (res) {
-    //     if (res.code === 0 || res.code === '000') {
-    //       let temp = JSON.stringify(res.result)
-    //       let temp2 = temp.replace(/status/g, 'className')
-    //       _this.calendarList = JSON.parse(temp2)
-    //       for (let i = 0; i < _this.calendarList.length; i++) {
-    //         let item = _this.calendarList[i]
-    //         console.log(item)
-    //         if (item.className === 0) {
-    //           item.className = 'mark1'
-    //         }
-    //         if (item.className === 1) {
-    //           item.className = 'mark2'
-    //         }
-    //         if (item.className === 2) {
-    //           item.className = 'mark3'
-    //         }
-    //       }
-    //       console.log(_this.calendarList)
-    //     } else {
-    //       lib.MessageAlert_None(res.message)
-    //     }
-    //   })
-    // },
+    loadDataList () {
+      let tmp = Date.parse(new Date()).toString()
+      tmp = tmp.substr(0, 10)
+      this.calendarTimeToday = tmp
+      console.log(this.calendarTimeToday)
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      _this.$_HTTPData.getSavedTime(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          let temp = JSON.stringify(res.result)
+          let temp2 = temp.replace(/status/g, 'className')
+          _this.calendarList = JSON.parse(temp2)
+          for (let i = 0; i < _this.calendarList.length; i++) {
+            let item = _this.calendarList[i]
+            if (item.className === 0) {
+              item.className = 'mark1'
+            }
+            if (item.className === 1) {
+              item.className = 'mark2'
+            }
+            if (item.className === 2) {
+              item.className = 'mark3'
+            }
+          }
+          console.log(_this.calendarList)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
     subClick () {
       let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
       let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
@@ -128,8 +147,8 @@ export default {
 <style scoped>
   .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
   .wh_container >>> .mark1 {color: rgba(249,91,64,1);}
-  .wh_container >>> .mark2 {background: rgba(249,91,64,1);color: #fff;border-radius: 1rem;width: 0.4rem!important;}
-  .wh_container >>> .mark3 {color: rgba(249,91,64,1);border: 0.01rem solid rgba(249,91,64,1);border-radius: 1rem;width: 0.4rem!important;}
+  .wh_container >>> .mark2 {color: rgba(249,91,64,1);border: 0.01rem solid rgba(249,91,64,1);border-radius: 1rem;width: 0.4rem!important;}
+  .wh_container >>> .mark3 {background: rgba(249,91,64,1);color: #fff;border-radius: 1rem;width: 0.4rem!important;}
   .none-rili{text-align: center;padding: 0.2rem 0.35rem 0 0.35rem;}
   .none-rili p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);}
   .class-btn{padding: 0.6rem 0;}

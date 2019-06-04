@@ -14,8 +14,11 @@ import AboutDetails from '../pages/Lecturer/Course/AboutDetails' // 约讲详情
 import PersonalIndex from '../pages/Lecturer/Personal/Index' // 我的
 import PersonalData from '../pages/Lecturer/Personal/PersonalData' // 个人资料
 import BaseData from '../pages/Lecturer/Personal/FillInformation/BaseData' // 基本信息
+import BaseDataShow from '../pages/Lecturer/Personal/FillInformation/BaseDataShow' // 基本信息-显示
 import Intention from '../pages/Lecturer/Personal/FillInformation/Intention' // 存储意向
+import IntentionShow from '../pages/Lecturer/Personal/FillInformation/IntentionShow' // 存储意向
 import Profile from '../pages/Lecturer/Personal/FillInformation/Profile' // 介绍资料
+import ProfileShow from '../pages/Lecturer/Personal/FillInformation/ProfileShow' // 介绍资料
 import Authentication from '../pages/Lecturer/Personal/FillInformation/Authentication' // 讲师认证
 import AuthenticationCenter from '../pages/Lecturer/Personal/FillInformation/AuthenticationCenter' // 讲师认证
 import Payment from '../pages/Lecturer/Personal/Payment' // 支付
@@ -211,17 +214,35 @@ export default new Router({
       name: 'BaseData',
       component: BaseData
     },
+    // 基本信息-显示
+    {
+      path: '/personal/information/basedata-show',
+      name: 'BaseDataShow',
+      component: BaseDataShow
+    },
     // 存储意向
     {
       path: '/personal/information/intention',
       name: 'Intention',
       component: Intention
     },
+    // 存储意向-显示
+    {
+      path: '/personal/information/intention-show',
+      name: 'IntentionShow',
+      component: IntentionShow
+    },
     // 介绍资料
     {
       path: '/personal/information/profile',
       name: 'Profile',
       component: Profile
+    },
+    // 介绍资料-显示
+    {
+      path: '/personal/information/profile-show',
+      name: 'ProfileShow',
+      component: ProfileShow
     },
     // 讲师认证
     {

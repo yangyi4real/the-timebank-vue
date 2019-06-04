@@ -27,7 +27,7 @@
       </div>
       <div>
         <label>{{listData.bouns}}</label>
-        <p class="border">奖励分红</p>
+        <p class="border">奖励报酬</p>
       </div>
       <div>
         <label>{{listData.sdg}}</label>
