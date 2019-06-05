@@ -10,8 +10,16 @@
           <div class="chose-btn-right chose-btn-div" :class="{active: shows == 2}" @click="qyClick">企业</div>
         </div>
         <div class="operation-button">
-          <div class="btn-border-black" @click="jsLoginClick" v-show="jsBtnClick">手机号码登录/注册</div>
-          <div class="btn-border-black" @click="qyLoginClick" v-show="qyBtnClick">手机号码登录/注册</div>
+          <div v-show="jsBtnClick">
+            <div class="btn-border-black" @click="jsLoginClick">登录</div>
+            <div style="height: 0.3rem;"></div>
+            <div class="btn-border-black" @click="jsRegisterClick">注册</div>
+          </div>
+          <div v-show="qyBtnClick">
+            <div class="btn-border-black" @click="qyLoginClick">登录</div>
+            <div style="height: 0.3rem;"></div>
+            <div class="btn-border-black" @click="qyRegisterClick">注册</div>
+          </div>
           <div style="height: 0.3rem;"></div>
           <div class="btn-border-black">微信用户一键登录</div>
         </div>
@@ -46,9 +54,14 @@ export default {
     jsLoginClick () {
       this.$router.push('/login/1')
     },
+    jsRegisterClick () {
+      this.$router.push('/register/1')
+    },
     qyLoginClick () {
-      // this.$router.push(`/sych/taskconfirm/${_this.refereeCardId}/${_this.userAccount}`)
       this.$router.push('/login/2')
+    },
+    qyRegisterClick () {
+      this.$router.push('/register/2')
     }
   },
   mounted () {}

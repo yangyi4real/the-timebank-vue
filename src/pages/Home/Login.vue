@@ -5,15 +5,12 @@
       <div class="login-form">
         <div class="login-form-div">
           <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
-          <span class="fr" :class="{'get-code-btn': true, 'disable': !getMsgCodeButtonCanTap}" @click="getMsgCodeButtonClicked">
-            {{ getMsgCodeButtonTitle }}
-          </span>
         </div>
         <div class="login-form-div">
-          <input type="text" v-model="phoneNumberCode" placeholder="请输入验证码" v-on:input="inputValue"/>
+          <input type="password" v-model="password" placeholder="请输入密码" v-on:input="inputValue"/>
         </div>
       </div>
-      <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span>并注册</p>
+      <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
       <div class="login-btn">
         <div @click="loginBtnClicked" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">登录</div>
       </div>
@@ -34,27 +31,14 @@ export default {
   },
   data () {
     return {
-      titleMsg: '登录/注册',
+      titleMsg: '登录',
       phoneNumber: '',
-      phoneNumberCode: '',
-      getMsgCodeSecond: 60,
-      getMsgCodeButtonCanTap: true,
-      timer: null,
+      password: '',
       inOperation: true, // 灰色按钮
       operation: false
     }
   },
   computed: {
-    /**
-     * 获取验证码按钮的标题
-     */
-    getMsgCodeButtonTitle () {
-      if (this.getMsgCodeButtonCanTap) {
-        return `获取验证码`
-      } else {
-        return `重新发送 ${this.getMsgCodeSecond} s`
-      }
-    },
     getUserType () {
       return this.$route.params.userType
     }
@@ -82,58 +66,11 @@ export default {
         lib.MessageAlert_Error('请输入正确手机号')
         return false
       }
-      if (this.phoneNumberCode.length < 1) {
-        lib.MessageAlert_Error('请输入短信验证码')
+      if (this.password.length < 1) {
+        lib.MessageAlert_Error('请输入密码')
         return false
       }
       return true
-    },
-    /**
-     * 开启定时器
-     */
-    startTimer () {
-      this.getMsgCodeButtonCanTap = false
-      let _this = this
-      this.timer = setInterval(() => {
-        _this.getMsgCodeSecond--
-        if (_this.getMsgCodeSecond < 0) {
-          _this.stopTimer()
-        }
-      }, 1000)
-    },
-    /**
-     * 停止定时器
-     */
-    stopTimer () {
-      clearInterval(this.timer)
-      this.timer = null
-      this.getMsgCodeSecond = 60
-      this.getMsgCodeButtonCanTap = true
-    },
-    /**
-     * 点击了获取验证码按钮
-     */
-    getMsgCodeButtonClicked () {
-      let _this = this
-      if (!this.getMsgCodeButtonCanTap) { return }
-      if (this.phoneNumber === '' || this.phoneNumber === null) {
-        lib.MessageAlert_Error('请输入正确手机号')
-        return false
-      }
-      if (this.phoneNumber.length < 11) {
-        lib.MessageAlert_Error('请输入正确手机号')
-        return false
-      }
-      let formData = new FormData()
-      formData.append('phone', _this.phoneNumber)
-      _this.$_HTTPData.getAuthCode(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.startTimer()
-          lib.MessageAlert_Success(res.message)
-        } else {
-          console.log(res.message)
-        }
-      })
     },
     /**
      * 点击登录按钮
@@ -142,37 +79,26 @@ export default {
       if (!this.checkInputValue()) { return }
       let _this = this
       let formData = new FormData()
-      formData.append('loginId', this.phoneNumber)
-      formData.append('authCode', this.phoneNumberCode)
+      formData.append('loginId', _this.phoneNumber)
+      formData.append('password', _this.password)
       formData.append('userType', this.getUserType)
       _this.$_HTTPData.getLogin(_this, formData, function (res) {
         if (_this.getUserType === 1 || _this.getUserType === '1') {
           if (res.code === 0 || res.code === '000') {
-            if (res.message === '登陆成功') {
-              lib.MessageAlert_None(res.message)
-              _this.$router.push('/calendar/index')
-            } else if (res.message === '注册成功') {
-              lib.MessageAlert_None(res.message)
-              _this.$router.push(`/paypassword/${res.result.id}`)
-            } else {
-              _this.TipsTools.MessageAlert_Error(res.message)
-            }
+            lib.MessageAlert_Success(res.message)
+            _this.$router.push('/calendar/index')
           } else {
-            _this.TipsTools.MessageAlert_Error(res.message)
+            lib.MessageAlert_Error(res.message)
           }
         } else if (_this.getUserType === 2 || _this.getUserType === '2') {
           if (res.code === 0 || res.code === '000') {
-            console.log(res.message)
-            if (res.message === '登陆成功') {
-              lib.MessageAlert_None(res.message)
-              _this.$router.push('/customized/index')
-            } else if (res.message === '注册成功') {
-              lib.MessageAlert_None(res.message)
-              _this.$router.push('/customized/index')
-            }
+            lib.MessageAlert_None(res.message)
+            _this.$router.push('/customized/index')
           } else {
             _this.TipsTools.MessageAlert_Error(res.message)
           }
+        } else {
+          _this.TipsTools.MessageAlert_Error(res.message)
         }
       })
     }
@@ -194,7 +120,7 @@ export default {
 
 <style scoped>
   .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
-  .login-form{padding-top: 0.6rem;}
+  .login-form{padding-top: 0.3rem;}
   .login-form .login-form-div{margin: 0.15rem 0.2rem 0 0.2rem;border-bottom: 0.01rem solid #E8E8E8;padding: 0.15rem 0;}
   .login-form .login-form-div input{border: 0;outline: none;background-color: rgba(0, 0, 0, 0);font-size: 0.16rem;
     font-family:PingFangSC-Regular;font-weight:400;}

@@ -8,14 +8,14 @@
             ref='Calendar'
             :markDateMore='calendarList'
             v-on:isToday='clickToday'
-            agoDayHide='1559635471'
+            agoDayHide='1559750399'
             futureDayHide='1567267200'
             :sundayStart = 'true'
             v-on:choseDay='clickDay'
             v-on:changeMonth='changeDate'
           ></Calendar>
         </div>
-        <div class="calebdar-time">
+        <div class="calebdar-time" v-show="tiemShow">
           <p>时间段</p>
           <div class="calebdar-time-div flex-row-around">
             <div class="calebdar-time-div-border"><yd-datetime start-hour="9" end-hour="23" type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
@@ -56,7 +56,8 @@ export default {
       dateTimeBegin: '',
       dateTimeEnd: '',
       dateInfo: [],
-      calendarTimeToday: '1559635453'
+      calendarTimeToday: '1559635453',
+      tiemShow: false
     }
   },
   computed: {
@@ -76,17 +77,18 @@ export default {
           _this.dateInfo = res.result
           if (_this.dateInfo === null) {
             lib.MessageAlert_Success('当前日期可储存')
+            _this.tiemShow = true
           } else {
             lib.MessageAlert_Error('当前日期已储存')
+            _this.tiemShow = false
           }
         }
       })
     },
     loadDataList () {
-      let tmp = Date.parse(new Date()).toString()
-      tmp = tmp.substr(0, 10)
-      this.calendarTimeToday = tmp
-      console.log(this.calendarTimeToday)
+      // let tmp = Date.parse(new Date()).toString()
+      // tmp = tmp.substr(0, 10)
+      // this.calendarTimeToday = tmp
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -107,13 +109,17 @@ export default {
               item.className = 'mark3'
             }
           }
-          console.log(_this.calendarList)
         } else {
           lib.MessageAlert_None(res.message)
         }
       })
     },
     subClick () {
+      let date = new Date(this.calendarData)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      this.calendarData = Y + M + D
       let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
       let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
       let calendarTime = Date.parse(this.calendarData)

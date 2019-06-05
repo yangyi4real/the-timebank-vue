@@ -22,15 +22,17 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.123:8081'
+      this.host = 'http://192.168.1.121:8081'
       // this.host = 'http://114.116.33.168:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
     // 请求路径对象
     this.url = {
-      // 用户登录/注册
-      login: '/time-bank/user/login_or_register',
+      // 用户登录
+      login: '/time-bank/user/login',
+      // 用户注册
+      register: '/time-bank/user/register',
       // 发送短信验证码
       authCode: '/time-bank/user/send_auth_code_web',
       // 基本资料填写
@@ -259,7 +261,7 @@ class HTTPData {
     })
   }
   /**
-   * 登录/注册
+   * 登录
    * @param obj 调用该方法所在的 vue 对象
    * @param data 本次请求的参数
    * @param callback 本次请求的回调
@@ -273,10 +275,35 @@ class HTTPData {
         _this.SaiLei.cookiesSave('user_id', res.result.id) // id
         _this.SaiLei.cookiesSave('user_name', res.result.name) // 姓名
         _this.SaiLei.cookiesSave('user_nickname', res.result.nickname) // 昵称
-        _this.SaiLei.cookiesSave('user_sex', res.result.sex) // 昵称
+        _this.SaiLei.cookiesSave('user_sex', res.result.sex) // 性别
         _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
-        _this.SaiLei.cookiesSave('user_loginId', res.result.loginId) // 认证状态
-        _this.SaiLei.cookiesSave('user_email', res.result.email) // 认证状态
+        _this.SaiLei.cookiesSave('user_loginId', res.result.loginId) // 手机号
+        _this.SaiLei.cookiesSave('user_email', res.result.email) // 邮箱
+        let user = new UserModel(res.result)
+        obj.$store.dispatch(SET_USER_INFO, user)
+      }
+      callback(res)
+    })
+  }
+  /**
+   * 注册
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getRegister (obj, data, callback) {
+    let _this = this
+    data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.register}`, data, function (res) {
+      if (res.code === 0 || res.code === '000') {
+        _this.SaiLei.cookiesSave('user_info', res.result)
+        _this.SaiLei.cookiesSave('user_id', res.result.id) // id
+        _this.SaiLei.cookiesSave('user_name', res.result.name) // 姓名
+        _this.SaiLei.cookiesSave('user_nickname', res.result.nickname) // 昵称
+        _this.SaiLei.cookiesSave('user_sex', res.result.sex) // 性别
+        _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
+        _this.SaiLei.cookiesSave('user_loginId', res.result.loginId) // 手机号
+        _this.SaiLei.cookiesSave('user_email', res.result.email) // 邮箱
         let user = new UserModel(res.result)
         obj.$store.dispatch(SET_USER_INFO, user)
       }

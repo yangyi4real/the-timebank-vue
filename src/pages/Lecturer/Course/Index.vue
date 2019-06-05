@@ -10,7 +10,7 @@
     </div>
     <div class="wapper">
       <div class="course-list-none" v-show="Tips">
-        <p><span class="main-color">存储时间</span> 后，企业才能跟你对讲哦</p>
+        <p><span class="main-color" @click="addTime">存储时间</span> 后，企业才能跟你对讲哦</p>
       </div>
       <div v-show="listItem">
         <div class="order-center-list" v-for="(item,index) in listRecord" :key="index">
@@ -80,6 +80,9 @@ export default {
     this.loadData()
   },
   methods: {
+    addTime () {
+      this.$router.push('/calendar/index')
+    },
     loadData () {
       let _this = this
       let formData = new FormData()
@@ -94,7 +97,7 @@ export default {
               _this.listRecord.splice(i, 1)
             }
           }
-          if (_this.listRecord === '') {
+          if (_this.listRecord.length === 0) {
             _this.Tips = true
             _this.listItem = false
           } else {

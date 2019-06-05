@@ -39,11 +39,13 @@ import Feedback from '../pages/Lecturer/Personal/SetUp/Feedback' // 意见反馈
 import Msg from '../pages/Lecturer/Personal/Msg' // 消息
 
 import Home from '../pages/Home/Index.vue' // 进入页
-import Login from '../pages/Home/Login' // 登录/注册
+import Login from '../pages/Home/Login' // 登录
+import Register from '../pages/Home/Register' // 注册
 import PayPassword from '../pages/Home/PayPassword' // 支付密码
 import Navbar from '../views/navbar/navbar' // 头部导航
 import Tabbar from '../views/Tabbar/Tabbar' // 讲师端-底部导航
 import TabbarEnt from '../views/Tabbar/TabbarEnt' // 企业端-底部导航
+
 import CustomizedIndex from '../pages/Enterprise/Customized/Index' // 约课
 import lecturerDetails from '../pages/Enterprise/Customized/lecturerDetails' // 讲师详情
 import Appointment from '../pages/Enterprise/Customized/Appointment' // 预约
@@ -88,11 +90,17 @@ export default new Router({
       name: 'TabbarEnt',
       component: TabbarEnt
     },
-    // 登录页
+    // 登录
     {
       path: '/login/:userType',
       name: 'Login',
       component: Login
+    },
+    // 注册
+    {
+      path: '/register/:userType',
+      name: 'Register',
+      component: Register
     },
     // 支付密码
     {
