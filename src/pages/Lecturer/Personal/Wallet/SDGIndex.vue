@@ -7,14 +7,16 @@
         <div class="wallet-index-sum text-center">
           <img src="" alt=""/>
           <div class="wallet-index-sum-padding">
-            <p>我的余额</p>
-            <label>￥ {{getBalance}}.00</label>
+            <p>SDG</p>
+            <label>{{getSdg}}</label>
           </div>
         </div>
       </div>
       <div class="authentication-btn">
-        <!--<div class="btn-border-black" @click="rechargeClick">充值</div>-->
-        <div class="btn-border-black" @click="withdrawClick">提现</div>
+        <!--<div class="btn-border-black" @click="purchaseClick">购买</div>-->
+        <!--<div class="btn-border-black" @click="exchangeClick">兑换</div>-->
+        <div class="btn-border-black">购买</div>
+        <div class="btn-border-black">兑换</div>
       </div>
     </div>
   </div>
@@ -23,7 +25,7 @@
 <script>
 import Navbar from '../../../../views/navbar/navbar'
 export default {
-  name: 'WalletIndex',
+  name: 'SDGIndex',
   components: {
     Navbar
   },
@@ -34,17 +36,17 @@ export default {
   },
   created () {},
   computed: {
-    getBalance () {
-      return this.$route.params.balance
+    getSdg () {
+      return this.$route.params.sdg
     }
   },
   methods: {
-    // rechargeClick () {
+    // purchaseClick () {
     //   this.$router.push('/personal/wallet/recharge')
     // },
-    withdrawClick () {
-      this.$router.push('/personal/wallet/withdraw')
-    },
+    // exchangeClick () {
+    //   this.$router.push('/personal/wallet/withdraw')
+    // },
     detailedClick () {
       this.$router.push('/personal/wallet/detailed')
     }

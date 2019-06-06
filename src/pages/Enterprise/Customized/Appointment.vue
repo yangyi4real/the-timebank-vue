@@ -25,8 +25,7 @@
               <div class="flex-row-between choice-time-list-div">
                 <div class="choice-time-list-left">可预约时间范围</div>
                 <div>
-                  <p>{{timeSaveBegin}}至</p>
-                  <p>{{timeSaveEnd}}</p>
+                  <p>{{day}} {{timeSaveBegin}} 至 {{timeSaveEnd}}</p>
                 </div>
               </div>
               <div class="flex-row-between choice-time-list-div padding-top-15">
@@ -142,6 +141,7 @@ export default {
       },
       appointmentList: [],
       choseList: [],
+      day: '',
       timeSaveBegin: '',
       timeSaveEnd: '',
       choseDiv: false
@@ -244,12 +244,11 @@ export default {
           _this.choseList = res
           if (_this.choseList.message === '当日无储存时间') {
             _this.choseDiv = false
-            console.log('111')
           } else {
-            _this.timeSaveBegin = res.result.timeSave.begin
-            _this.timeSaveEnd = res.result.timeSave.end
+            _this.day = res.result.timeSave.date.substring(0, 10)
+            _this.timeSaveBegin = res.result.timeSave.begin.substring(11, 16)
+            _this.timeSaveEnd = res.result.timeSave.end.substring(11, 16)
             _this.choseDiv = true
-            console.log('222')
           }
           _this.chose = res.result
           _this.chose.timeSave = res.result.timeSave

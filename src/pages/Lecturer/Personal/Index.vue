@@ -51,7 +51,7 @@
         <label>{{listData.bouns}}</label>
         <p class="border">报酬</p>
       </div>
-      <div>
+      <div @click="sdgClick">
         <label>{{listData.sdg}}</label>
         <p>SDG</p>
       </div>
@@ -157,6 +157,10 @@ export default {
     // 邀请好友
     linkInvitation () {
       this.$router.push('/personal/invitation')
+    },
+    // sdg
+    sdgClick () {
+      this.$router.push(`/personal/wallet/sdg-index/${this.listData.sdg}`)
     },
     // 设置
     linkSetUp () {

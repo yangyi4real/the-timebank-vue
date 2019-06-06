@@ -141,7 +141,7 @@ export default {
     courseCompleteClick () {
       this.mainDiv = true
       this.courseDiv = false
-      let temp = {className: this.className, tags: this.tags, description: this.description}
+      let temp = {userId: this.$SaiLei.cookiesGet('user_id'), className: this.className, tags: this.tags, description: this.description}
       this.introDataList.push(temp)
       // 清空文本框中的数据
       this.className = ''
@@ -217,11 +217,17 @@ export default {
       }
       return true
     },
+    /**
+     * 点击保存整体
+     * @return {boolean}
+     */
     keepClick () {
-      this.maskShow = true
       // if (!this.checkInputValue()) { return }
-      // let myJSON = JSON.stringify(this.introDataList)
-      // let myJSONData = JSON.stringify(this.introDatasList)
+      console.log(this.introDataList)
+      let myJSON = JSON.stringify(this.introDataList)
+      let myJSONData = JSON.stringify(this.introDatasList)
+      console.log(myJSON)
+      console.log(myJSONData)
       // let _this = this
       // let formData = new FormData()
       // formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -233,7 +239,7 @@ export default {
       //     _this.maskShow = true
       //   } else {
       //     _this.maskShow = true
-      //     // lib.MessageAlert_Error(res.message)
+      //     lib.MessageAlert_Error(res.message)
       //   }
       // })
     },

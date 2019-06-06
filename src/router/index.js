@@ -23,6 +23,7 @@ import Authentication from '../pages/Lecturer/Personal/FillInformation/Authentic
 import AuthenticationCenter from '../pages/Lecturer/Personal/FillInformation/AuthenticationCenter' // 讲师认证
 import Payment from '../pages/Lecturer/Personal/Payment' // 支付
 import WalletIndex from '../pages/Lecturer/Personal/Wallet/Index' // 钱包
+import SDGIndex from '../pages/Lecturer/Personal/Wallet/SDGIndex' // 钱包
 import Detailed from '../pages/Lecturer/Personal/Wallet/Detailed' // 明细
 import DetailedPage from '../pages/Lecturer/Personal/Wallet/DetailedPage' // 明细详情页
 import Recharge from '../pages/Lecturer/Personal/Wallet/Recharge' // 充值
@@ -275,6 +276,12 @@ export default new Router({
       path: '/personal/wallet/index/:balance',
       name: 'WalletIndex',
       component: WalletIndex
+    },
+    // sdg
+    {
+      path: '/personal/wallet/sdg-index/:sdg',
+      name: 'SDGIndex',
+      component: SDGIndex
     },
     // 明细
     {

@@ -117,8 +117,7 @@
                 <div class="flex-row-between padding-bottom-15">
                   <div>时间段</div>
                   <div class="clearfix">
-                    <div>{{begin}} 至</div>
-                    <div>{{end}}</div>
+                    <div>{{day}} {{begin}} 至 {{end}}</div>
                   </div>
                   <div class="btn-main" @click="cancelTime">取消</div>
                 </div>
@@ -139,8 +138,7 @@
               <div class="flex-row-between padding-bottom-15">
                 <div>时间段</div>
                 <div>
-                  <div>{{begin}} 至</div>
-                  <div>{{end}}</div>
+                  <div>{{day}} {{begin}} 至 {{end}}</div>
                 </div>
               </div>
               <div class="flex-row-between">
@@ -198,6 +196,7 @@ export default {
       storage: {
         message: ''
       },
+      day: '',
       begin: '',
       end: '',
       dateTimeBegin: '',
@@ -272,7 +271,6 @@ export default {
               item.className = 'mark3'
             }
           }
-          console.log(_this.timeList)
         } else {
           lib.MessageAlert_None(res.message)
         }
@@ -411,10 +409,10 @@ export default {
           }
           _this.storageList.order = res.result.order
           _this.storageList.timeSave = res.result.timeSave
-          _this.end = res.result.timeSave.end
-          _this.begin = res.result.timeSave.begin
+          _this.day = res.result.timeSave.date.substring(0, 10)
+          _this.end = res.result.timeSave.end.substring(11, 16)
+          _this.begin = res.result.timeSave.begin.substring(11, 16)
           _this.statuss = res.result.timeSave.status
-          console.log(_this.storageList)
         } else {
           lib.MessageAlert_None(res.message)
         }
