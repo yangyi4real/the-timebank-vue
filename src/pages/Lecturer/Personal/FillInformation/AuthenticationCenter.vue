@@ -76,7 +76,7 @@
       <p class="text-center main-color tips-p">以上信息作为平台审核认证讲师资格使用</p>
       <div class="authentication-btn">
         <div class="btn-border-black" @click="pushClick" v-if="this.listData.authStatus === 0 || this.listData.authStatus === null">确定</div>
-        <div class="btn-border-black" @click="cancelClick" v-if="this.listData.authStatus === 1">取消认证</div>
+        <!--<div class="btn-border-black" @click="cancelClick" v-if="this.listData.authStatus === 1">取消认证</div>-->
       </div>
     </div>
   </div>
@@ -344,31 +344,31 @@ export default {
           lib.MessageAlert_Error(res.message)
         }
       })
-    },
+    }
     /**
      * 点击取消认证
      */
-    cancelClick () {
-      // let _this = this
-      this.$dialog.confirm({
-        title: '<p style="text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.1rem">确定取消认证？</p>',
-        mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">取消后，未来已存储时间将全部失效，并且不可继续约课</p>',
-        opts: [
-          {
-            txt: '取消',
-            color: '#ccc',
-            callback: () => {}
-          },
-          {
-            txt: '确定',
-            color: true,
-            callback: () => {
-              // this.$router.push('/calendar/index')
-            }
-          }
-        ]
-      })
-    }
+    // cancelClick () {
+    //   // let _this = this
+    //   this.$dialog.confirm({
+    //     title: '<p style="text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.1rem">确定取消认证？</p>',
+    //     mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">取消后，未来已存储时间将全部失效，并且不可继续约课</p>',
+    //     opts: [
+    //       {
+    //         txt: '取消',
+    //         color: '#ccc',
+    //         callback: () => {}
+    //       },
+    //       {
+    //         txt: '确定',
+    //         color: true,
+    //         callback: () => {
+    //           // this.$router.push('/calendar/index')
+    //         }
+    //       }
+    //     ]
+    //   })
+    // }
   },
   watch: {}
 }

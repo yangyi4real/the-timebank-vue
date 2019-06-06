@@ -70,6 +70,26 @@
           <div @click="courseCompleteClick" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
         </div>
       </div>
+      <div class="course" v-show="courseDiv2">
+        <div class="course">
+          <div class="course-list flex-row-between">
+            <div>课程名称</div>
+            <div><input type="text" v-model="className" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-list flex-row-between">
+            <div>课程标签</div>
+            <div><input type="text" v-model="tags" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-text">
+            <div class="course-text-title">课程内容/描述</div>
+            <textarea draggable="false" v-model="description" v-on:input="inputValue" placeholder=""></textarea>
+          </div>
+        </div>
+        <div class="course-btn flex-row-between">
+          <div @click="courseCancelClick" class="btn-small-border">取消</div>
+          <div @click="courseCompleteClick2" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
+        </div>
+      </div>
       <div class="service-case" v-show="serviceDiv">
         <div class="course">
           <div class="course-list flex-row-between">
@@ -84,6 +104,22 @@
         <div class="course-btn flex-row-between">
           <div @click="caseCancelClick" class="btn-small-border">取消</div>
           <div @click="caseCompleteClick" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
+        </div>
+      </div>
+      <div class="service-case" v-show="serviceDiv2">
+        <div class="course">
+          <div class="course-list flex-row-between">
+            <div>课程名称</div>
+            <div><input type="text" v-model="classNames" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-list flex-row-between" style="border: 0">
+            <div>企业名称</div>
+            <div><input type="text" v-model="companyName" v-on:input="inputValue"/></div>
+          </div>
+        </div>
+        <div class="course-btn flex-row-between">
+          <div @click="caseCancelClick" class="btn-small-border">取消</div>
+          <div @click="caseCompleteClick2" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
         </div>
       </div>
     </div>
@@ -129,8 +165,12 @@ export default {
       operation: false,
       mainDiv: true,
       courseDiv: false,
+      courseDiv2: false,
       serviceDiv: false,
-      maskShow: false
+      serviceDiv2: false,
+      maskShow: false,
+      dataIndex: '',
+      dataIndex2: ''
     }
   },
   created () {},
@@ -141,7 +181,20 @@ export default {
     courseCompleteClick () {
       this.mainDiv = true
       this.courseDiv = false
-      let temp = {userId: this.$SaiLei.cookiesGet('user_id'), className: this.className, tags: this.tags, description: this.description}
+      let temp = {className: this.className, tags: this.tags, description: this.description}
+      this.introDataList.push(temp)
+      // 清空文本框中的数据
+      this.className = ''
+      this.tags = ''
+      this.description = ''
+      console.log(this.introDataList)
+    },
+    // 课程介绍点击修改完成
+    courseCompleteClick2 () {
+      this.mainDiv = true
+      this.courseDiv2 = false
+      this.introDataList.splice(this.dataIndex, 1)
+      let temp = {className: this.className, tags: this.tags, description: this.description}
       this.introDataList.push(temp)
       // 清空文本框中的数据
       this.className = ''
@@ -150,8 +203,9 @@ export default {
     },
     // 课程介绍点击修改
     courseModify (index) {
+      this.dataIndex = index
       this.mainDiv = false
-      this.courseDiv = true
+      this.courseDiv2 = true
       this.className = this.introDataList[index].className
       this.tags = this.introDataList[index].tags
       this.description = this.introDataList[index].description
@@ -166,11 +220,26 @@ export default {
       this.classNames = ''
       this.companyName = ''
     },
+    // 课程案例点击修改完成
+    caseCompleteClick2 () {
+      this.mainDiv = true
+      this.serviceDiv2 = false
+      this.introDatasList.splice(this.dataIndex2, 1)
+      let tempData = {classNames: this.classNames, companyName: this.companyName}
+      this.introDatasList.push(tempData)
+      // 清空文本框中的数据
+      this.classNames = ''
+      this.companyName = ''
+    },
+    // 课程案例点击修改
     caseModify (index) {
+      this.dataIndex2 = index
       this.mainDiv = false
-      this.serviceDiv = true
-      this.classNames = this.introDataList[index].classNames
-      this.companyName = this.introDataList[index].companyName
+      this.serviceDiv2 = true
+      this.classNames = this.introDatasList[index].classNames
+      this.companyName = this.introDatasList[index].companyName
+      console.log(this.classNames)
+      console.log(this.companyName)
     },
     // 点击添加课程介绍
     courseClick () {
@@ -200,11 +269,13 @@ export default {
     courseCancelClick () {
       this.mainDiv = true
       this.courseDiv = false
+      this.courseDiv2 = false
     },
     // 取消添加课程案例
     caseCancelClick () {
       this.mainDiv = true
       this.serviceDiv = false
+      this.serviceDiv2 = false
     },
     /**
      * 验证输入框的值
@@ -217,17 +288,11 @@ export default {
       }
       return true
     },
-    /**
-     * 点击保存整体
-     * @return {boolean}
-     */
     keepClick () {
+      this.maskShow = true
       // if (!this.checkInputValue()) { return }
-      console.log(this.introDataList)
-      let myJSON = JSON.stringify(this.introDataList)
-      let myJSONData = JSON.stringify(this.introDatasList)
-      console.log(myJSON)
-      console.log(myJSONData)
+      // let myJSON = JSON.stringify(this.introDataList)
+      // let myJSONData = JSON.stringify(this.introDatasList)
       // let _this = this
       // let formData = new FormData()
       // formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -239,7 +304,7 @@ export default {
       //     _this.maskShow = true
       //   } else {
       //     _this.maskShow = true
-      //     lib.MessageAlert_Error(res.message)
+      //     // lib.MessageAlert_Error(res.message)
       //   }
       // })
     },

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
 
@@ -9,7 +9,25 @@ import UserModel from './store/UserModel'
 import {SET_USER_INFO} from './store/MutationTypes'
 export default {
   name: 'App',
+  provide () {
+    return {
+      reload: this.reload
+    }
+  },
+  data () {
+    return {
+      isRouterAlive: true
+    }
+  },
   components: {},
+  methods: {
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(function () {
+        this.isRouterAlive = true
+      })
+    }
+  },
   beforeCreate () {
     if (this.$SaiLei.cookiesGet('user_info')) {
       this.$store.dispatch(SET_USER_INFO, new UserModel(this.$SaiLei.cookiesGet('user_info')))

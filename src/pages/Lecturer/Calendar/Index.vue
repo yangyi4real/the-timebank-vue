@@ -177,6 +177,7 @@ import TipsTools from '../../../common/TipsTools'
 import moment from 'moment'
 let lib = new TipsTools()
 export default {
+  inject: ['reload'],
   name: 'CalendarIndex',
   components: {
     Tabbar,
@@ -329,7 +330,6 @@ export default {
           myDate.toLocaleDateString()
           let myDateDay = Date.parse(myDate.toLocaleDateString())
           if (myDateDay > calendarTime) { // 今天之前
-            console.log('今天之前')
             if (_this.storageList === null) {
               _this.notChose = false
               _this.ChoseNotAbout = false
@@ -356,7 +356,6 @@ export default {
               _this.choseItem2 = 1
             }
           } else if (myDateDay === calendarTime) { // 今天
-            console.log('今天')
             if (_this.storageList === null) {
               _this.notChoseEd = true
               _this.ChoseNotAbout = false
@@ -384,7 +383,6 @@ export default {
             }
           } else if (myDateDay < calendarTime) { // 今天之后
             if (_this.storageList === null) {
-              console.log('今天之后')
               _this.notChose = true
               _this.notChoseEd = false
               _this.ChoseNotAbout = false
@@ -433,9 +431,14 @@ export default {
       }
     },
     addTime () {
-      let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
-      let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
-      let calendarTime = Date.parse(this.calendarData)
+      let date = new Date(this.calendarTime)
+      let Y = date.getFullYear() + '-'
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      let D = date.getDate() + ' '
+      this.calendarTime = Y + M + D
+      let beginDate = moment(`${this.calendarTime} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let endDate = moment(`${this.calendarTime} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let calendarTime = Date.parse(this.calendarTime)
       let beginDateTime = Date.parse(beginDate)
       let endDateTime = Date.parse(endDate)
       let _this = this
@@ -446,10 +449,11 @@ export default {
       formData.append('end', endDateTime)
       _this.$_HTTPData.getStoreTime(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          lib.MessageAlert_None('储存成功，刷新日历')
+          lib.MessageAlert_Success('储存成功')
           _this.loadDataList()
           _this.loadData()
           _this.loadDataToday()
+          _this.reload()
         } else {
           lib.MessageAlert_None(res.message)
         }
@@ -466,10 +470,11 @@ export default {
         formData.append('date', _this.calendarTime)
         _this.$_HTTPData.getCancelSave(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
-            lib.MessageAlert_None('取消成功，刷新日历')
+            lib.MessageAlert_Success('取消成功')
             _this.loadDataList()
             _this.loadData()
             _this.loadDataToday()
+            _this.reload()
           } else {
             lib.MessageAlert_Error(res.message)
           }
@@ -487,10 +492,11 @@ export default {
       formData.append('date', _this.calendarTime)
       _this.$_HTTPData.getCancelSave(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          lib.MessageAlert_None('取消成功，刷新日历')
+          lib.MessageAlert_Success('取消成功')
           _this.loadDataList()
           _this.loadData()
           _this.loadDataToday()
+          _this.reload()
         } else {
           lib.MessageAlert_Error(res.message)
         }

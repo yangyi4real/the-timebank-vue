@@ -67,7 +67,7 @@
         <div class="basedata-list flex-row-between" style="border: 0">
           <div>电子邮箱</div>
           <div>
-            <input type="text" v-model="EMail" v-on:input="inputValue" placeholder="点击编辑"/>
+            <input type="text" v-model="email" v-on:input="inputValue" placeholder="点击编辑"/>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@ export default {
       changeSex: 0,
       birthDate: '',
       workDate: '',
-      EMail: '',
+      email: '',
       areaValue: [],
       show1: false,
       model1: '',
@@ -115,18 +115,32 @@ export default {
     this.nowTimes()
   },
   computed: {
-    // userInfo () {
-    //   return this.$store.state.user
-    // },
-    // userProfile () {
-    //   if (this.userInfo) {
-    //     return this.userInfo.getProfile()
-    //   } else {
-    //     return ''
-    //   }
-    // }
+  },
+  mounted () {
+    this.nowTimes()
+    this.loadData()
   },
   methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 1)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.imgUrl = res.result.photo
+          _this.name = res.result.name
+          _this.changeSex = res.result.sex
+          _this.email = res.result.email
+          _this.model1 = res.result.livingLocation
+          // _this.workAge = res.result.workAge
+          _this.birthDate = res.result.birthday
+          console.log(res.result)
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     /**
      * 验证输入框的值
      * @return {boolean}
@@ -274,7 +288,7 @@ export default {
       formData.append('birthday', _this.birthDate)
       formData.append('workDate', _this.workDate)
       formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
-      formData.append('email', _this.EMail)
+      formData.append('email', _this.email)
       formData.append('profile', myImg)
       console.log('********imgUrl的数据********')
       console.log(myImg)
@@ -299,9 +313,6 @@ export default {
         this.operation = false
       }
     }
-  },
-  mounted () {
-    this.nowTimes()
   },
   watch: {
     inputValue () {
