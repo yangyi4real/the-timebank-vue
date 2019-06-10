@@ -35,7 +35,7 @@
           </div>
           <div v-for="(item, index) in introDatasList" :key="index + 1" style="border-bottom: 0.01rem solid #E8E8E8;padding-bottom: 0.2rem;">
             <div class="profile-add-course-list flex-row-between">
-              <div>{{item.classNames}}</div>
+              <div>{{item.className}}</div>
               <div>
                 <i class="iconfont iconbianji main-color" @click="caseModify(index)"></i>
                 <i class="iconfont iconshanchu main-color" @click="caseDelClick(index)"></i>
@@ -70,11 +70,31 @@
           <div @click="courseCompleteClick" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
         </div>
       </div>
+      <div class="course" v-show="courseDiv2">
+        <div class="course">
+          <div class="course-list flex-row-between">
+            <div>课程名称</div>
+            <div><input type="text" v-model="className" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-list flex-row-between">
+            <div>课程标签</div>
+            <div><input type="text" v-model="tags" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-text">
+            <div class="course-text-title">课程内容/描述</div>
+            <textarea draggable="false" v-model="description" v-on:input="inputValue" placeholder=""></textarea>
+          </div>
+        </div>
+        <div class="course-btn flex-row-between">
+          <div @click="courseCancelClick" class="btn-small-border">取消</div>
+          <div @click="courseCompleteClick2" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
+        </div>
+      </div>
       <div class="service-case" v-show="serviceDiv">
         <div class="course">
           <div class="course-list flex-row-between">
             <div>课程名称</div>
-            <div><input type="text" v-model="classNames" v-on:input="inputValue"/></div>
+            <div><input type="text" v-model="className" v-on:input="inputValue"/></div>
           </div>
           <div class="course-list flex-row-between" style="border: 0">
             <div>企业名称</div>
@@ -84,6 +104,22 @@
         <div class="course-btn flex-row-between">
           <div @click="caseCancelClick" class="btn-small-border">取消</div>
           <div @click="caseCompleteClick" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
+        </div>
+      </div>
+      <div class="service-case" v-show="serviceDiv2">
+        <div class="course">
+          <div class="course-list flex-row-between">
+            <div>课程名称</div>
+            <div><input type="text" v-model="className" v-on:input="inputValue"/></div>
+          </div>
+          <div class="course-list flex-row-between" style="border: 0">
+            <div>企业名称</div>
+            <div><input type="text" v-model="companyName" v-on:input="inputValue"/></div>
+          </div>
+        </div>
+        <div class="course-btn flex-row-between">
+          <div @click="caseCancelClick" class="btn-small-border">取消</div>
+          <div @click="caseCompleteClick2" :class="{ 'btn-small-opacity': inOperation, 'btn-small': operation}">完成</div>
         </div>
       </div>
     </div>
@@ -108,25 +144,58 @@ export default {
       className: '',
       tags: '',
       description: '',
-      classNames: '',
       companyName: '',
       inOperation: true, // 灰色按钮
       operation: false,
       mainDiv: true,
       courseDiv: false,
+      courseDiv2: false,
       serviceDiv: false,
-      maskShow: false
+      serviceDiv2: false,
+      dataIndex: '',
+      dataIndex2: ''
     }
   },
   created () {},
-  computed: {
+  computed: {},
+  mounted () {
+    this.loadData()
   },
   methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 1)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.introduction = res.result.introduction
+          _this.introDataList = res.result.classIntroEntityList
+          _this.introDatasList = res.result.classExampleEntityList
+          console.log(res.result)
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     // 课程介绍点击完成
     courseCompleteClick () {
       this.mainDiv = true
       this.courseDiv = false
-      let temp = {className: this.className, tags: this.tags, description: this.description}
+      let temp = {className: this.className, tags: this.tags, description: this.description, userId: this.$SaiLei.cookiesGet('user_id')}
+      this.introDataList.push(temp)
+      // 清空文本框中的数据
+      this.className = ''
+      this.tags = ''
+      this.description = ''
+      console.log(this.introDataList)
+    },
+    // 课程介绍点击修改完成
+    courseCompleteClick2 () {
+      this.mainDiv = true
+      this.courseDiv2 = false
+      this.introDataList.splice(this.dataIndex, 1)
+      let temp = {className: this.className, tags: this.tags, description: this.description, userId: this.$SaiLei.cookiesGet('user_id')}
       this.introDataList.push(temp)
       // 清空文本框中的数据
       this.className = ''
@@ -135,8 +204,9 @@ export default {
     },
     // 课程介绍点击修改
     courseModify (index) {
+      this.dataIndex = index
       this.mainDiv = false
-      this.courseDiv = true
+      this.courseDiv2 = true
       this.className = this.introDataList[index].className
       this.tags = this.introDataList[index].tags
       this.description = this.introDataList[index].description
@@ -145,17 +215,33 @@ export default {
     caseCompleteClick () {
       this.mainDiv = true
       this.serviceDiv = false
-      let tempData = {classNames: this.classNames, companyName: this.companyName}
+      let tempData = {className: this.className, companyName: this.companyName, userId: this.$SaiLei.cookiesGet('user_id')}
       this.introDatasList.push(tempData)
       // 清空文本框中的数据
-      this.classNames = ''
+      this.className = ''
+      this.companyName = ''
+      console.log(this.introDatasList)
+    },
+    // 课程案例点击修改完成
+    caseCompleteClick2 () {
+      this.mainDiv = true
+      this.serviceDiv2 = false
+      this.introDatasList.splice(this.dataIndex2, 1)
+      let tempData = {className: this.className, companyName: this.companyName, userId: this.$SaiLei.cookiesGet('user_id')}
+      this.introDatasList.push(tempData)
+      // 清空文本框中的数据
+      this.className = ''
       this.companyName = ''
     },
+    // 课程案例点击修改
     caseModify (index) {
+      this.dataIndex2 = index
       this.mainDiv = false
-      this.serviceDiv = true
-      this.classNames = this.introDataList[index].classNames
-      this.companyName = this.introDataList[index].companyName
+      this.serviceDiv2 = true
+      this.className = this.introDatasList[index].className
+      this.companyName = this.introDatasList[index].companyName
+      console.log(this.className)
+      console.log(this.companyName)
     },
     // 点击添加课程介绍
     courseClick () {
@@ -185,11 +271,13 @@ export default {
     courseCancelClick () {
       this.mainDiv = true
       this.courseDiv = false
+      this.courseDiv2 = false
     },
     // 取消添加课程案例
     caseCancelClick () {
       this.mainDiv = true
       this.serviceDiv = false
+      this.serviceDiv2 = false
     },
     /**
      * 验证输入框的值
@@ -203,24 +291,25 @@ export default {
       return true
     },
     keepClick () {
-      this.maskShow = true
-      // if (!this.checkInputValue()) { return }
-      // let myJSON = JSON.stringify(this.introDataList)
-      // let myJSONData = JSON.stringify(this.introDatasList)
-      // let _this = this
-      // let formData = new FormData()
-      // formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      // formData.append('introduction', _this.introduction)
-      // formData.append('intros', myJSON)
-      // formData.append('examples', myJSONData)
-      // _this.$_HTTPData.getIntroData(_this, formData, function (res) {
-      //   if (res.code === 0 || res.code === '000') {
-      //     _this.maskShow = true
-      //   } else {
-      //     _this.maskShow = true
-      //     // lib.MessageAlert_Error(res.message)
-      //   }
-      // })
+      if (!this.checkInputValue()) { return }
+      let myJSON = JSON.stringify(this.introDataList)
+      // let myJSON = this.introDataList
+      let myJSONData = JSON.stringify(this.introDatasList)
+      // let myJSONData = this.introDatasList
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('introduction', _this.introduction)
+      formData.append('intros', myJSON)
+      formData.append('examples', myJSONData)
+      _this.$_HTTPData.getIntroData(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.$router.push('/personal/personaldata')
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_Error(res.message)
+        }
+      })
     },
     inputValue () {
       if (this.profileMsg !== '' && this.birthDate !== '' && this.workDate !== '' && this.EMail !== '' && this.areaValue !== '') {
@@ -232,7 +321,6 @@ export default {
       }
     }
   },
-  mounted () {},
   watch: {
     inputValue () {
       if (this.name !== '' && this.birthDate !== '' && this.workDate !== '' && this.EMail !== '' && this.areaValue !== '') {

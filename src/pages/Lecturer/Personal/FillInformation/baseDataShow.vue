@@ -133,7 +133,7 @@ export default {
           _this.changeSex = res.result.sex
           _this.email = res.result.email
           _this.model1 = res.result.livingLocation
-          // _this.workAge = res.result.workAge
+          _this.workDate = res.result.workAge
           _this.birthDate = res.result.birthday
           console.log(res.result)
         } else {
@@ -280,26 +280,48 @@ export default {
       let myImg = this.imgUrl
       myImg = myImg.replace('data:image/png;base64,', '')
       myImg = myImg.replace('data:image/jpeg;base64,', '')
-      let _this = this
-      let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('name', _this.name)
-      formData.append('sex', _this.changeSex)
-      formData.append('birthday', _this.birthDate)
-      formData.append('workDate', _this.workDate)
-      formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
-      formData.append('email', _this.email)
-      formData.append('profile', myImg)
-      console.log('********imgUrl的数据********')
-      console.log(myImg)
-      _this.$_HTTPData.getFillInfo(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          lib.MessageAlert_Success('保存成功')
-          _this.$router.push('/personal/personaldata')
-        } else {
-          console.log(res.message)
-        }
-      })
+      console.log(this.areaValue.length)
+      if (this.areaValue.length === 0) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('name', _this.name)
+        formData.append('sex', _this.changeSex)
+        formData.append('birthday', _this.birthDate)
+        formData.append('workDate', _this.workDate)
+        // formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
+        formData.append('email', _this.email)
+        formData.append('profile', myImg)
+        _this.$_HTTPData.getFillInfo(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_Success('保存成功')
+            _this.$router.push('/personal/personaldata')
+          } else {
+            lib.MessageAlert_Error('保存成功')
+            console.log(res.message)
+          }
+        })
+      } else {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('name', _this.name)
+        formData.append('sex', _this.changeSex)
+        formData.append('birthday', _this.birthDate)
+        formData.append('workDate', _this.workDate)
+        formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
+        formData.append('email', _this.email)
+        formData.append('profile', myImg)
+        _this.$_HTTPData.getFillInfo(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_Success('保存成功')
+            _this.$router.push('/personal/personaldata')
+          } else {
+            lib.MessageAlert_Error('保存成功')
+            console.log(res.message)
+          }
+        })
+      }
     },
     // pushClick () {
     //   this.$router.push('/personal/information/intention')

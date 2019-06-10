@@ -174,21 +174,69 @@ export default {
     },
     pushClick () {
       // if (!this.checkInputValue()) { return }
-      let _this = this
-      let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('skillLevel', this.skillLevel.toString())
-      formData.append('expectSalary', _this.price)
-      formData.append('expectLocation', _this.areaValue.toString())
-      _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          lib.MessageAlert_Success(res.message)
-          console.log('1111')
-          _this.$router.push('/personal/personaldata')
-        } else {
-          lib.MessageAlert_Error(res.message)
-        }
-      })
+      console.log(this.skillLevel)
+      console.log(this.areaValue)
+      if (this.skillLevel === null && this.areaValue === null) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        // formData.append('skillLevel', this.skillLevel.toString())
+        formData.append('expectSalary', _this.price)
+        // formData.append('expectLocation', _this.areaValue.toString())
+        _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_Success(res.message)
+            _this.$router.push('/personal/personaldata')
+          } else {
+            lib.MessageAlert_Error(res.message)
+          }
+        })
+      } else if (this.skillLevel === null) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        // formData.append('skillLevel', this.skillLevel.toString())
+        formData.append('expectSalary', _this.price)
+        formData.append('expectLocation', _this.areaValue.toString())
+        _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_Success(res.message)
+            _this.$router.push('/personal/personaldata')
+          } else {
+            lib.MessageAlert_Error(res.message)
+          }
+        })
+      } else if (this.areaValue === null) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('skillLevel', this.skillLevel.toString())
+        formData.append('expectSalary', _this.price)
+        // formData.append('expectLocation', _this.areaValue.toString())
+        _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_Success(res.message)
+            _this.$router.push('/personal/personaldata')
+          } else {
+            lib.MessageAlert_Error(res.message)
+          }
+        })
+      } else if (this.skillLevel !== null && this.areaValue !== null) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('skillLevel', this.skillLevel.toString())
+        formData.append('expectSalary', _this.price)
+        formData.append('expectLocation', _this.areaValue.toString())
+        _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_Success(res.message)
+            _this.$router.push('/personal/personaldata')
+          } else {
+            lib.MessageAlert_Error(res.message)
+          }
+        })
+      }
     }
   },
   watch: {

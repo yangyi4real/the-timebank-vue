@@ -76,7 +76,7 @@
               </div>
               <div>
                 <label>{{listData.name}}<i class="iconfont iconnan main-color" v-if="listData.sex === 1"></i><i class="iconfont iconnv main-color" v-if="listData.sex === 2"></i></label>
-                <p>{{listData.birthday}}岁 | 工作{{listData.workingAge}}年 | {{listData.livingLocation}}</p>
+                <p>{{listData.birthday}}岁 | 工作{{listData.workAge}}年 | {{listData.livingLocation}}</p>
               </div>
             </div>
             <div class="fr">
@@ -108,29 +108,29 @@
             {{listData.introduction}}
           </div>
         </div>
-        <!--<div class="pro-data-class padding-20 pro-data-border">-->
-          <!--<div class="flex-row-between pro-data-title">-->
-            <!--<div>课程介绍</div>-->
-            <!--<div class="main-color">添加</div>-->
-          <!--</div>-->
-          <!--<div class="flex-row-between padding-15-top">-->
-            <!--<div>课程名称</div>-->
-            <!--<div><i class="iconfont iconbianji main-color"></i></div>-->
-          <!--</div>-->
-          <!--<div class="padding-15-top">课程标签</div>-->
-          <!--<div class="padding-15-top">课程内容/描述</div>-->
-        <!--</div>-->
-        <!--<div class="pro-data-service padding-20 pro-data-border">-->
-          <!--<div class="flex-row-between pro-data-title">-->
-            <!--<div>服务案例</div>-->
-            <!--<div class="main-color">添加</div>-->
-          <!--</div>-->
-          <!--<div class="flex-row-between">-->
-            <!--<div>课程名称</div>-->
-            <!--<div><i class="iconfont iconbianji main-color"></i></div>-->
-          <!--</div>-->
-          <!--<div class="padding-15-top">企业名称</div>-->
-        <!--</div>-->
+        <div class="pro-data-class padding-20 pro-data-border">
+          <div class="pro-data-title">
+            <div>课程介绍</div>
+          </div>
+          <div v-for="(item, index) of listData.classIntroEntityList" :key="index" class="class-list">
+            <div class="padding-15-top">
+              <div>{{item.className}}</div>
+            </div>
+            <div class="padding-15-top">{{item.tags}}</div>
+            <div class="padding-15-top">{{item.description}}</div>
+          </div>
+        </div>
+        <div class="pro-data-service padding-20 pro-data-border">
+          <div class="pro-data-title">
+            <div>服务案例</div>
+          </div>
+          <div v-for="(item, index) of listData.classExampleEntityList" :key="index" class="class-list">
+            <div class="flex-row-between">
+              <div>{{item.className}}</div>
+            </div>
+            <div class="padding-15-top">{{item.companyName}}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -182,6 +182,9 @@ export default {
           let d = new Date()
           let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
           _this.listData.birthday = age
+          let secondDate = new Date(_this.listData.workAge.replace(/-/g, '/'))
+          let workYears = d.getFullYear() - secondDate.getFullYear()
+          _this.listData.workAge = workYears
         } else {
           lib.MessageAlert_None(res.message)
         }
@@ -223,4 +226,5 @@ export default {
   .pro-data-introduce-cont div i{padding-right: 0.15rem;}
   pro-data-introduce-cont{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
   .pro-data-introduce-cont img{margin: 0.15rem 0;}
+  .class-list{padding-bottom: 0.2rem}
 </style>

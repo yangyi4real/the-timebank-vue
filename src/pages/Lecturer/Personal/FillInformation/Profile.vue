@@ -35,7 +35,7 @@
           </div>
           <div v-for="(item, index) in introDatasList" :key="index + 1" style="border-bottom: 0.01rem solid #E8E8E8;padding-bottom: 0.2rem;">
             <div class="profile-add-course-list flex-row-between">
-              <div>{{item.classNames}}</div>
+              <div>{{item.className}}</div>
               <div>
                 <i class="iconfont iconbianji main-color" @click="caseModify(index)"></i>
                 <i class="iconfont iconshanchu main-color" @click="caseDelClick(index)"></i>
@@ -94,7 +94,7 @@
         <div class="course">
           <div class="course-list flex-row-between">
             <div>课程名称</div>
-            <div><input type="text" v-model="classNames" v-on:input="inputValue"/></div>
+            <div><input type="text" v-model="className" v-on:input="inputValue"/></div>
           </div>
           <div class="course-list flex-row-between" style="border: 0">
             <div>企业名称</div>
@@ -110,7 +110,7 @@
         <div class="course">
           <div class="course-list flex-row-between">
             <div>课程名称</div>
-            <div><input type="text" v-model="classNames" v-on:input="inputValue"/></div>
+            <div><input type="text" v-model="className" v-on:input="inputValue"/></div>
           </div>
           <div class="course-list flex-row-between" style="border: 0">
             <div>企业名称</div>
@@ -159,7 +159,6 @@ export default {
       className: '',
       tags: '',
       description: '',
-      classNames: '',
       companyName: '',
       inOperation: true, // 灰色按钮
       operation: false,
@@ -181,7 +180,7 @@ export default {
     courseCompleteClick () {
       this.mainDiv = true
       this.courseDiv = false
-      let temp = {className: this.className, tags: this.tags, description: this.description}
+      let temp = {className: this.className, tags: this.tags, description: this.description, userId: this.$SaiLei.cookiesGet('user_id')}
       this.introDataList.push(temp)
       // 清空文本框中的数据
       this.className = ''
@@ -194,7 +193,7 @@ export default {
       this.mainDiv = true
       this.courseDiv2 = false
       this.introDataList.splice(this.dataIndex, 1)
-      let temp = {className: this.className, tags: this.tags, description: this.description}
+      let temp = {className: this.className, tags: this.tags, description: this.description, userId: this.$SaiLei.cookiesGet('user_id')}
       this.introDataList.push(temp)
       // 清空文本框中的数据
       this.className = ''
@@ -214,21 +213,22 @@ export default {
     caseCompleteClick () {
       this.mainDiv = true
       this.serviceDiv = false
-      let tempData = {classNames: this.classNames, companyName: this.companyName}
+      let tempData = {className: this.className, companyName: this.companyName, userId: this.$SaiLei.cookiesGet('user_id')}
       this.introDatasList.push(tempData)
       // 清空文本框中的数据
-      this.classNames = ''
+      this.className = ''
       this.companyName = ''
+      console.log(this.introDatasList)
     },
     // 课程案例点击修改完成
     caseCompleteClick2 () {
       this.mainDiv = true
       this.serviceDiv2 = false
       this.introDatasList.splice(this.dataIndex2, 1)
-      let tempData = {classNames: this.classNames, companyName: this.companyName}
+      let tempData = {className: this.className, companyName: this.companyName, userId: this.$SaiLei.cookiesGet('user_id')}
       this.introDatasList.push(tempData)
       // 清空文本框中的数据
-      this.classNames = ''
+      this.className = ''
       this.companyName = ''
     },
     // 课程案例点击修改
@@ -236,9 +236,9 @@ export default {
       this.dataIndex2 = index
       this.mainDiv = false
       this.serviceDiv2 = true
-      this.classNames = this.introDatasList[index].classNames
+      this.className = this.introDatasList[index].className
       this.companyName = this.introDatasList[index].companyName
-      console.log(this.classNames)
+      console.log(this.className)
       console.log(this.companyName)
     },
     // 点击添加课程介绍
@@ -289,24 +289,34 @@ export default {
       return true
     },
     keepClick () {
-      this.maskShow = true
-      // if (!this.checkInputValue()) { return }
-      // let myJSON = JSON.stringify(this.introDataList)
-      // let myJSONData = JSON.stringify(this.introDatasList)
-      // let _this = this
-      // let formData = new FormData()
-      // formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      // formData.append('introduction', _this.introduction)
-      // formData.append('intros', myJSON)
-      // formData.append('examples', myJSONData)
-      // _this.$_HTTPData.getIntroData(_this, formData, function (res) {
-      //   if (res.code === 0 || res.code === '000') {
-      //     _this.maskShow = true
-      //   } else {
-      //     _this.maskShow = true
-      //     // lib.MessageAlert_Error(res.message)
-      //   }
+      // this.maskShow = true
+      if (!this.checkInputValue()) { return }
+      let myJSON = JSON.stringify(this.introDataList)
+      // let myJSON = this.introDataList
+      let myJSONData = JSON.stringify(this.introDatasList)
+      // let myJSONData = this.introDatasList
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('introduction', _this.introduction)
+      formData.append('intros', myJSON)
+      formData.append('examples', myJSONData)
+      // let formData = {}
+      // formData.userId = _this.$SaiLei.cookiesGet('user_id')
+      // formData.introduction = _this.introduction
+      // formData.intros = myJSON
+      // formData.examples = myJSONData
+      // this.$_HTTPData.POST(this, `${this.$_HTTPData.host}${this.$_HTTPData.url.introData}`, formData, function (res) {
+      //   console.log(res)
       // })
+      _this.$_HTTPData.getIntroData(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.maskShow = true
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_Error(res.message)
+        }
+      })
     },
     inputValue () {
       if (this.profileMsg !== '' && this.birthDate !== '' && this.workDate !== '' && this.EMail !== '' && this.areaValue !== '') {

@@ -10,7 +10,8 @@
     </div>
     <div class="wapper">
       <div class="course-list-none" v-show="Tips">
-        <p><span class="main-color" @click="addTime">存储时间</span> 后，企业才能跟你对讲哦</p>
+        <!--<p><span class="main-color" @click="addTime">存储时间</span> 后，企业才能跟你对讲哦</p>-->
+        <p>暂无约讲记录</p>
       </div>
       <div v-show="listItem">
         <div class="order-center-list" v-for="(item,index) in listRecord" :key="index">
