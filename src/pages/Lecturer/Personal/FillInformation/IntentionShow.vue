@@ -146,7 +146,19 @@ export default {
     treeselectBtn2 () {
       this.sub2 = false
       this.showList = true
-      this.expectLocation = this.areaValue.toString()
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      // formData.append('skillLevel', this.skillLevel.toString())
+      formData.append('expectSalary', _this.price)
+      formData.append('expectLocation', _this.areaValue.toString())
+      _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.loadData()
+        } else {
+          lib.MessageAlert_Error(res.message)
+        }
+      })
     },
     showSub1 () {
       this.showList = false
@@ -173,7 +185,7 @@ export default {
       })
     },
     pushClick () {
-      // if (!this.checkInputValue()) { return }
+      if (!this.checkInputValue()) { return }
       console.log(this.skillLevel)
       console.log(this.areaValue)
       if (this.skillLevel === null && this.areaValue === null) {
