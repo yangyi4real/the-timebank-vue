@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.123:8081'
+      this.host = 'http://192.168.1.125:8081'
       // this.host = 'http://114.116.33.168:8081'
     }
     this.TipsTools = new TipsTools()
@@ -201,15 +201,6 @@ class HTTPData {
         _this.clearUserInfo()
         obj.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
       }, 0)
-      return false
-    }
-    /**
-     * 汇付用户不存在
-     */
-    if (res.code === 49 || res.code === '049') {
-      if (!obj['isButtonAlert']) {
-        this.TipsTools.MessageAlert_Error('请先开通支付账户')
-      }
       return false
     }
     /**

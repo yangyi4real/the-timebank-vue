@@ -23,7 +23,7 @@ import Authentication from '../pages/Lecturer/Personal/FillInformation/Authentic
 import AuthenticationCenter from '../pages/Lecturer/Personal/FillInformation/AuthenticationCenter' // 讲师认证
 import Payment from '../pages/Lecturer/Personal/Payment' // 支付
 import WalletIndex from '../pages/Lecturer/Personal/Wallet/Index' // 钱包
-import SDGIndex from '../pages/Lecturer/Personal/Wallet/SDGIndex' // 钱包
+import SDGIndex from '../pages/Lecturer/Personal/Wallet/SDGIndex' // sdg钱包
 import Detailed from '../pages/Lecturer/Personal/Wallet/Detailed' // 明细
 import DetailedPage from '../pages/Lecturer/Personal/Wallet/DetailedPage' // 明细详情页
 import Recharge from '../pages/Lecturer/Personal/Wallet/Recharge' // 充值
@@ -56,6 +56,7 @@ import ServiceDetails from '../pages/Enterprise/Reserve/ServiceDetails' // 服�
 import Purchase from '../pages/Enterprise/Reserve/Purchase' // 购买
 import UserIndex from '../pages/Enterprise/User/Index' // 企业端-我的
 import EnterpriseInfo from '../pages/Enterprise/User/EnterpriseInfo' // 企业信息
+import EnterpriseInfoShow from '../pages/Enterprise/User/EnterpriseInfoShow' // 企业信息-显示
 import PersonalCenter from '../pages/Enterprise/User/PersonalCenter' // 个人中心
 import OrderCenter from '../pages/Enterprise/User/OrderCenter' // 订单中心
 import AllOrder from '../pages/Enterprise/User/AllOrder' // 全部订单
@@ -384,6 +385,12 @@ export default new Router({
       path: '/user/enterpriseInfo',
       name: 'EnterpriseInfo',
       component: EnterpriseInfo
+    },
+    // 企业信息-显示
+    {
+      path: '/user/enterpriseInfo-show',
+      name: 'EnterpriseInfoShow',
+      component: EnterpriseInfoShow
     },
     // 个人中心
     {

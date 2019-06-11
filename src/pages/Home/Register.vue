@@ -19,6 +19,7 @@
           </span>
         </div>
       </div>
+      <div class="login-denglu">已有密码，<span class="main-color" @click="getLogin">立即登录</span></div>
       <p class="agreement">新用户默认同意<span @click="loginAgreementClicked">《协议》</span>并注册</p>
       <div class="login-btn">
         <div @click="loginBtnClicked" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">注册</div>
@@ -29,7 +30,7 @@
 
 <script>
 import Navbar from '../../views/navbar/navbar'
-// import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
+import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
 import TipsTools from '../../common/TipsTools'
 let lib = new TipsTools()
 
@@ -81,6 +82,7 @@ export default {
         this.operation = false
       }
     },
+    getLogin () {},
     /**
      * 验证输入框的值
      * @return {boolean}
@@ -172,6 +174,7 @@ export default {
         if (_this.getUserType === 1 || _this.getUserType === '1') {
           if (res.code === 0 || res.code === '000') {
             lib.MessageAlert_Success(res.message)
+            _this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
             _this.$router.push(`/paypassword/${res.result.id}`)
           } else {
             _this.TipsTools.MessageAlert_Error(res.message)
@@ -179,6 +182,7 @@ export default {
         } else if (_this.getUserType === 2 || _this.getUserType === '2') {
           if (res.code === 0 || res.code === '000') {
             lib.MessageAlert_Success(res.message)
+            _this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
             _this.$router.push('/customized/index')
           } else {
             _this.TipsTools.MessageAlert_Error(res.message)
@@ -214,4 +218,5 @@ export default {
   .agreement span{color:rgba(249,91,64,1);}
   .login-btn{padding-top: 1.77rem;padding-bottom: 1.5rem;}
   .disable {color: #A7A7A7!important;}
+  .login-denglu{padding-right: 0.2rem;text-align: right;padding-top: 0.1rem;font-size: 0.14rem;}
 </style>

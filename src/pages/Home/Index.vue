@@ -21,7 +21,7 @@
             <div class="btn-border-black" @click="qyRegisterClick">注册</div>
           </div>
           <div style="height: 0.3rem;"></div>
-          <div class="btn-border-black">微信用户一键登录</div>
+          <!--<div class="btn-border-black">微信用户一键登录</div>-->
         </div>
       </div>
     </div>

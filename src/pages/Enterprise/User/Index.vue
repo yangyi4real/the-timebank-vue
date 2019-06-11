@@ -8,7 +8,7 @@
         <div class="head flex-row-start">
           <div class="head-img">
             <!--<img :src="userIconUrl" @click="userIconDidClicked" class="User-icon">-->
-            <img :src="src" alt="" @click="personalCenterClicked"/>
+            <img :src="src" alt=""/>
           </div>
           <div>
             <p class="head-text" @click="addInfo">{{listData.name}} <span v-if="this.listData.name === null || this.listData.name === ''" class="main-color wanshan">点我完善信息</span></p>
@@ -72,7 +72,7 @@
           <img src="../../../assets/icon/shoucang.png"/>
           <p>收藏夹</p>
         </div>
-        <div @click="linkSetUp">
+        <div>
           <img src="../../../assets/icon/liulan.png"/>
           <p>浏览记录</p>
         </div>
@@ -86,7 +86,7 @@
           <img src="../../../assets/icon/bangzhu.png"/>
           <p>帮助中心</p>
         </div>
-        <div @click="linkSetUp">
+        <div>
           <img src="../../../assets/icon/yonghu.png"/>
           <p>服务协议</p>
         </div>
@@ -96,9 +96,9 @@
           <img src="../../../assets/icon/yijian.png"/>
           <p>意见反馈</p>
         </div>
-        <div style="visibility:hidden">
-          <img src=""/>
-          <p>联系客服</p>
+        <div @click="personalCenterClicked">
+          <img src="../../../assets/icon/shezhi.png"/>
+          <p>设置</p>
         </div>
         <div style="visibility:hidden">
           <img src=""/>
@@ -175,7 +175,7 @@ export default {
     },
     // 钱包
     walletClick () {
-      this.$router.push('/personal/wallet/index')
+      this.$router.push(`/personal/wallet/index/${this.listData.balance}`)
     },
     // 订单中心
     orderCenterClick () {
@@ -188,10 +188,6 @@ export default {
     // 设置
     linkSetUp () {
       this.$router.push('/personal/setup/index')
-    },
-    // 完善资料
-    baseDataClick () {
-      this.$router.push('/personal/information/basedata')
     }
   }
 }

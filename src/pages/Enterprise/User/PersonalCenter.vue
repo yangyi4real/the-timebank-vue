@@ -3,7 +3,7 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="setUp-main">
-        <div class="setUp-list flex-row-between" @click="$router.push('/user/enterpriseInfo')">
+        <div class="setUp-list flex-row-between" @click="$router.push('/user/enterpriseInfo-show')">
           <div>企业信息</div>
           <div>
             <span></span><i class="iconfont iconjiantou"></i>

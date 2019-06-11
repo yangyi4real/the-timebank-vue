@@ -10,6 +10,7 @@
           <input type="password" v-model="password" placeholder="请输入密码" v-on:input="inputValue"/>
         </div>
       </div>
+      <div class="forgetPassword">忘记密码</div>
       <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
       <div class="login-btn">
         <div @click="loginBtnClicked" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">登录</div>
@@ -20,7 +21,7 @@
 
 <script>
 import Navbar from '../../views/navbar/navbar'
-// import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
+import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
 import TipsTools from '../../common/TipsTools'
 let lib = new TipsTools()
 
@@ -86,6 +87,7 @@ export default {
         if (_this.getUserType === 1 || _this.getUserType === '1') {
           if (res.code === 0 || res.code === '000') {
             lib.MessageAlert_Success(res.message)
+            _this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
             _this.$router.push('/calendar/index')
           } else {
             lib.MessageAlert_Error(res.message)
@@ -93,6 +95,7 @@ export default {
         } else if (_this.getUserType === 2 || _this.getUserType === '2') {
           if (res.code === 0 || res.code === '000') {
             lib.MessageAlert_None(res.message)
+            _this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
             _this.$router.push('/customized/index')
           } else {
             _this.TipsTools.MessageAlert_Error(res.message)
@@ -130,4 +133,5 @@ export default {
   .agreement span{color:rgba(249,91,64,1);}
   .login-btn{padding-top: 1.77rem;padding-bottom: 1.5rem;}
   .disable {color: #A7A7A7!important;}
+  .forgetPassword{padding-top: 0.1rem;color: rgba(249,91,64,1);text-align: right;padding-right: 0.2rem;font-size: 0.14rem;}
 </style>
