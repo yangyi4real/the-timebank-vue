@@ -2,46 +2,44 @@
     <div class="body">
       <navbar :title="titleMsg"></navbar>
       <div class="wapper">
-        <div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>
+        <!--<div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>-->
         <div class="order-center-tab flex-row-around">
           <div v-for="(item,index) in tabItems" :key="index" class="s-tab" :class="{ active: changeTab === index}" @click="tabsClicked(index)">
             {{ item.name }}
           </div>
         </div>
-        <div>
-          <div class="order-center-list" v-for="(item,index) in listData" :key="index" >
-            <div class="order-center-list-msg">
-              <div class="flex-row-between">
-                <div class="order-center-list-msg-div flex-row-start">
-                  <div class="msg-left"><img :src="item.userEntity.photo" @click="OrderDetailClick(item)"/></div>
-                  <div class="msg-right">
-                    <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
-                    <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
-                    <p>{{item.userEntity.skillLevel}}</p>
-                  </div>
+        <div class="order-center-list" v-for="(item,index) in listData" :key="index" >
+          <div class="order-center-list-msg">
+            <div class="flex-row-between">
+              <div class="order-center-list-msg-div flex-row-start">
+                <div class="msg-left"><img :src="item.userEntity.photo" @click="OrderDetailClick(item)"/></div>
+                <div class="msg-right">
+                  <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
+                  <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
+                  <p>{{item.userEntity.skillLevel}}</p>
                 </div>
-                <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
-                <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
-                <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
-                <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
-                <div class="tip" v-if="item.orderEntity.orderStatus === 5">待已退款</div>
               </div>
-              <div class="msg-time">
-                <div>约讲内容：{{item.userEntity.skillLevel}}</div>
-                <div class="flex-row-start">
-                  <div>约讲时间：</div>
-                  <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
-                </div>
+              <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
+              <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
+              <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
+              <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
+              <div class="tip" v-if="item.orderEntity.orderStatus === 5">待已退款</div>
+            </div>
+            <div class="msg-time">
+              <div>约讲内容：{{item.userEntity.skillLevel}}</div>
+              <div class="flex-row-start">
+                <div>约讲时间：</div>
+                <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
               </div>
             </div>
-            <div class="order-center-list-opt">
-              <p class="text-right">合计：{{item.orderEntity.price}}</p>
-              <div class="opt-btn flex-row-end">
-                <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
-                <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
-                <div>取消订单</div>
-                <div>联系客服</div>
-              </div>
+          </div>
+          <div class="order-center-list-opt">
+            <p class="text-right">合计：{{item.orderEntity.price}}</p>
+            <div class="opt-btn flex-row-end">
+              <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
+              <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
+              <div @click="cancelOrder(item)">取消订单</div>
+              <div>联系客服</div>
             </div>
           </div>
         </div>
@@ -52,16 +50,19 @@
 <script>
 import Navbar from '../../../views/navbar/navbar'
 import TipsTools from '../../../common/TipsTools'
+import AllOrderPayment from './AllOrderPayment'
 let lib = new TipsTools()
 export default {
   name: 'OrderCenter',
   components: {
+    AllOrderPayment,
     Navbar
   },
   data () {
     return {
       titleMsg: '订单中心',
       tabItems: [
+        {name: '全部'},
         {name: '待付款'},
         {name: '待确认'},
         {name: '待开课'},
@@ -72,16 +73,22 @@ export default {
       listData: null
     }
   },
-  computed: {},
+  computed: {
+    getStatusId () {
+      return this.$route.params.id
+    }
+  },
   mounted () {
     this.loadData()
   },
   methods: {
     loadData () {
+      this.changeTab = this.getStatusId
+      console.log(this.changeTab)
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', _this.changeTab + 1)
+      formData.append('status', _this.changeTab)
       formData.append('type', 2)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
@@ -92,8 +99,10 @@ export default {
             let d = new Date()
             let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
             _this.listData[i].userEntity.birthday = age
+            let secondDate = new Date(_this.listData[i].workingAge.replace(/-/g, '/'))
+            let workYears = d.getFullYear() - secondDate.getFullYear()
+            _this.listData[i].workingAge = workYears
           }
-          console.log(_this.listData)
         } else {
           lib.MessageAlert_None(res.message)
         }
@@ -101,26 +110,151 @@ export default {
     },
     tabsClicked (index) {
       this.changeTab = index
-      let _this = this
-      let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', _this.changeTab + 1)
-      formData.append('type', 2)
-      console.log(_this.changeTab + 1)
-      _this.$_HTTPData.getOrderList(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.listData = res.result
-          for (let i = 0; i < _this.listData.length; i++) {
-            let newBirthday = _this.listData[i].userEntity.birthday
-            let birthday = new Date(newBirthday.replace(/-/g, '/'))
-            let d = new Date()
-            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
-            _this.listData[i].userEntity.birthday = age
+      if (this.getStatusId === 0 || this.changeTab === 0) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 0)
+        formData.append('type', 2)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            console.log('status0')
+            _this.listData = res.result
+            for (let i = 0; i < _this.listData.length; i++) {
+              let newBirthday = _this.listData[i].userEntity.birthday
+              let birthday = new Date(newBirthday.replace(/-/g, '/'))
+              let d = new Date()
+              let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
+              _this.listData[i].userEntity.birthday = age
+              let secondDate = new Date(_this.listData[i].workingAge.replace(/-/g, '/'))
+              let workYears = d.getFullYear() - secondDate.getFullYear()
+              _this.listData[i].workingAge = workYears
+            }
+          } else {
+            lib.MessageAlert_None(res.message)
           }
-        } else {
-          lib.MessageAlert_None(res.message)
-        }
-      })
+        })
+      } else if (this.getStatusId === 1 || this.changeTab === 1) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 1)
+        formData.append('type', 2)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            console.log('status1')
+            _this.listData = res.result
+            for (let i = 0; i < _this.listData.length; i++) {
+              let newBirthday = _this.listData[i].userEntity.birthday
+              let birthday = new Date(newBirthday.replace(/-/g, '/'))
+              let d = new Date()
+              let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
+              _this.listData[i].userEntity.birthday = age
+              let secondDate = new Date(_this.listData[i].workingAge.replace(/-/g, '/'))
+              let workYears = d.getFullYear() - secondDate.getFullYear()
+              _this.listData[i].workingAge = workYears
+            }
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      } else if (this.getStatusId === 2 || this.changeTab === 2) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 2)
+        formData.append('type', 2)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            console.log('status2')
+            _this.listData = res.result
+            for (let i = 0; i < _this.listData.length; i++) {
+              let newBirthday = _this.listData[i].userEntity.birthday
+              let birthday = new Date(newBirthday.replace(/-/g, '/'))
+              let d = new Date()
+              let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
+              _this.listData[i].userEntity.birthday = age
+              let secondDate = new Date(_this.listData[i].workingAge.replace(/-/g, '/'))
+              let workYears = d.getFullYear() - secondDate.getFullYear()
+              _this.listData[i].workingAge = workYears
+            }
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      } else if (this.getStatusId === 3 || this.changeTab === 3) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 3)
+        formData.append('type', 2)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            console.log('status3')
+            _this.listData = res.result
+            for (let i = 0; i < _this.listData.length; i++) {
+              let newBirthday = _this.listData[i].userEntity.birthday
+              let birthday = new Date(newBirthday.replace(/-/g, '/'))
+              let d = new Date()
+              let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
+              _this.listData[i].userEntity.birthday = age
+              let secondDate = new Date(_this.listData[i].workingAge.replace(/-/g, '/'))
+              let workYears = d.getFullYear() - secondDate.getFullYear()
+              _this.listData[i].workingAge = workYears
+            }
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      } else if (this.getStatusId === 4 || this.changeTab === 4) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 4)
+        formData.append('type', 2)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            console.log('status4')
+            _this.listData = res.result
+            for (let i = 0; i < _this.listData.length; i++) {
+              let newBirthday = _this.listData[i].userEntity.birthday
+              let birthday = new Date(newBirthday.replace(/-/g, '/'))
+              let d = new Date()
+              let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
+              _this.listData[i].userEntity.birthday = age
+              let secondDate = new Date(_this.listData[i].workingAge.replace(/-/g, '/'))
+              let workYears = d.getFullYear() - secondDate.getFullYear()
+              _this.listData[i].workingAge = workYears
+            }
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      } else if (this.getStatusId === 5 || this.changeTab === 5) {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 5)
+        formData.append('type', 2)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            console.log('status5')
+            _this.listData = res.result
+            for (let i = 0; i < _this.listData.length; i++) {
+              let newBirthday = _this.listData[i].userEntity.birthday
+              let birthday = new Date(newBirthday.replace(/-/g, '/'))
+              let d = new Date()
+              let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
+              _this.listData[i].userEntity.birthday = age
+              let secondDate = new Date(_this.listData[i].workingAge.replace(/-/g, '/'))
+              let workYears = d.getFullYear() - secondDate.getFullYear()
+              _this.listData[i].workingAge = workYears
+            }
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      }
     },
     paymentClicked (item) {
       let _this = this
@@ -137,15 +271,29 @@ export default {
         }
       })
     },
+    cancelOrder (item) {
+      let _this = this
+      let formData = new FormData()
+      formData.append('type', 2)
+      formData.append('orderId', item.orderEntity.id)
+      _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.loadData()
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
     evaluateClicked (item) {
       this.$router.push(`/user/evaluate/${item.orderEntity.id}`)
     },
     OrderDetailClick (item) {
       this.$router.push(`/user/OrderDetails/${item.orderEntity.id}`)
-    },
-    allOrderClick () {
-      this.$router.push('/user/allorder')
     }
+    // allOrderClick () {
+    //   this.$router.push('/user/allorder')
+    // }
   }
 }
 </script>

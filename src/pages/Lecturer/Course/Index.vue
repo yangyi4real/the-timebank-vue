@@ -40,7 +40,7 @@
               <div @click="evaluateClick(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
               <div @click="acceptType(item)" v-if="item.orderEntity.orderStatus === 2">接受</div>
               <div @click="refuseType(item)" v-if="item.orderEntity.orderStatus === 2">拒绝</div>
-              <div v-if="item.orderEntity.orderStatus === 3">取消行程</div>
+              <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 3">取消行程</div>
               <div>联系客服</div>
             </div>
           </div>
@@ -200,12 +200,27 @@ export default {
         }
       })
     },
-    // 取消
-    refuseType () {
+    // 拒绝
+    refuseType (item) {
       let _this = this
       let formData = new FormData()
       formData.append('type', 2)
-      formData.append('orderId', this.getOrderId)
+      formData.append('orderId', item.orderEntity.id)
+      _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.loadData()
+          lib.MessageAlert_Success(res.message)
+        } else {
+          lib.MessageAlert_None(res.message)
+        }
+      })
+    },
+    // 取消行程
+    cancelOrder (item) {
+      let _this = this
+      let formData = new FormData()
+      formData.append('type', 1)
+      formData.append('orderId', item.orderEntity.id)
       _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.loadData()

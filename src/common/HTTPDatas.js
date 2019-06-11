@@ -76,7 +76,9 @@ class HTTPData {
       // 切换登录身份
       switchLogin: '/time-bank/user/switch_login',
       // 取消储存
-      cancelSave: '/time-bank/user/cancel_save'
+      cancelSave: '/time-bank/user/cancel_save',
+      // 取消行程
+      cancelOrder: '/time-bank/user/cancel_order'
     }
     // 请求拦截
     // 响应拦截
@@ -574,6 +576,19 @@ class HTTPData {
     let _this = this
     // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.cancelSave}`, data, function (res) {
+      callback(res)
+    })
+  }
+  /**
+   * 取消行程
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getCancelOrder (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.cancelOrder}`, data, function (res) {
       callback(res)
     })
   }

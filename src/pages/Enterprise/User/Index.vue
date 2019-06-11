@@ -40,23 +40,23 @@
         <div class="modular3-title-right" @click="orderCenterClick">查看全部订单</div>
       </div>
       <div class="modular3-sort flex-row-between">
-        <div>
+        <div @click="statusClicked1">
           <i class="iconfont icondaifukuan"></i>
           <p>待付款</p>
         </div>
-        <div>
+        <div @click="statusClicked2">
           <i class="iconfont iconqueren1"></i>
           <p>待付款</p>
         </div>
-        <div>
+        <div @click="statusClicked3">
           <i class="iconfont iconkaishijixi"></i>
           <p>待开课</p>
         </div>
-        <div>
+        <div @click="statusClicked4">
           <i class="iconfont iconpingjia"></i>
           <p>待评价</p>
         </div>
-        <div>
+        <div @click="statusClicked5">
           <i class="iconfont icontubiaolunkuo-"></i>
           <p>退款/售后</p>
         </div>
@@ -142,6 +142,21 @@ export default {
     this.loadData()
   },
   methods: {
+    statusClicked1 () {
+      this.$router.push('/user/ordercenter/1')
+    },
+    statusClicked2 () {
+      this.$router.push('/user/ordercenter/2')
+    },
+    statusClicked3 () {
+      this.$router.push('/user/ordercenter/3')
+    },
+    statusClicked4 () {
+      this.$router.push('/user/ordercenter/4')
+    },
+    statusClicked5 () {
+      this.$router.push('/user/ordercenter/5')
+    },
     personalCenterClicked () {
       this.$router.push('/user/personalcenter')
     },
@@ -179,7 +194,7 @@ export default {
     },
     // 订单中心
     orderCenterClick () {
-      this.$router.push('/user/ordercenter')
+      this.$router.push('/user/ordercenter/0')
     },
     // 邀请好友
     linkInvitation () {

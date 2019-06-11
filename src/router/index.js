@@ -39,7 +39,7 @@ import SLA from '../pages/Lecturer/Personal/SetUp/SLA' // 服务协议
 import Feedback from '../pages/Lecturer/Personal/SetUp/Feedback' // 意见反馈
 import Msg from '../pages/Lecturer/Personal/Msg' // 消息
 
-import Home from '../pages/Home/Index.vue' // 进入页
+// import Home from '../pages/Home/Index.vue' // 进入页
 import Login from '../pages/Home/Login' // 登录
 import Register from '../pages/Home/Register' // 注册
 import PayPassword from '../pages/Home/PayPassword' // 支付密码
@@ -60,6 +60,7 @@ import EnterpriseInfoShow from '../pages/Enterprise/User/EnterpriseInfoShow' // 
 import PersonalCenter from '../pages/Enterprise/User/PersonalCenter' // 个人中心
 import OrderCenter from '../pages/Enterprise/User/OrderCenter' // 订单中心
 import AllOrder from '../pages/Enterprise/User/AllOrder' // 全部订单
+import AllOrderPayment from '../pages/Enterprise/User/AllOrderPayment' // 待付款
 import OrderDetails from '../pages/Enterprise/User/OrderDetails' // 订单详情
 import Evaluate from '../pages/Enterprise/User/Evaluate' // 评价讲师
 import CoMsg from '../pages/Enterprise/User/Msg' // 企业端-消息
@@ -71,8 +72,8 @@ export default new Router({
     // 首页
     {
       path: '/',
-      name: 'Home',
-      component: Home
+      name: 'Login',
+      component: Login
     },
     // 头部导航
     {
@@ -92,15 +93,15 @@ export default new Router({
       name: 'TabbarEnt',
       component: TabbarEnt
     },
-    // 登录
-    {
-      path: '/login/:userType',
-      name: 'Login',
-      component: Login
-    },
+    // // 登录
+    // {
+    //   path: '/login',
+    //   name: 'Login',
+    //   component: Login
+    // },
     // 注册
     {
-      path: '/register/:userType',
+      path: '/register',
       name: 'Register',
       component: Register
     },
@@ -400,7 +401,7 @@ export default new Router({
     },
     // 订单中心
     {
-      path: '/user/ordercenter',
+      path: '/user/ordercenter/:id',
       name: 'OrderCenter',
       component: OrderCenter
     },
@@ -409,6 +410,12 @@ export default new Router({
       path: '/user/allorder',
       name: 'AllOrder',
       component: AllOrder
+    },
+    // 待付款
+    {
+      path: '/user/allorder-payment',
+      name: 'AllOrderPayment',
+      component: AllOrderPayment
     },
     // 订单详情
     {

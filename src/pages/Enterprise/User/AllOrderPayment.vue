@@ -1,40 +1,37 @@
 <template>
-  <div class="body">
-    <navbar :title="titleMsg"></navbar>
-    <div class="wapper">
-      <div class="order-center-list" v-for="(item,index) in listData" :key="index" >
-        <div class="order-center-list-msg" @click="OrderDetailsClick(item)">
-          <div class="flex-row-between">
-            <div class="order-center-list-msg-div flex-row-start">
-              <div class="msg-left"><img :src="item.userEntity.photo"/></div>
-              <div class="msg-right">
-                <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
-                <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
-                <p>专注研究产品设计</p>
-              </div>
+  <div>
+    <div class="order-center-list" v-for="(item,index) in listData" :key="index" >
+      <div class="order-center-list-msg" @click="OrderDetailsClick(item)">
+        <div class="flex-row-between">
+          <div class="order-center-list-msg-div flex-row-start">
+            <div class="msg-left"><img :src="item.userEntity.photo"/></div>
+            <div class="msg-right">
+              <label>{{item.userEntity.name}}<i class="iconfont iconnan main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
+              <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
+              <p>专注研究产品设计</p>
             </div>
-            <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
-            <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
-            <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
-            <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
-            <div class="tip" v-if="item.orderEntity.orderStatus === 5">待已退款</div>
           </div>
-          <div class="msg-time">
-            <div>约讲内容：{{item.userEntity.skillLevel}}</div>
-            <div class="flex-row-start">
-              <div>约讲时间：</div>
-              <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
-            </div>
+          <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
+          <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
+          <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
+          <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
+          <div class="tip" v-if="item.orderEntity.orderStatus === 5">待已退款</div>
+        </div>
+        <div class="msg-time">
+          <div>约讲内容：{{item.userEntity.skillLevel}}</div>
+          <div class="flex-row-start">
+            <div>约讲时间：</div>
+            <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
           </div>
         </div>
-        <div class="order-center-list-opt">
-          <p class="text-right">合计：{{item.orderEntity.price}}</p>
-          <div class="opt-btn flex-row-end">
-            <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
-            <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
-            <div @click="cancelOrder(item)">取消订单</div>
-            <div>联系客服</div>
-          </div>
+      </div>
+      <div class="order-center-list-opt">
+        <p class="text-right">合计：{{item.orderEntity.price}}</p>
+        <div class="opt-btn flex-row-end">
+          <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
+          <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
+          <div @click="cancelOrder(item)">取消订单</div>
+          <div>联系客服</div>
         </div>
       </div>
     </div>
@@ -42,22 +39,17 @@
 </template>
 
 <script>
-import Navbar from '../../../views/navbar/navbar'
 import TipsTools from '../../../common/TipsTools'
 let lib = new TipsTools()
 export default {
-  name: 'AllOrder',
-  components: {
-    Navbar
-  },
+  name: 'AllOrderPayment',
+  components: {},
   data () {
     return {
-      titleMsg: '全部订单',
       listData: []
     }
   },
-  computed: {
-  },
+  computed: {},
   mounted () {
     this.loadData()
   },
@@ -66,7 +58,7 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', '')
+      formData.append('status', 1)
       formData.append('type', 2)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
@@ -77,6 +69,9 @@ export default {
             let d = new Date()
             let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
             _this.listData[i].userEntity.birthday = age
+            let secondDate = new Date(_this.listDatas[i].workingAge.replace(/-/g, '/'))
+            let workYears = d.getFullYear() - secondDate.getFullYear()
+            _this.listDatas[i].workingAge = workYears
           }
         } else {
           lib.MessageAlert_None(res.message)
@@ -123,7 +118,6 @@ export default {
 </script>
 
 <style scoped>
-  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
   .order-center-list{margin: 0 0.2rem;}
   .order-center-list .order-center-list-msg{padding: 0.2rem 0;}
   .order-center-list-msg .order-center-list-msg-div .msg-left{padding-right: 0.15rem;}

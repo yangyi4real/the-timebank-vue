@@ -35,7 +35,7 @@
           <div><i class="iconfont iconjiantou"></i><span>|</span></div>
           <div>
             <div v-if="listData.authStatus === 0 || listData.authStatus === null" @click="authenticationClicked">去认证<i class="iconfont iconjiantou"></i><span></span></div>
-            <div v-if="listData.authStatus === 1" @click="authenticationClicked">已认证<i class="iconfont iconjiantou"></i><span></span></div>
+            <div v-if="listData.authStatus === 1" @click="authenticationClicked">已认证<span></span></div>
           </div>
         </div>
         <p v-if="listData.skillLevel === '' || listData.skillLevel === null" @click="skillLevelClicked">添加个人描述，可让企业更好地认识你</p>
@@ -212,7 +212,7 @@ export default {
   .modular3 .modular3-div img{width: 0.3rem;height: 0.3rem;}
   .modular3 .modular3-div p{padding-top: 0.16rem}
   .modular-already div{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);text-align: center}
-  .modular-already div span{padding-left: 0.1rem;}
+  /*.modular-already div span{padding-left: 0.1rem;}*/
   .modular-already p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);padding-top: 0.15rem;}
   .user-icon{position: relative;overflow: hidden;}
   .user-icon input{position: absolute;top: 0;opacity: 0;-ms-filter: 'alpha(opacity=0)';}
