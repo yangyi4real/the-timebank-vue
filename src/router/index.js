@@ -21,7 +21,7 @@ import Profile from '../pages/Lecturer/Personal/FillInformation/Profile' // 介�
 import ProfileShow from '../pages/Lecturer/Personal/FillInformation/ProfileShow' // 介绍资料
 import Authentication from '../pages/Lecturer/Personal/FillInformation/Authentication' // 讲师认证
 import AuthenticationCenter from '../pages/Lecturer/Personal/FillInformation/AuthenticationCenter' // 讲师认证
-import Payment from '../pages/Lecturer/Personal/Payment' // 支付
+import Payment from '../pages/Lecturer/Personal/lecturerPayment' // 讲师支付
 import WalletIndex from '../pages/Lecturer/Personal/Wallet/Index' // 钱包
 import SDGIndex from '../pages/Lecturer/Personal/Wallet/SDGIndex' // sdg钱包
 import Detailed from '../pages/Lecturer/Personal/Wallet/Detailed' // 明细
@@ -57,13 +57,17 @@ import Purchase from '../pages/Enterprise/Reserve/Purchase' // 购买
 import UserIndex from '../pages/Enterprise/User/Index' // 企业端-我的
 import EnterpriseInfo from '../pages/Enterprise/User/EnterpriseInfo' // 企业信息
 import EnterpriseInfoShow from '../pages/Enterprise/User/EnterpriseInfoShow' // 企业信息-显示
-import PersonalCenter from '../pages/Enterprise/User/PersonalCenter' // 个人中心
-import OrderCenter from '../pages/Enterprise/User/OrderCenter' // 订单中心
-import AllOrder from '../pages/Enterprise/User/AllOrder' // 全部订单
+import PersonalCenter from '../pages/Enterprise/User/PersonalCenter' // 企业设置
+import OrderCenter from '../pages/Enterprise/User/OrderCenter' // 全部
 import AllOrderPayment from '../pages/Enterprise/User/AllOrderPayment' // 待付款
+import AllOrderConfirm from '../pages/Enterprise/User/AllOrderConfirm' // 待确认
+import AllOrderClass from '../pages/Enterprise/User/AllOrderClass' // 待开课
+import AllOrderEvaluate from '../pages/Enterprise/User/AllOrderEvaluate' // 待评价
+import AllOrderRefund from '../pages/Enterprise/User/AllOrderRefund' // 退款/售后
 import OrderDetails from '../pages/Enterprise/User/OrderDetails' // 订单详情
 import Evaluate from '../pages/Enterprise/User/Evaluate' // 评价讲师
 import CoMsg from '../pages/Enterprise/User/Msg' // 企业端-消息
+import EnterprisePayment from '../pages/Enterprise/User/EnterprisePayment' // 企业支付
 
 Vue.use(Router)
 
@@ -267,11 +271,17 @@ export default new Router({
       name: 'AuthenticationCenter',
       component: AuthenticationCenter
     },
-    // 支付
+    // 讲师支付
     {
-      path: '/personal/payment/:price',
+      path: '/personal/lecturer-payment/:price',
       name: 'Payment',
       component: Payment
+    },
+    // 企业支付
+    {
+      path: '/user/enterprise-payment/:price/:id',
+      name: 'EnterprisePayment',
+      component: EnterprisePayment
     },
     // 钱包
     {
@@ -393,29 +403,47 @@ export default new Router({
       name: 'EnterpriseInfoShow',
       component: EnterpriseInfoShow
     },
-    // 个人中心
+    // 企业设置
     {
       path: '/user/personalcenter',
       name: 'PersonalCenter',
       component: PersonalCenter
     },
-    // 订单中心
+    // 全部
     {
-      path: '/user/ordercenter/:id',
+      path: '/user/ordercenter',
       name: 'OrderCenter',
       component: OrderCenter
-    },
-    // 全部订单
-    {
-      path: '/user/allorder',
-      name: 'AllOrder',
-      component: AllOrder
     },
     // 待付款
     {
       path: '/user/allorder-payment',
       name: 'AllOrderPayment',
       component: AllOrderPayment
+    },
+    // 待确认
+    {
+      path: '/user/allorder-confirm',
+      name: 'AllOrderConfirm',
+      component: AllOrderConfirm
+    },
+    // 待开课
+    {
+      path: '/user/allorder-class',
+      name: 'AllOrderClass',
+      component: AllOrderClass
+    },
+    // 待评价
+    {
+      path: '/user/allorder-evaluate',
+      name: 'AllOrderEvaluate',
+      component: AllOrderEvaluate
+    },
+    // 售后/退款
+    {
+      path: '/user/allorder-refund',
+      name: 'AllOrderRefund',
+      component: AllOrderRefund
     },
     // 订单详情
     {

@@ -339,7 +339,7 @@ export default {
       _this.$_HTTPData.getLectureAuth(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
-          _this.$router.push('/personal/payment/300')
+          _this.$router.push('/personal/lecturer-payment/300')
         } else {
           lib.MessageAlert_Error(res.message)
         }

@@ -46,7 +46,7 @@
         </div>
         <div @click="statusClicked2">
           <i class="iconfont iconqueren1"></i>
-          <p>待付款</p>
+          <p>待确认</p>
         </div>
         <div @click="statusClicked3">
           <i class="iconfont iconkaishijixi"></i>
@@ -58,7 +58,7 @@
         </div>
         <div @click="statusClicked5">
           <i class="iconfont icontubiaolunkuo-"></i>
-          <p>退款/售后</p>
+          <p>已取消</p>
         </div>
       </div>
     </div>
@@ -69,42 +69,54 @@
           <p>邀请好友</p>
         </div>
         <div>
-          <img src="../../../assets/icon/shoucang.png"/>
-          <p>收藏夹</p>
-        </div>
-        <div>
-          <img src="../../../assets/icon/liulan.png"/>
-          <p>浏览记录</p>
-        </div>
-      </div>
-      <div class="modular4-div flex-row-around">
-        <div>
-          <img src="../../../assets/icon/kefu.png"/>
-          <p>联系客服</p>
-        </div>
-        <div>
-          <img src="../../../assets/icon/bangzhu.png"/>
-          <p>帮助中心</p>
-        </div>
-        <div>
-          <img src="../../../assets/icon/yonghu.png"/>
-          <p>服务协议</p>
-        </div>
-      </div>
-      <div class="modular4-div flex-row-around">
-        <div>
-          <img src="../../../assets/icon/yijian.png"/>
-          <p>意见反馈</p>
+          <a :href="'tel:' + '05328888888'">
+            <img src="../../../assets/icon/kefu.png"/>
+            <p>联系客服</p>
+          </a>
         </div>
         <div @click="personalCenterClicked">
           <img src="../../../assets/icon/shezhi.png"/>
           <p>设置</p>
         </div>
-        <div style="visibility:hidden">
-          <img src=""/>
-          <p>联系客服</p>
-        </div>
+        <!--<div>-->
+          <!--<img src="../../../assets/icon/shoucang.png"/>-->
+          <!--<p>收藏夹</p>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<img src="../../../assets/icon/liulan.png"/>-->
+          <!--<p>浏览记录</p>-->
+        <!--</div>-->
       </div>
+      <!--<div class="modular4-div flex-row-around">-->
+        <!--<div>-->
+          <!--<img src="../../../assets/icon/bangzhu.png"/>-->
+          <!--<p>帮助中心</p>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<img src="../../../assets/icon/yonghu.png"/>-->
+          <!--<p>服务协议</p>-->
+        <!--</div>-->
+        <!--<div>-->
+          <!--<a :href="'tel:' + '05328888888'">-->
+            <!--<img src="../../../assets/icon/kefu.png"/>-->
+            <!--<p>联系客服</p>-->
+          <!--</a>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="modular4-div flex-row-around">-->
+        <!--<div>-->
+          <!--<img src="../../../assets/icon/yijian.png"/>-->
+          <!--<p>意见反馈</p>-->
+        <!--</div>-->
+        <!--<div @click="personalCenterClicked">-->
+          <!--<img src="../../../assets/icon/shezhi.png"/>-->
+          <!--<p>设置</p>-->
+        <!--</div>-->
+        <!--<div style="visibility:hidden">-->
+          <!--<img src=""/>-->
+          <!--<p>联系客服</p>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
     <tabbar-ent :idx="2"></tabbar-ent>
   </div>
@@ -143,19 +155,19 @@ export default {
   },
   methods: {
     statusClicked1 () {
-      this.$router.push('/user/ordercenter/1')
+      this.$router.push('/user/allorder-payment')
     },
     statusClicked2 () {
-      this.$router.push('/user/ordercenter/2')
+      this.$router.push('/user/allorder-confirm')
     },
     statusClicked3 () {
-      this.$router.push('/user/ordercenter/3')
+      this.$router.push('/user/allorder-class')
     },
     statusClicked4 () {
-      this.$router.push('/user/ordercenter/4')
+      this.$router.push('/user/allorder-evaluate')
     },
     statusClicked5 () {
-      this.$router.push('/user/ordercenter/5')
+      this.$router.push('/user/allorder-refund')
     },
     personalCenterClicked () {
       this.$router.push('/user/personalcenter')
@@ -194,7 +206,7 @@ export default {
     },
     // 订单中心
     orderCenterClick () {
-      this.$router.push('/user/ordercenter/0')
+      this.$router.push('/user/ordercenter')
     },
     // 邀请好友
     linkInvitation () {
