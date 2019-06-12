@@ -123,9 +123,16 @@ export default {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
             for (let i = _this.listRecord.length - 1; i > 0; i--) {
-              if (_this.listRecord[i].companyEntity.status === 1) {
+              if (_this.listRecord[i].orderEntity.orderStatus === 1) {
                 _this.listRecord.splice(i, 1)
               }
+            }
+            if (_this.listRecord.length === 0) {
+              _this.Tips = true
+              _this.listItem = false
+            } else {
+              _this.Tips = false
+              _this.listItem = true
             }
           } else {
             lib.MessageAlert_None(res.message)
@@ -139,6 +146,13 @@ export default {
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
+            if (_this.listRecord.length === 0) {
+              _this.Tips = true
+              _this.listItem = false
+            } else {
+              _this.Tips = false
+              _this.listItem = true
+            }
           } else {
             lib.MessageAlert_None(res.message)
           }
@@ -151,7 +165,13 @@ export default {
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
-            console.log(_this.listRecord)
+            if (_this.listRecord.length === 0) {
+              _this.Tips = true
+              _this.listItem = false
+            } else {
+              _this.Tips = false
+              _this.listItem = true
+            }
           } else {
             lib.MessageAlert_None(res.message)
           }
@@ -164,7 +184,13 @@ export default {
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
-            console.log(_this.listRecord)
+            if (_this.listRecord.length === 0) {
+              _this.Tips = true
+              _this.listItem = false
+            } else {
+              _this.Tips = false
+              _this.listItem = true
+            }
           } else {
             lib.MessageAlert_None(res.message)
           }
@@ -177,7 +203,13 @@ export default {
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
-            console.log(_this.listRecord)
+            if (_this.listRecord.length === 0) {
+              _this.Tips = true
+              _this.listItem = false
+            } else {
+              _this.Tips = false
+              _this.listItem = true
+            }
           } else {
             lib.MessageAlert_None(res.message)
           }
