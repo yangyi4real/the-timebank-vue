@@ -1,467 +1,432 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import CalendarIndex from '../pages/Lecturer/Calendar/Index' // 日历
-import AddCalendar from '../pages/Lecturer/Calendar/AddCalendar' // 添加日历
-import ceshi from '../pages/Lecturer/Calendar/ceshi' // 测试
-import ceshiSelect from '../pages/Home/ceshiSelect'
-import LoginAgreement from '../pages/Home/Agreement/LoginAgreement' // 注册协议
-import selectItem from '../pages/Home/selectItem'
-import Definitions from '../pages/Lecturer/Calendar/Definitions' // 名词解释
-import CourseIndex from '../pages/Lecturer/Course/Index' // 约讲记录
-import CoEvaluate from '../pages/Lecturer/Course/CoEvaluate' // 评价企业
-import AboutDetails from '../pages/Lecturer/Course/AboutDetails' // 约讲详情
-import PersonalIndex from '../pages/Lecturer/Personal/Index' // 我的
-import PersonalData from '../pages/Lecturer/Personal/PersonalData' // 个人资料
-import BaseData from '../pages/Lecturer/Personal/FillInformation/BaseData' // 基本信息
-import BaseDataShow from '../pages/Lecturer/Personal/FillInformation/BaseDataShow' // 基本信息-显示
-import Intention from '../pages/Lecturer/Personal/FillInformation/Intention' // 存储意向
-import IntentionShow from '../pages/Lecturer/Personal/FillInformation/IntentionShow' // 存储意向
-import Profile from '../pages/Lecturer/Personal/FillInformation/Profile' // 介绍资料
-import ProfileShow from '../pages/Lecturer/Personal/FillInformation/ProfileShow' // 介绍资料
-import Authentication from '../pages/Lecturer/Personal/FillInformation/Authentication' // 讲师认证
-import AuthenticationCenter from '../pages/Lecturer/Personal/FillInformation/AuthenticationCenter' // 讲师认证
-import Payment from '../pages/Lecturer/Personal/lecturerPayment' // 讲师支付
-import WalletIndex from '../pages/Lecturer/Personal/Wallet/Index' // 钱包
-import SDGIndex from '../pages/Lecturer/Personal/Wallet/SDGIndex' // sdg钱包
-import Detailed from '../pages/Lecturer/Personal/Wallet/Detailed' // 明细
-import DetailedPage from '../pages/Lecturer/Personal/Wallet/DetailedPage' // 明细详情页
-import Recharge from '../pages/Lecturer/Personal/Wallet/Recharge' // 充值
-import Withdraw from '../pages/Lecturer/Personal/Wallet/Withdraw' // 提现
-import Invitation from '../pages/Lecturer/Personal/Invitation' // 邀请好友
-import SetUp from '../pages/Lecturer/Personal/SetUp/Index' // 设置
-import NewPhone from '../pages/Lecturer/Personal/SetUp/NewPhone' // 绑定新手机
-import PhoneVerification from '../pages/Lecturer/Personal/SetUp/PhoneVerification' // 手机号验证
-import InputPayPassword from '../pages/Lecturer/Personal/SetUp/InputPayPassword' // 支付密码
-import NewPayPassword from '../pages/Lecturer/Personal/SetUp/NewPayPassword' // 设置新密码
-import Help from '../pages/Lecturer/Personal/SetUp/Help' // 帮助中心
-import SLA from '../pages/Lecturer/Personal/SetUp/SLA' // 服务协议
-import Feedback from '../pages/Lecturer/Personal/SetUp/Feedback' // 意见反馈
-import Msg from '../pages/Lecturer/Personal/Msg' // 消息
-
-// import Home from '../pages/Home/Index.vue' // 进入页
-import Login from '../pages/Home/Login' // 登录
-import Register from '../pages/Home/Register' // 注册
-import PayPassword from '../pages/Home/PayPassword' // 支付密码
-import Navbar from '../views/navbar/navbar' // 头部导航
-import Tabbar from '../views/Tabbar/Tabbar' // 讲师端-底部导航
-import TabbarEnt from '../views/Tabbar/TabbarEnt' // 企业端-底部导航
-
-import CustomizedIndex from '../pages/Enterprise/Customized/Index' // 约课
-import lecturerDetails from '../pages/Enterprise/Customized/lecturerDetails' // 讲师详情
-import Appointment from '../pages/Enterprise/Customized/Appointment' // 预约
-import AppointmentInput from '../pages/Enterprise/Customized/AppointmentInput' // 预约-填写
-import ReserveIndex from '../pages/Enterprise/Reserve/Index' // 定制服务
-import ServiceDetails from '../pages/Enterprise/Reserve/ServiceDetails' // 服务详情
-import Purchase from '../pages/Enterprise/Reserve/Purchase' // 购买
-import UserIndex from '../pages/Enterprise/User/Index' // 企业端-我的
-import EnterpriseInfo from '../pages/Enterprise/User/EnterpriseInfo' // 企业信息
-import EnterpriseInfoShow from '../pages/Enterprise/User/EnterpriseInfoShow' // 企业信息-显示
-import PersonalCenter from '../pages/Enterprise/User/PersonalCenter' // 企业设置
-import OrderCenter from '../pages/Enterprise/User/OrderCenter' // 全部
-import AllOrderPayment from '../pages/Enterprise/User/AllOrderPayment' // 待付款
-import AllOrderConfirm from '../pages/Enterprise/User/AllOrderConfirm' // 待确认
-import AllOrderClass from '../pages/Enterprise/User/AllOrderClass' // 待开课
-import AllOrderEvaluate from '../pages/Enterprise/User/AllOrderEvaluate' // 待评价
-import AllOrderRefund from '../pages/Enterprise/User/AllOrderRefund' // 退款/售后
-import OrderDetails from '../pages/Enterprise/User/OrderDetails' // 订单详情
-import Evaluate from '../pages/Enterprise/User/Evaluate' // 评价讲师
-import CoMsg from '../pages/Enterprise/User/Msg' // 企业端-消息
-import EnterprisePayment from '../pages/Enterprise/User/EnterprisePayment' // 企业支付
+import SaiLei from '../common/SaiLei'
+import Http from '../common/HTTPDatas'
+import store from '../store/Store'
+import { SHOW_GLOBAL_LOGIN } from '../store/MutationTypes'
 
 Vue.use(Router)
 
-export default new Router({
+const sailei = new SaiLei()
+
+const router = new Router({
   routes: [
-    // 首页
+    // 登录
     {
       path: '/',
       name: 'Login',
-      component: Login
+      component: () => import('../pages/Home/Login')
     },
     // 头部导航
     {
       path: '/navbar',
       name: 'Navbar',
-      component: Navbar
+      component: () => import('../views/navbar/navbar')
     },
     // 讲师端-底部导航
     {
       path: '/tabbar',
       name: 'Tabbar',
-      component: Tabbar
+      component: () => import('../views/Tabbar/Tabbar')
     },
     // 企业端-底部导航
     {
       path: '/Tabbar-ent',
       name: 'TabbarEnt',
-      component: TabbarEnt
+      component: () => import('../views/Tabbar/TabbarEnt')
     },
-    // // 登录
-    // {
-    //   path: '/login',
-    //   name: 'Login',
-    //   component: Login
-    // },
     // 注册
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: () => import('../pages/Home/Register')
     },
     // 支付密码
     {
-      path: '/paypassword/:id',
+      path: '/paypassword/:id/:type',
       name: 'PayPassword',
-      component: PayPassword
+      component: () => import('../pages/Home/PayPassword')
     },
     // 日历
     {
       path: '/calendar/index',
       name: 'CalendarIndex',
-      component: CalendarIndex
+      component: () => import('../pages/Lecturer/Calendar/Index')
     },
     // 添加日历
     {
       path: '/calendar/addcalendat',
       name: 'AddCalendar',
-      component: AddCalendar
+      component: () => import('../pages/Lecturer/Calendar/AddCalendar')
     },
     // 注册协议
     {
       path: '/login-agreement',
       name: 'LoginAgreement',
-      component: LoginAgreement
+      component: () => import('../pages/Home/Agreement/LoginAgreement')
     },
     // 名词解释
     {
       path: '/calendar/definitions',
       name: 'Definitions',
-      component: Definitions
+      component: () => import('../pages/Lecturer/Calendar/Definitions')
     },
     // 约讲记录
     {
       path: '/course/index',
       name: 'CourseIndex',
-      component: CourseIndex
+      component: () => import('../pages/Lecturer/Course/Index')
     },
     // 评价企业
     {
       path: '/course/evaluate/:orderId',
       name: 'CoEvaluate',
-      component: CoEvaluate
+      component: () => import('../pages/Lecturer/Course/CoEvaluate')
     },
     // 约讲详情
     {
       path: '/course/aboutdetails/:orderId',
       name: 'AboutDetails',
-      component: AboutDetails
+      component: () => import('../pages/Lecturer/Course/AboutDetails')
     },
     // 我的
     {
       path: '/personal/index',
       name: 'personalIndex',
-      component: PersonalIndex
+      component: () => import('../pages/Lecturer/Personal/Index')
     },
     // 个人资料
     {
       path: '/personal/personaldata',
       name: 'PersonalData',
-      component: PersonalData
+      component: () => import('../pages/Lecturer/Personal/PersonalData')
     },
     // 邀请好友
     {
       path: '/personal/invitation',
       name: 'Invitation',
-      component: Invitation
+      component: () => import('../pages/Lecturer/Personal/Invitation')
     },
     // 设置
     {
       path: '/personal/setup/index',
       name: 'SetUp',
-      component: SetUp
+      component: () => import('../pages/Lecturer/Personal/SetUp/Index')
     },
     // 绑定新手机
     {
       path: '/personal/setup/newphone',
       name: 'NewPhone',
-      component: NewPhone
+      component: () => import('../pages/Lecturer/Personal/SetUp/NewPhone')
     },
     // 手机号验证
     {
       path: '/personal/setup/phoneverification',
       name: 'PhoneVerification',
-      component: PhoneVerification
+      component: () => import('../pages/Lecturer/Personal/SetUp/PhoneVerification')
     },
     // 支付密码
     {
       path: '/personal/setup/inputpaypassword',
       name: 'InputPayPassword',
-      component: InputPayPassword
+      component: () => import('../pages/Lecturer/Personal/SetUp/InputPayPassword')
     },
-    // 设置新密码
+    // 设置讲师端新密码
     {
       path: '/personal/setup/newpaypassword',
       name: 'NewPayPassword',
-      component: NewPayPassword
+      component: () => import('../pages/Lecturer/Personal/SetUp/NewPayPassword')
     },
     // 帮助中心
     {
       path: '/personal/setup/help',
       name: 'Help',
-      component: Help
+      component: () => import('../pages/Lecturer/Personal/SetUp/Help')
     },
     // 服务协议
     {
       path: '/personal/setup/sla',
       name: 'SLA',
-      component: SLA
+      component: () => import('../pages/Lecturer/Personal/SetUp/SLA')
     },
     // 意见反馈
     {
       path: '/personal/setup/feedback',
       name: 'Feedback',
-      component: Feedback
+      component: () => import('../pages/Lecturer/Personal/Msg')
     },
     // 基本信息
     {
       path: '/personal/information/basedata',
       name: 'BaseData',
-      component: BaseData
+      component: () => import('../pages/Lecturer/Personal/FillInformation/BaseData')
     },
     // 基本信息-显示
     {
       path: '/personal/information/basedata-show',
       name: 'BaseDataShow',
-      component: BaseDataShow
+      component: () => import('../pages/Lecturer/Personal/FillInformation/BaseDataShow')
     },
     // 存储意向
     {
       path: '/personal/information/intention',
       name: 'Intention',
-      component: Intention
+      component: () => import('../pages/Lecturer/Personal/FillInformation/Intention')
     },
     // 存储意向-显示
     {
       path: '/personal/information/intention-show',
       name: 'IntentionShow',
-      component: IntentionShow
+      component: () => import('../pages/Lecturer/Personal/FillInformation/IntentionShow')
     },
     // 介绍资料
     {
       path: '/personal/information/profile',
       name: 'Profile',
-      component: Profile
+      component: () => import('../pages/Lecturer/Personal/FillInformation/Profile')
     },
     // 介绍资料-显示
     {
       path: '/personal/information/profile-show',
       name: 'ProfileShow',
-      component: ProfileShow
+      component: () => import('../pages/Lecturer/Personal/FillInformation/ProfileShow')
     },
     // 讲师认证
     {
       path: '/personal/information/authentication',
       name: 'Authentication',
-      component: Authentication
+      component: () => import('../pages/Lecturer/Personal/FillInformation/Authentication')
     },
     // 讲师认证-我的
     {
       path: '/personal/information/authentication-center',
       name: 'AuthenticationCenter',
-      component: AuthenticationCenter
+      component: () => import('../pages/Lecturer/Personal/FillInformation/AuthenticationCenter')
     },
     // 讲师支付
     {
       path: '/personal/lecturer-payment/:price',
       name: 'Payment',
-      component: Payment
+      component: () => import('../pages/Lecturer/Personal/lecturerPayment')
     },
     // 企业支付
     {
       path: '/user/enterprise-payment/:price/:id',
       name: 'EnterprisePayment',
-      component: EnterprisePayment
+      component: () => import('../pages/Enterprise/User/EnterprisePayment')
     },
     // 钱包
     {
       path: '/personal/wallet/index/:balance',
       name: 'WalletIndex',
-      component: WalletIndex
+      component: () => import('../pages/Lecturer/Personal/Wallet/Index')
     },
     // sdg
     {
       path: '/personal/wallet/sdg-index/:sdg',
       name: 'SDGIndex',
-      component: SDGIndex
+      component: () => import('../pages/Lecturer/Personal/Wallet/SDGIndex')
     },
     // 明细
     {
       path: '/personal/wallet/detailed',
       name: 'Detailed',
-      component: Detailed
+      component: () => import('../pages/Lecturer/Personal/Wallet/Detailed')
     },
     // 明细详情页
     {
       path: '/personal/wallet/detailedpage',
       name: 'DetailedPage',
-      component: DetailedPage
+      component: () => import('../pages/Lecturer/Personal/Wallet/DetailedPage')
     },
     // 充值
     {
       path: '/personal/wallet/recharge',
       name: 'Recharge',
-      component: Recharge
+      component: () => import('../pages/Lecturer/Personal/Wallet/Recharge')
     },
     // 提现
     {
       path: '/personal/wallet/withdraw',
       name: 'Withdraw',
-      component: Withdraw
+      component: () => import('../pages/Lecturer/Personal/Wallet/Withdraw')
     },
     // 消息
     {
       path: '/personal/msg',
       name: 'Msg',
-      component: Msg
+      component: () => import('../pages/Lecturer/Personal/Msg')
     },
-    // 测试
-    {
-      path: '/ceshi',
-      name: 'ceshi',
-      component: ceshi
-    },
-    // 测试
-    {
-      path: '/ceshiSelect',
-      name: 'ceshiSelect',
-      component: ceshiSelect
-    },
-    // 测试
-    {
-      path: '/selectItem',
-      name: 'selectItem',
-      component: selectItem
-    },
+    // // 测试
+    // {
+    //   path: '/ceshi',
+    //   name: 'ceshi',
+    //   component: () => import('../pages/Home/Login')
+    // },
+    // // 测试
+    // {
+    //   path: '/ceshiSelect',
+    //   name: 'ceshiSelect',
+    //   component: () => import('../pages/Home/Login')
+    // },
+    // // 测试
+    // {
+    //   path: '/selectItem',
+    //   name: 'selectItem',
+    //   component: () => import('../pages/Home/Login')
+    // },
     // 约课
     {
       path: '/customized/index',
       name: 'CustomizedIndex',
-      component: CustomizedIndex
+      component: () => import('../pages/Enterprise/Customized/Index')
     },
     // 讲师详情
     {
       path: '/customized/details/:id',
       name: 'lecturerDetails',
-      component: lecturerDetails
+      component: () => import('../pages/Enterprise/Customized/lecturerDetails')
     },
     // 预约
     {
       path: '/customized/appointment/:id',
       name: 'Appointment',
-      component: Appointment
+      component: () => import('../pages/Enterprise/Customized/Appointment')
     },
     // 预约-填写
     {
       path: '/customized/appointmentinput',
       name: 'AppointmentInput',
-      component: AppointmentInput
+      component: () => import('../pages/Enterprise/Customized/AppointmentInput')
     },
     // 定制服务
     {
       path: '/reserve/index',
       name: 'ReserveIndex',
-      component: ReserveIndex
+      component: () => import('../pages/Enterprise/Reserve/Index')
     },
     // 服务详情
     {
       path: '/reserve/servicedetails',
       name: 'ServiceDetails',
-      component: ServiceDetails
+      component: () => import('../pages/Enterprise/Reserve/ServiceDetails')
     },
     // 购买
     {
       path: '/reserve/purchase',
       name: 'Purchase',
-      component: Purchase
+      component: () => import('../pages/Enterprise/Reserve/Purchase')
     },
     // 我的
     {
       path: '/user/index',
       name: 'UserIndex',
-      component: UserIndex
+      component: () => import('../pages/Enterprise/User/Index')
     },
     // 企业信息
     {
       path: '/user/enterpriseInfo',
       name: 'EnterpriseInfo',
-      component: EnterpriseInfo
+      component: () => import('../pages/Enterprise/User/EnterpriseInfo')
     },
     // 企业信息-显示
     {
       path: '/user/enterpriseInfo-show',
       name: 'EnterpriseInfoShow',
-      component: EnterpriseInfoShow
+      component: () => import('../pages/Enterprise/User/EnterpriseInfoShow')
     },
     // 企业设置
     {
       path: '/user/personalcenter',
       name: 'PersonalCenter',
-      component: PersonalCenter
+      component: () => import('../pages/Enterprise/User/PersonalCenter')
     },
     // 全部
     {
       path: '/user/ordercenter',
       name: 'OrderCenter',
-      component: OrderCenter
+      component: () => import('../pages/Enterprise/User/OrderCenter')
     },
     // 待付款
     {
       path: '/user/allorder-payment',
       name: 'AllOrderPayment',
-      component: AllOrderPayment
+      component: () => import('../pages/Enterprise/User/AllOrderPayment')
     },
     // 待确认
     {
       path: '/user/allorder-confirm',
       name: 'AllOrderConfirm',
-      component: AllOrderConfirm
+      component: () => import('../pages/Enterprise/User/AllOrderConfirm')
     },
     // 待开课
     {
       path: '/user/allorder-class',
       name: 'AllOrderClass',
-      component: AllOrderClass
+      component: () => import('../pages/Enterprise/User/AllOrderClass')
     },
     // 待评价
     {
       path: '/user/allorder-evaluate',
       name: 'AllOrderEvaluate',
-      component: AllOrderEvaluate
+      component: () => import('../pages/Enterprise/User/AllOrderEvaluate')
     },
     // 售后/退款
     {
       path: '/user/allorder-refund',
       name: 'AllOrderRefund',
-      component: AllOrderRefund
+      component: () => import('../pages/Enterprise/User/AllOrderRefund')
     },
     // 订单详情
     {
       path: '/user/OrderDetails/:orderId',
       name: 'OrderDetails',
-      component: OrderDetails
+      component: () => import('../pages/Enterprise/User/OrderDetails')
     },
     // 评价讲师
     {
       path: '/user/evaluate/:orderId',
       name: 'Evaluate',
-      component: Evaluate
+      component: () => import('../pages/Enterprise/User/Evaluate')
     },
     // 企业端-消息
     {
       path: '/user/msg',
       name: 'CoMsg',
-      component: CoMsg
+      component: () => import('../pages/Enterprise/User/Msg')
     }
   ]
 })
+
+Vue.use(Router)
+
+/**
+ * 判断是否是指用户必须登录的页面
+ * @param route
+ * @returns {boolean}
+ */
+function checkRouteName (route) {
+  if (route.name === 'Register') {
+    return false
+  } else {
+    return true
+  }
+}
+
+router.beforeEach(function (to, form, next) {
+  if (checkRouteName(to)) {
+    if (!sailei.cookiesGet('user_loginStatus')) {
+      new Http().clearUserInfo()
+      store.dispatch(SHOW_GLOBAL_LOGIN, true)
+      console.log('111')
+    } else if (sailei.cookiesGet('user_loginStatus') === 1) {
+      console.log('讲师')
+      next()
+    } else if (sailei.cookiesGet('user_loginStatus') === 2) {
+      console.log('企业')
+      next()
+    }
+  } else { next() }
+})
+
+export default router

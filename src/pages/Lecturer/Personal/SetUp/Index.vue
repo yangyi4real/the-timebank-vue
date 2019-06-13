@@ -49,10 +49,12 @@
 </template>
 
 <script>
+import { SHOW_GLOBAL_LOGIN } from '../../../../store/MutationTypes'
 import Navbar from '../../../../views/navbar/navbar'
 import TipsTools from '../../../../common/TipsTools'
 let lib = new TipsTools()
 export default {
+  inject: ['reload'],
   name: 'SetUp',
   components: {
     Navbar
@@ -112,10 +114,12 @@ export default {
             color: true,
             callback: () => {
               this.$SaiLei.cookiesClear('user_info')
+              this.$SaiLei.cookiesClear('user_loginStatus')
               this.$SaiLei.cookiesClear('user_id')
               this.$SaiLei.cookiesClear('user_name')
-              this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
-              this.$router.push('/')
+              this.reload()
+              this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
+              // this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
             }
           }
         ]

@@ -122,7 +122,13 @@ export default {
       _this.$_HTTPData.getLogin(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
-          _this.$router.push('/calendar/index')
+          _this.$SaiLei.cookiesSave('user_loginStatus', 1)
+          console.log(res)
+          if (res.result.sexuality === null) {
+            _this.$router.push(`/paypassword/${res.result.id}/1`)
+          } else {
+            _this.$router.push('/calendar/index')
+          }
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)
         }
@@ -141,7 +147,13 @@ export default {
       _this.$_HTTPData.getLogin(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
-          _this.$router.push('/customized/index')
+          _this.$SaiLei.cookiesSave('user_loginStatus', 2)
+          console.log(res)
+          if (res.result.companyName === null) {
+            _this.$router.push(`/paypassword/${res.result.id}/2`)
+          } else {
+            _this.$router.push('/customized/index')
+          }
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)
         }

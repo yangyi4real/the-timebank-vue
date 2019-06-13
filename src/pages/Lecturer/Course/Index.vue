@@ -36,7 +36,7 @@
             </div>
           </div>
           <div class="order-center-list-opt">
-            <p class="text-right">参与人数：{{item.orderEntity.joinNum}}人&nbsp;&nbsp;&nbsp;&nbsp;合计：{{item.orderEntity.price}}</p>
+            <p class="text-right">参与人数：{{item.orderEntity.joinNum}}人&nbsp;&nbsp;&nbsp;&nbsp;合计：{{item.orderEntity.price}} 元</p>
             <div class="opt-btn flex-row-end">
               <div @click="evaluateClick(item)" v-if="item.orderEntity.orderStatus === 4 || item.orderEntity.orderStatus === 6">评价</div>
               <div @click="acceptType(item)" v-if="item.orderEntity.orderStatus === 2">接受</div>

@@ -60,7 +60,7 @@
           </div>
         </div>
         <div class="order-center-list-opt">
-          <p class="text-right">合计：{{item.orderEntity.price}}</p>
+          <p class="text-right">合计：{{item.orderEntity.price}} 元</p>
           <div class="opt-btn flex-row-end">
             <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
             <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>

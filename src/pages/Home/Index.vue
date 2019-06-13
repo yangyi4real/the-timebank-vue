@@ -1,30 +1,30 @@
 <template>
-    <div class="body">
-      <div class="home-nav text-center">
-        时间银行
+  <div>
+    <div class="home-nav text-center">
+      时间银行
+    </div>
+    <div class="wapper">
+      <p class="chose-p"><i class="iconfont iconshenfenzheng"></i>选择身份</p>
+      <div class="chose-btn clearfix">
+        <div class="chose-btn-left chose-btn-div" :class="{active: shows == 1}" @click="jsClick">讲师</div>
+        <div class="chose-btn-right chose-btn-div" :class="{active: shows == 2}" @click="qyClick">企业</div>
       </div>
-      <div class="wapper">
-        <p class="chose-p"><i class="iconfont iconshenfenzheng"></i>选择身份</p>
-        <div class="chose-btn clearfix">
-          <div class="chose-btn-left chose-btn-div" :class="{active: shows == 1}" @click="jsClick">讲师</div>
-          <div class="chose-btn-right chose-btn-div" :class="{active: shows == 2}" @click="qyClick">企业</div>
-        </div>
-        <div class="operation-button">
-          <div v-show="jsBtnClick">
-            <div class="btn-border-black" @click="jsLoginClick">登录</div>
-            <div style="height: 0.3rem;"></div>
-            <div class="btn-border-black" @click="jsRegisterClick">注册</div>
-          </div>
-          <div v-show="qyBtnClick">
-            <div class="btn-border-black" @click="qyLoginClick">登录</div>
-            <div style="height: 0.3rem;"></div>
-            <div class="btn-border-black" @click="qyRegisterClick">注册</div>
-          </div>
+      <div class="operation-button">
+        <div v-show="jsBtnClick">
+          <div class="btn-border-black" @click="jsLoginClick">登录</div>
           <div style="height: 0.3rem;"></div>
-          <!--<div class="btn-border-black">微信用户一键登录</div>-->
+          <div class="btn-border-black" @click="jsRegisterClick">注册</div>
         </div>
+        <div v-show="qyBtnClick">
+          <div class="btn-border-black" @click="qyLoginClick">登录</div>
+          <div style="height: 0.3rem;"></div>
+          <div class="btn-border-black" @click="qyRegisterClick">注册</div>
+        </div>
+        <div style="height: 0.3rem;"></div>
+        <!--<div class="btn-border-black">微信用户一键登录</div>-->
       </div>
     </div>
+  </div>
 </template>
 
 <script>

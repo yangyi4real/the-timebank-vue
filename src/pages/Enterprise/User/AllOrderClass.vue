@@ -55,7 +55,7 @@
             <div>约讲内容：{{item.orderEntity.purpose}}</div>
             <div class="flex-row-start">
               <div>约讲时间：</div>
-              <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
+              <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}} 元</p></div>
             </div>
           </div>
         </div>

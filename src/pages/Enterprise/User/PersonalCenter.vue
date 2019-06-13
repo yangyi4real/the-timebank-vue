@@ -102,6 +102,7 @@ export default {
               this.$SaiLei.cookiesClear('user_info')
               this.$SaiLei.cookiesClear('user_id')
               this.$SaiLei.cookiesClear('user_name')
+              this.$SaiLei.cookiesClear('user_loginStatus')
               this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
               this.$router.push('/')
             }

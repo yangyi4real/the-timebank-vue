@@ -1,17 +1,20 @@
 <template>
   <div id="app" style="margin-bottom: 2rem">
     <router-view v-if="isRouterAlive"></router-view>
-    <home v-if="show"></home>
+    <login-embedded v-if="showLogin"></login-embedded>
+    <register-embedded v-if="showRegister"></register-embedded>
   </div>
 </template>
 
 <script>
 import UserModel from './store/UserModel'
 import {SET_USER_INFO} from './store/MutationTypes'
-import Home from './pages/Home/Index'
+import LoginEmbedded from './pages/Home/LoginEmbedded'
+import RegisterEmbedded from './pages/Home/RegisterEmbedded'
 export default {
   components: {
-    Home
+    RegisterEmbedded,
+    LoginEmbedded
   },
   name: 'App',
   provide () {
@@ -25,9 +28,15 @@ export default {
     }
   },
   computed: {
-    show () {
+    showLogin () {
       return this.$store.state.showGlobalLogin
+    },
+    showRegister () {
+      return this.$store.state.showGlobalRegister
     }
+  },
+  mounted () {
+    console.log(this.$store.state.showGlobalRegister)
   },
   methods: {
     reload () {
