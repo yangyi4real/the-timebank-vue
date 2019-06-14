@@ -13,7 +13,7 @@
           <div class="flex-row-between">
             <div class="basedata-list-left">认证状态</div>
             <div>
-              <span class="text-primary" v-if="this.listData.authStatus === '' || this.listData.authStatus === null">未认证</span>
+              <span class="text-primary" v-if="this.listData.authStatus === 0 || this.listData.authStatus === null">未认证</span>
               <span class="text-primary" v-if="this.listData.authStatus === 1">已认证</span><i class="iconfont iconjiantou"></i>
             </div>
           </div>

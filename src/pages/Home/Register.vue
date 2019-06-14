@@ -95,6 +95,10 @@ export default {
         lib.MessageAlert_Error('请输入正确手机号')
         return false
       }
+      if (this.phoneNumberCode.length < 1) {
+        lib.MessageAlert_Error('请输入短信验证码')
+        return false
+      }
       if (this.password.length < 6) {
         lib.MessageAlert_Error('密码至少为6位数')
         return false
@@ -105,10 +109,6 @@ export default {
       }
       if (this.password !== this.passwordSure) {
         lib.MessageAlert_Error('密码输入不一致')
-        return false
-      }
-      if (this.phoneNumberCode.length < 1) {
-        lib.MessageAlert_Error('请输入短信验证码')
         return false
       }
       return true

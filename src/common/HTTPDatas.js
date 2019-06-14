@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.117:8081'
+      this.host = 'http://192.168.1.141:8081'
       // this.host = 'http://114.116.33.168:8081'
     }
     this.TipsTools = new TipsTools()
@@ -78,7 +78,9 @@ class HTTPData {
       // 取消储存
       cancelSave: '/time-bank/user/cancel_save',
       // 取消行程
-      cancelOrder: '/time-bank/user/cancel_order'
+      cancelOrder: '/time-bank/user/cancel_order',
+      // 修改登录密码
+      changeLoginPassword: '/time-bank/user/change_password'
     }
     // 请求拦截
     // 响应拦截
@@ -577,6 +579,19 @@ class HTTPData {
     let _this = this
     // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.cancelOrder}`, data, function (res) {
+      callback(res)
+    })
+  }
+  /**
+   * 设置支付密码
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getChangeLoginPassword (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.changeLoginPassword}`, data, function (res) {
       callback(res)
     })
   }

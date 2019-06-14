@@ -3,12 +3,12 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="setUp-main">
-        <div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/phoneverification')">
-          <div>手机绑定</div>
-          <div>
-            <span></span><i class="iconfont iconjiantou"></i>
-          </div>
-        </div>
+        <!--<div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/phoneverification')">-->
+          <!--<div>手机绑定</div>-->
+          <!--<div>-->
+            <!--<span></span><i class="iconfont iconjiantou"></i>-->
+          <!--</div>-->
+        <!--</div>-->
         <div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/inputpaypassword')">
           <div>支付密码</div>
           <div>

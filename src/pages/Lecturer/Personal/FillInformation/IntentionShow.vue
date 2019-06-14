@@ -138,6 +138,25 @@ export default {
     this.loadData()
   },
   methods: {
+    /**
+     * 验证输入框的值
+     * @return {boolean}
+     */
+    checkInputValue () {
+      if (this.skillValue === '') {
+        lib.MessageAlert_Error('请选择技能标签')
+        return false
+      }
+      if (this.areaValue === '') {
+        lib.MessageAlert_Error('请选择意向地点')
+        return false
+      }
+      if (this.price === '') {
+        lib.MessageAlert_Error('请输入金额')
+        return false
+      }
+      return true
+    },
     treeselectBtn () {
       this.sub1 = false
       this.showList = true

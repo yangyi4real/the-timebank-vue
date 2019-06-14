@@ -190,7 +190,7 @@ export default {
       let formData = new FormData()
       formData.append('type', 2)
       formData.append('orderId', item.orderEntity.id)
-      _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
+      _this.$_HTTPData.getCancelOrder(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.loadData()
           lib.MessageAlert_Success(res.message)

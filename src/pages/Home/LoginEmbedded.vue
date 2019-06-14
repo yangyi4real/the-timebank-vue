@@ -57,8 +57,8 @@ export default {
   components: {},
   data () {
     return {
-      phoneNumber: '',
-      password: '',
+      phoneNumber: '15063989340',
+      password: '111111',
       shows: 1,
       jsBtnClick: true,
       qyBtnClick: false,
