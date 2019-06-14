@@ -116,7 +116,7 @@ export default {
       ],
       areaOptions: AreaJson,
       titleMsg: '存储意向',
-      price: null,
+      price: 0,
       showList: true,
       sub1: false,
       sub2: false,
@@ -138,6 +138,25 @@ export default {
     this.loadData()
   },
   methods: {
+    /**
+     * 验证输入框的值
+     * @return {boolean}
+     */
+    checkInputValue () {
+      if (this.skillValue === '') {
+        lib.MessageAlert_Error('请选择技能标签')
+        return false
+      }
+      if (this.areaValue === '') {
+        lib.MessageAlert_Error('请选择意向地点')
+        return false
+      }
+      if (this.price === '') {
+        lib.MessageAlert_Error('请输入金额')
+        return false
+      }
+      return true
+    },
     treeselectBtn () {
       this.sub1 = false
       this.showList = true
@@ -154,7 +173,7 @@ export default {
       formData.append('expectLocation', _this.areaValue.toString())
       _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          this.loadData()
+          _this.loadData()
         } else {
           lib.MessageAlert_Error(res.message)
         }
@@ -185,7 +204,7 @@ export default {
       })
     },
     pushClick () {
-      if (!this.checkInputValue()) { return }
+      // if (!this.checkInputValue()) { return }
       console.log(this.skillLevel)
       console.log(this.areaValue)
       if (this.skillLevel === null && this.areaValue === null) {

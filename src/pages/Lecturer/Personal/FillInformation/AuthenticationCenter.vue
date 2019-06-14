@@ -7,7 +7,7 @@
           <div class="flex-row-between">
             <div class="basedata-list-left">认证状态</div>
             <div>
-              <span class="text-primary" v-if="this.listData.authStatus === '' || this.listData.authStatus === null">未认证</span>
+              <span class="text-primary" v-if="this.listData.authStatus === 0 || this.listData.authStatus === null">未认证</span>
               <span class="text-primary" v-if="this.listData.authStatus === 1">已认证</span><i class="iconfont iconjiantou"></i>
             </div>
           </div>
@@ -302,6 +302,11 @@ export default {
       _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
+          _this.name = res.result
+          _this.name = res.result.name
+          _this.name = res.result.name
+          _this.name = res.result.name
+          _this.name = res.result.name
         } else {
           console.log(res.message)
         }
@@ -311,39 +316,47 @@ export default {
      * 点击确定
      */
     pushClick () {
-      if (!this.checkInputValue()) { return }
-      let tempImgs = []
-      let tempImgs2 = []
-      for (let i = 0; i < this.imgList.length; i++) {
-        tempImgs.push(this.imgList[i].file.src)
-      }
-      this.imgListempImgs = tempImgs
-      let myJSON = JSON.stringify(this.imgListempImgs)
-      myJSON = myJSON.replace('data:image/png;base64,', '')
-      myJSON = myJSON.replace('data:image/jpeg;base64,', '')
-      for (let i = 0; i < this.imgList2.length; i++) {
-        tempImgs2.push(this.imgList2[i].file.src)
-      }
-      this.imgListempImgs2 = tempImgs2
-      let myJSONT = JSON.stringify(this.imgListempImgs2)
-      myJSONT = myJSONT.replace('data:image/png;base64,', '')
-      myJSONT = myJSONT.replace('data:image/jpeg;base64,', '')
-      let _this = this
-      let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('name', _this.name)
-      formData.append('IdNumber', _this.IdNumber)
-      formData.append('credentials', myJSON)
-      formData.append('classPhotos', myJSONT)
-      formData.append('traditional', true)
-      _this.$_HTTPData.getLectureAuth(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          lib.MessageAlert_Success(res.message)
-          _this.$router.push('/personal/payment/300')
-        } else {
-          lib.MessageAlert_Error(res.message)
+      if (this.listData.authStatus === 1) {
+        this.$router.push('/personal/lecturer-payment/300')
+      } else if (this.listData.authStatus === 0) {
+        if (!this.checkInputValue()) { return }
+        let tempImgs = []
+        let tempImgs2 = []
+        for (let i = 0; i < this.imgList.length; i++) {
+          tempImgs.push(this.imgList[i].file.src)
         }
-      })
+        this.imgListempImgs = tempImgs
+        let myJSON = JSON.stringify(this.imgListempImgs)
+        myJSON = myJSON.replace('data:image/png;base64,', '')
+        myJSON = myJSON.replace('data:image/jpeg;base64,', '')
+        for (let i = 0; i < this.imgList2.length; i++) {
+          tempImgs2.push(this.imgList2[i].file.src)
+        }
+        this.imgListempImgs2 = tempImgs2
+        let myJSONT = JSON.stringify(this.imgListempImgs2)
+        myJSONT = myJSONT.replace('data:image/png;base64,', '')
+        myJSONT = myJSONT.replace('data:image/jpeg;base64,', '')
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('name', _this.name)
+        formData.append('IdNumber', _this.IdNumber)
+        formData.append('credentials', myJSON)
+        formData.append('classPhotos', myJSONT)
+        formData.append('traditional', true)
+        _this.$_HTTPData.getLectureAuth(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            // lib.MessageAlert_Success(res.message)
+            if (_this.listData.payPassword === null) {
+              _this.$router.push('/personal/setup/inputpaypassword')
+            } else {
+              _this.$router.push('/personal/lecturer-payment/300')
+            }
+          } else {
+            lib.MessageAlert_Error(res.message)
+          }
+        })
+      }
     }
     /**
      * 点击取消认证

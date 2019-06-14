@@ -132,6 +132,10 @@ export default {
      * @return {boolean}
      */
     checkInputValue () {
+      if (this.src === '') {
+        lib.MessageAlert_Error('请上传头像')
+        return false
+      }
       if (this.neme === '') {
         lib.MessageAlert_Error('请输入姓名')
         return false
@@ -146,10 +150,6 @@ export default {
       }
       if (this.workDate === '') {
         lib.MessageAlert_Error('请输入参加工作时间')
-        return false
-      }
-      if (this.src === '') {
-        lib.MessageAlert_Error('请上传头像')
         return false
       }
       if (this.model1 === '') {

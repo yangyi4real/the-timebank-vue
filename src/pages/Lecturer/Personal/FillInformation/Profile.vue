@@ -134,7 +134,7 @@
         </div>
         <div class="flex-row-around popup-main-btn">
           <div class="div" @click="$router.push('/calendar/index')">暂不认证</div>
-          <div @click="$router.push('/personal/information/authentication')">去认证</div>
+          <div @click="$router.push('/personal/information/authentication-center')">去认证</div>
         </div>
       </div>
     </div>

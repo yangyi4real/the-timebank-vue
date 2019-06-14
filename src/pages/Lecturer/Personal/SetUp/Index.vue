@@ -3,13 +3,13 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="setUp-main">
-        <div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/phoneverification')">
-          <div>手机绑定</div>
-          <div>
-            <span></span><i class="iconfont iconjiantou"></i>
-          </div>
-        </div>
-        <div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/inputpaypassword')">
+        <!--<div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/phoneverification')">-->
+          <!--<div>手机绑定</div>-->
+          <!--<div>-->
+            <!--<span></span><i class="iconfont iconjiantou"></i>-->
+          <!--</div>-->
+        <!--</div>-->
+        <div class="setUp-list flex-row-between" @click="newPayPassword">
           <div>支付密码</div>
           <div>
             <span></span><i class="iconfont iconjiantou"></i>
@@ -49,10 +49,12 @@
 </template>
 
 <script>
+// import { SHOW_GLOBAL_LOGIN } from '../../../../store/MutationTypes'
 import Navbar from '../../../../views/navbar/navbar'
 import TipsTools from '../../../../common/TipsTools'
 let lib = new TipsTools()
 export default {
+  inject: ['reload'],
   name: 'SetUp',
   components: {
     Navbar
@@ -63,7 +65,31 @@ export default {
     }
   },
   computed: {},
+  mounted () {
+    this.loadData()
+  },
   methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 1)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+          console.log(res.result)
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
+    newPayPassword () {
+      if (this.listData.payPassword === null) {
+        this.$router.push('/personal/setup/inputpaypassword')
+      } else {
+        this.$router.push('/personal/setup/newpaypassword')
+      }
+    },
     // 切换登录
     switchClicked () {
       this.$dialog.confirm({
@@ -112,17 +138,18 @@ export default {
             color: true,
             callback: () => {
               this.$SaiLei.cookiesClear('user_info')
+              this.$SaiLei.cookiesClear('user_loginStatus')
               this.$SaiLei.cookiesClear('user_id')
               this.$SaiLei.cookiesClear('user_name')
-              this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
-              this.$router.push('/')
+              this.reload()
+              location.reload()
+              // this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
             }
           }
         ]
       })
     }
-  },
-  mounted () {}
+  }
 }
 </script>
 

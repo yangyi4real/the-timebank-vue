@@ -2,109 +2,100 @@
   <div class="body">
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
-      <div class="phone-title">
-        <p>请输入现支付密码</p>
-      </div>
-      <div class="payPassword-form">
-        <div class="payPwd">
-          <input ref="pwd" type="password" maxlength="6" v-model="msg"  style="position: absolute;z-index: -1;left:-100%;opacity: 0"/>
-          <ul class="pwd-wrap" @click="payFocus">
-            <li><i v-if="msgLength > 0"></i></li>
-            <li><i v-if="msgLength > 1"></i></li>
-            <li><i v-if="msgLength > 2"></i></li>
-            <li><i v-if="msgLength > 3"></i></li>
-            <li><i v-if="msgLength > 4"></i></li>
-            <li><i v-if="msgLength > 5"></i></li>
-          </ul>
+      <div class="login-form">
+        <div class="login-form-div">
+          <input type="password" v-model="payPassword" placeholder="请设置六位数字的支付密码"/>
         </div>
-        <p class="text-right" @click="ResetPwd">忘记密码？</p>
+        <div class="login-form-div">
+          <input type="password" v-model="payPasswordSure" placeholder="请确认支付密码"/>
+        </div>
+      </div>
+      <p class="agreement">支付密码用于余额提现和消费</p>
+      <div class="login-btn">
+        <div :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}" @click="confirmButtonClicked">确认</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+/* eslint-disable standard/no-callback-literal,no-useless-return */
 import Navbar from '../../../../views/navbar/navbar'
+import TipsTools from '../../../../common/TipsTools'
+let lib = new TipsTools()
 export default {
-  name: 'InputPayPassword',
+  name: 'inputPayPassword',
   components: {
     Navbar
   },
   data () {
     return {
       titleMsg: '支付密码',
-      msg: '',
-      msgLength: 0
+      payPassword: '',
+      payPasswordSure: '',
+      inOperation: true, // 灰色按钮
+      operation: false
+      // userInfoItem: ''
     }
   },
-  computed: {
-  },
+  computed: {},
   methods: {
-    payFocus () {
-      this.$refs.pwd.focus()
+    /**
+     * 验证输入框的值
+     * @return {boolean}
+     */
+    checkInputValue () {
+      if (this.payPassword === '') {
+        lib.MessageAlert_Error('请输入密码')
+        return false
+      }
+      if (this.payPassword.length < 6 || this.payPassword.length > 6) {
+        lib.MessageAlert_Error('请输入6位数密码')
+        return false
+      }
+      if (this.payPasswordSure === '') {
+        lib.MessageAlert_Error('请确认密码')
+        return false
+      }
+      if (this.payPassword !== this.payPasswordSure) {
+        lib.MessageAlert_Error('密码不一致')
+        return false
+      }
+      return true
     },
-    ResetPwd () {
-      this.$router.push('/personal/setup/newpaypassword')
-    },
-    getPush () {
-      setTimeout(() => {
-        this.$dialog.loading.close()
-        this.$router.push('/personal/setup/newpaypassword')
-      }, 2000)
-      this.show1 = false
+    /**
+     * 点击了确认按钮
+     */
+    confirmButtonClicked () {
+      if (!this.checkInputValue()) { return }
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('paypassword', _this.payPasswordSure)
+      _this.$_HTTPData.getSetPayPassword(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_Success('设置成功')
+          _this.$router.go(-1)
+        } else {
+          console.log(res.message)
+        }
+      })
     }
   },
   mounted () {},
-  watch: {
-    msg (curVal) {
-      if (/[^\d]/g.test(curVal)) {
-        this.msg = this.msg.replace(/[^\d]/g, '')
-      } else {
-        this.msgLength = curVal.length
-        if (this.msgLength === 6) {
-          this.getPush()
-        }
-      }
-    }
-  }
+  watch: {}
 }
 </script>
 
 <style scoped>
-  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
-  .phone-title{text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-top: 0.54rem;padding-bottom: 0.8rem}
-  .phone-title p{line-height: 0.48rem;}
-  .payPassword-form{margin: 0 0.2rem;}
-  .payPassword-form .text-right{padding-top: 0.2rem;font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);padding-bottom: 3rem}
-  .payPwd .pwd-wrap{
-    width: 100%;
-    height: 0.5rem;
-    margin: 0 auto;
-    background: #fff;
-    display: flex;
-    display: -webkit-box;
-    display: -webkit-flex;
-    cursor: pointer;
-  }
-  .pwd-wrap li{
-    list-style-type:none;
-    text-align: center;
-    line-height: 0.5rem;
-    -webkit-box-flex: 1;
-    flex: 1;
-    -webkit-flex: 1;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 0.05rem;
-    border: 0.01rem solid rgba(219,219,219,1);
-    margin: 0 0.05rem;
-  }
-  .pwd-wrap li i{
-    height: 0.1rem;
-    width: 0.1rem;
-    border-radius:50% ;
-    background: #000;
-    display: inline-block;
-  }
+  .home-nav{padding: 0.2rem 0;font-size: 0.2rem;font-family:PingFangSC-Semibold;font-weight:600;}
+  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0 0.1rem;}
+  .login-form{padding-top: 0.6rem;}
+  .login-form .login-form-div{margin: 0.15rem 0.2rem 0 0.2rem;border-bottom: 0.01rem solid #E8E8E8;padding: 0.15rem 0;}
+  .login-form .login-form-div input{border: 0;outline: none;background-color: rgba(0, 0, 0, 0);font-size: 0.16rem;
+    font-family:PingFangSC-Regular;font-weight:400;}
   input:focus {outline: none;}
+  .agreement{padding-top: 0.15rem;text-align: center;font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(167,167,167,1);}
+  .login-btn{padding-top: 1.77rem;padding-bottom: 1.5rem;}
+  .tiaoClickBtn{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #C8C8C8;background: #C8C8C8;color:rgba(255,255,255,1);}
 </style>

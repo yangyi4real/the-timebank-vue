@@ -36,7 +36,7 @@ export default {
       this.$router.push('/personal/wallet/detailedpage')
     },
     pushClick () {
-      this.$router.push('/personal/payment')
+      this.$router.push('/personal/lecturer-payment')
     }
   },
   mounted () {},

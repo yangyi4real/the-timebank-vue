@@ -1,6 +1,8 @@
 <template>
-  <div class="body">
-    <navbar :title="titleMsg"></navbar>
+  <div>
+    <div class="home-nav text-center">
+      时间银行
+    </div>
     <div class="wapper">
       <div class="login-form">
         <div class="login-form-div">
@@ -31,13 +33,13 @@
 </template>
 
 <script>
-// import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
+import { SHOW_GLOBAL_LOGIN, SHOW_GLOBAL_REGISTER } from '../../store/MutationTypes'
 import Navbar from '../../views/navbar/navbar'
 import TipsTools from '../../common/TipsTools'
 let lib = new TipsTools()
 
 export default {
-  name: 'Register',
+  name: 'RegisterEmbedded',
   components: {
     Navbar
   },
@@ -70,7 +72,9 @@ export default {
   },
   methods: {
     returnLogin () {
-      this.$router.push('/')
+      // this.$router.push('/')
+      this.$store.dispatch(SHOW_GLOBAL_REGISTER, false)
+      this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
     },
     loginAgreementClicked () {
       this.$router.push('/login-agreement')
@@ -174,7 +178,9 @@ export default {
       _this.$_HTTPData.getRegister(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('您已注册成功，请登录')
-          _this.$router.push('/')
+          // _this.$router.push('/')
+          _this.$store.dispatch(SHOW_GLOBAL_REGISTER, false)
+          _this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)
         }
@@ -197,7 +203,8 @@ export default {
 </script>
 
 <style scoped>
-  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
+  .home-nav{padding: 0.2rem 0;font-size: 0.2rem;font-family:PingFangSC-Semibold;font-weight:600;}
+  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0 0.1rem;}
   .login-form{padding-top: 0.3rem;}
   .login-form .login-form-div{margin: 0.15rem 0.2rem 0 0.2rem;border-bottom: 0.01rem solid #E8E8E8;padding: 0.15rem 0;}
   .login-form .login-form-div input{border: 0;outline: none;background-color: rgba(0, 0, 0, 0);font-size: 0.16rem;

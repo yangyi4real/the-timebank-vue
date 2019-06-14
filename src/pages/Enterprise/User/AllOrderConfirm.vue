@@ -1,76 +1,76 @@
 <template>
-    <div class="body">
-      <div class="navbar">
-        <div class="left-btn" @click="leftItemTouched">
-          <i class="iconfont iconxiazai6"></i>
+  <div class="body">
+    <div class="navbar">
+      <div class="left-btn" @click="leftItemTouched">
+        <i class="iconfont iconxiazai6"></i>
+      </div>
+      <div class="item title">
+        订单中心
+      </div>
+    </div>
+    <div class="wapper">
+      <!--<div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>-->
+      <div class="order-center-tab flex-row-around">
+        <div @click="tabsClicked">
+          全部
         </div>
-        <div class="item title">
-          订单中心
+        <div @click="tabsClicked2">
+          待付款
+        </div>
+        <div @click="tabsClicked3" class="active">
+          待确认
+        </div>
+        <div @click="tabsClicked4">
+          待开课
+        </div>
+        <div @click="tabsClicked5">
+          待评价
+        </div>
+        <div @click="tabsClicked6">
+          已取消
         </div>
       </div>
-      <div class="wapper">
-        <!--<div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>-->
-        <div class="order-center-tab flex-row-around">
-          <div @click="tabsClicked" class="active">
-            全部
-          </div>
-          <div @click="tabsClicked2">
-            待付款
-          </div>
-          <div @click="tabsClicked3">
-            待确认
-          </div>
-          <div @click="tabsClicked4">
-            待开课
-          </div>
-          <div @click="tabsClicked5">
-            待评价
-          </div>
-          <div @click="tabsClicked6">
-            已取消
-          </div>
-        </div>
-        <div class="list-null" v-show="listDataNull">
-          暂无订单
-        </div>
-        <div class="order-center-list" v-for="(item,index) in listData" :key="index" v-show="listDataShow">
-          <div class="order-center-list-msg">
-            <div class="flex-row-between">
-              <div class="order-center-list-msg-div flex-row-start">
-                <div class="msg-left"><img :src="item.userEntity.photo" @click="OrderDetailClick(item)"/></div>
-                <div class="msg-right">
-                  <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
-                  <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
-                  <p>{{item.userEntity.skillLevel}}</p>
-                </div>
-              </div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 6">已完成</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 5 || item.orderEntity.orderStatus === 7">已取消</div>
-            </div>
-            <div class="msg-time">
-              <div>约讲内容：{{item.orderEntity.purpose}}</div>
-              <div class="flex-row-start">
-                <div>约讲时间：</div>
-                <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
+      <div class="list-null" style="text-align: center" v-show="listDataNull">
+        暂无订单
+      </div>
+      <div class="order-center-list" v-for="(item,index) in listData" :key="index" v-show="listDataShow">
+        <div class="order-center-list-msg">
+          <div class="flex-row-between">
+            <div class="order-center-list-msg-div flex-row-start">
+              <div class="msg-left"><img :src="item.userEntity.photo" @click="OrderDetailClick(item)"/></div>
+              <div class="msg-right">
+                <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
+                <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
+                <p>{{item.userEntity.skillLevel}}</p>
               </div>
             </div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 6">已完成</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 5 || item.orderEntity.orderStatus === 7">已取消</div>
           </div>
-          <div class="order-center-list-opt">
-            <p class="text-right">合计：{{item.orderEntity.price}} 元</p>
-            <div class="opt-btn flex-row-end">
-              <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
-              <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
-              <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 1 || item.orderEntity.orderStatus === 2 || item.orderEntity.orderStatus === 3">取消订单</div>
-              <div>联系客服</div>
+          <div class="msg-time">
+            <div>约讲内容：{{item.orderEntity.purpose}}</div>
+            <div class="flex-row-start">
+              <div>约讲时间：</div>
+              <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
             </div>
+          </div>
+        </div>
+        <div class="order-center-list-opt">
+          <p class="text-right">合计：{{item.orderEntity.price}} 元</p>
+          <div class="opt-btn flex-row-end">
+            <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
+            <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
+            <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 1 || item.orderEntity.orderStatus === 2 || item.orderEntity.orderStatus === 3">取消订单</div>
+            <div>联系客服</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -79,7 +79,7 @@ import TipsTools from '../../../common/TipsTools'
 import AllOrderPayment from './AllOrderPayment'
 let lib = new TipsTools()
 export default {
-  name: 'OrderCenter',
+  name: 'AllOrderConfirm',
   components: {
     AllOrderPayment,
     Navbar
@@ -108,7 +108,7 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', 0)
+      formData.append('status', 2)
       formData.append('type', 2)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
@@ -136,10 +136,16 @@ export default {
       })
     },
     tabsClicked () {
+      this.$router.push('/user/ordercenter')
+    },
+    tabsClicked2 () {
+      this.$router.push('/user/allorder-payment')
+    },
+    tabsClicked3 () {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', 0)
+      formData.append('status', 2)
       formData.append('type', 2)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
@@ -165,12 +171,6 @@ export default {
           lib.MessageAlert_None(res.message)
         }
       })
-    },
-    tabsClicked2 () {
-      this.$router.push('/user/allorder-payment')
-    },
-    tabsClicked3 () {
-      this.$router.push('/user/allorder-confirm')
     },
     tabsClicked4 () {
       this.$router.push('/user/allorder-class')

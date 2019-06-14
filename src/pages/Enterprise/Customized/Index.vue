@@ -37,7 +37,7 @@
             <img :src="item.photo"/>
           </div>
           <div class="class-list-div-right">
-            <label>{{item.name}}<i class="iconfont iconnv main-color" v-if="item.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.sexuality === 2"></i></label>
+            <label>{{item.name}}<i class="iconfont iconnan main-color" v-if="item.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.sexuality === 2"></i></label>
             <p>{{item.birthday}}岁 | 工作{{item.workingAge}}年 | 青岛</p>
             <p><i class="iconfont iconqiwangzhiwei main-color"></i>{{item.skillLevel}}</p>
             <p><i class="iconfont iconditu main-color"></i>{{item.expectedLocation}}</p>
@@ -107,11 +107,15 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
           for (let i = 0; i < _this.listData.length; i++) {
-            let newBirthday = _this.listData[i].birthday
-            let birthday = new Date(newBirthday.replace(/-/g, '/'))
+            console.log(_this.listData[i].birthday)
+            let birthday = new Date(_this.listData[i].birthday.replace(/-/g, '/'))
             let d = new Date()
             let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
             _this.listData[i].birthday = age
+            console.log(_this.listData[i].birthday)
+            let secondDate = new Date(_this.listData[i].workingAge.replace(/-/g, '/'))
+            let workYears = d.getFullYear() - secondDate.getFullYear()
+            _this.listData[i].workingAge = workYears
           }
         } else {
           lib.MessageAlert_None(res.message)

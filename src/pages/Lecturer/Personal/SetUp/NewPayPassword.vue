@@ -3,13 +3,13 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="pay-form-div">
-        <input type="password" v-model="payPassword" placeholder="设置6位数字支付密码" v-on:input="inputValue"/>
+        <input type="password" v-model="payPassword" placeholder="设置6位数字支付密码"/>
       </div>
       <div class="pay-form-div">
-        <input type="password" v-model="payPasswordSure" placeholder="确认密码" v-on:input="inputValue"/>
+        <input type="password" v-model="payPasswordSure" placeholder="确认密码"/>
       </div>
       <div class="pay-form-div">
-        <input type="text" v-model="phoneNumberCode" placeholder="请输入验证码" v-on:input="inputValue"/>
+        <input type="text" v-model="phoneNumberCode" placeholder="请输入验证码"/>
         <span class="fr" :class="{'get-code-btn': true, 'disable': !getMsgCodeButtonCanTap}" @click="getMsgCodeButtonClicked">
             {{ getMsgCodeButtonTitle }}
           </span>
@@ -33,7 +33,7 @@ export default {
   },
   data () {
     return {
-      titleMsg: '设置新密码',
+      titleMsg: '新支付密码',
       payPassword: '',
       payPasswordSure: '',
       phoneNumberCode: '',
@@ -104,33 +104,15 @@ export default {
       _this.$_HTTPData.getResetPayPassword(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('设置成功')
-          _this.$router.push('/personal/setup/index')
+          _this.$router.go(-1)
         } else {
           console.log(res.message)
         }
       })
-    },
-    inputValue () {
-      if (this.payPassword !== '' && this.payPasswordSure !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
     }
   },
   mounted () {},
   watch: {
-    inputValue () {
-      if (this.payPassword !== '' && this.payPasswordSure !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
-    }
   }
 }
 </script>

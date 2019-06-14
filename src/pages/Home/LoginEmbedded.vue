@@ -1,5 +1,5 @@
 <template>
-  <div class="body">
+  <div>
     <div class="home-nav text-center">
       时间银行
     </div>
@@ -48,12 +48,12 @@
 </template>
 
 <script>
-// import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
+import { SHOW_GLOBAL_LOGIN, SHOW_GLOBAL_REGISTER } from '../../store/MutationTypes'
 import TipsTools from '../../common/TipsTools'
 let lib = new TipsTools()
 
 export default {
-  name: 'Login',
+  name: 'LoginEmbedded',
   components: {},
   data () {
     return {
@@ -69,7 +69,9 @@ export default {
   computed: {},
   methods: {
     registerClicked () {
-      this.$router.push('/register')
+      this.$store.dispatch(SHOW_GLOBAL_REGISTER, true)
+      this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
+      // this.$router.push('/register')
     },
     jsClick () {
       this.shows = 1
@@ -122,6 +124,7 @@ export default {
       _this.$_HTTPData.getLogin(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
+          _this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
           _this.$SaiLei.cookiesSave('user_loginStatus', 1)
           console.log(res)
           if (res.result.account.payPassword === null) {
@@ -148,6 +151,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
           _this.$SaiLei.cookiesSave('user_loginStatus', 2)
+          _this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
           console.log(res)
           if (res.result.account.payPassword === null) {
             _this.$router.push(`/paypassword/${res.result.user.id}/2`)

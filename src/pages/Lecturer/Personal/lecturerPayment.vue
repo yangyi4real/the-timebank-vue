@@ -1,6 +1,9 @@
 <template>
   <div class="body">
-    <navbar :title="titleMsg"></navbar>
+    <div class="home-nav clearfix">
+      <i class="iconfont iconxiazai6 fl" @click="authentClicked"></i>
+      <span class="fl"> 支付</span>
+    </div>
     <div class="wapper">
       <div class="payment-title">
         <label>支付金额</label>
@@ -21,9 +24,9 @@
           <div class="payment-mode-list-text">
             <img src=""/>微信支付
           </div>
-          <div class="payment-mode-list-radio">
-            <input id="item2" type="radio" name="payItem" value="2" v-model="checkedValue">
-            <label for="item2"></label>
+          <div class="payment-mode-list-radio" @click="noWinxin">
+            <input type="radio">
+            <label></label>
           </div>
         </div>
       </div>
@@ -84,8 +87,14 @@ export default {
     }
   },
   methods: {
+    authentClicked () {
+      this.$router.push('/personal/information/authentication-center')
+    },
     affirmPay () {
       this.show1 = true
+    },
+    noWinxin () {
+      lib.MessageAlert_None('暂时无法使用微信支付，敬请期待')
     },
     payFocus () {
       this.$refs.pwd.focus()
@@ -120,7 +129,9 @@ export default {
 
 <style scoped>
   input:focus {outline: none;}
-  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
+  .home-nav{padding: 0.2rem 0;font-size: 0.2rem;font-family:PingFangSC-Semibold;font-weight:600;margin: 0 0.1rem;}
+  .home-nav span{padding-left: 1.6rem;}
+  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0 0.1rem;}
   .payment-title{padding-top: 0.6rem;padding-bottom: 0.48rem;text-align: center;}
   .payment-title label{font-size:0.19rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(0,0,0,1);}
   .payment-title p{font-size:0.32rem;ont-family:PingFangSC-Semibold;font-weight:600;color:rgba(249,91,64,1);padding-top: 0.4rem;}
