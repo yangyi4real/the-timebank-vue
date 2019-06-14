@@ -6,7 +6,7 @@
         <div class="feedback-title">
           <p>您的宝贵意见会让我们做的越来越好</p>
           <div class="feedback-title-msg">
-            <textarea v-model="feedback"></textarea>
+            <textarea></textarea>
           </div>
         </div>
         <div class="feedback-btn">
@@ -19,8 +19,6 @@
 
 <script>
 import Navbar from '../../../../views/navbar/navbar'
-import TipsTools from '../../../../common/TipsTools'
-let lib = new TipsTools()
 export default {
   name: 'Feedback',
   components: {
@@ -28,26 +26,12 @@ export default {
   },
   data () {
     return {
-      titleMsg: '意见反馈',
-      feedback: ''
+      titleMsg: '意见反馈'
     }
   },
   computed: {},
   methods: {
-    /**
-     * 验证输入框的值
-     * @return {boolean}
-     */
-    checkInputValue () {
-      if (this.feedback === '') {
-        lib.MessageAlert_Error('请输入您的意见')
-        return false
-      }
-      return true
-    },
     subClick () {
-      if (!this.checkInputValue()) { return }
-      lib.MessageAlert_Success('提交成功')
       this.$router.push('/personal/setup/index')
     }
   },

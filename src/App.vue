@@ -1,21 +1,13 @@
 <template>
-  <div id="app" style="margin-bottom: 2rem">
+  <div id="app">
     <router-view v-if="isRouterAlive"></router-view>
-    <login-embedded v-if="showLogin"></login-embedded>
-    <register-embedded v-if="showRegister"></register-embedded>
   </div>
 </template>
 
 <script>
 import UserModel from './store/UserModel'
 import {SET_USER_INFO} from './store/MutationTypes'
-import LoginEmbedded from './pages/Home/LoginEmbedded'
-import RegisterEmbedded from './pages/Home/RegisterEmbedded'
 export default {
-  components: {
-    RegisterEmbedded,
-    LoginEmbedded
-  },
   name: 'App',
   provide () {
     return {
@@ -27,22 +19,11 @@ export default {
       isRouterAlive: true
     }
   },
-  computed: {
-    showLogin () {
-      return this.$store.state.showGlobalLogin
-    },
-    showRegister () {
-      return this.$store.state.showGlobalRegister
-    }
-  },
-  mounted () {
-    console.log(this.$store.state.showGlobalLogin)
-  },
+  components: {},
   methods: {
     reload () {
       this.isRouterAlive = false
       this.$nextTick(function () {
-        console.log('进来了')
         this.isRouterAlive = true
       })
     }
@@ -139,8 +120,7 @@ export default {
   /*按钮黄框黑色字*/
   .btn-border-black{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40}
   /*按钮背景色透明*/
-  /*.btn-border-opacity{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40;background:rgba(249,91,64,1);opacity:0.4966;color:rgba(255,255,255,1);}*/
-  .btn-border-opacity{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40;background:rgba(249,91,64,1);color:rgba(255,255,255,1);}
+  .btn-border-opacity{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40;background:rgba(249,91,64,1);opacity:0.4966;color:rgba(255,255,255,1);}
   /*按钮背景色不透明*/
   .btn-border{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40;background:rgba(249,91,64,1);color:rgba(255,255,255,1);}
   .treeselect .vue-treeselect__multi-value-item{color: #fff;background: rgba(249,91,64,1);}

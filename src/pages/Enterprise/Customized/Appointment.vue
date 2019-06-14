@@ -18,15 +18,14 @@
         <div>
           <div class="choice-time-list">
             <div class="flex-row-between choice-time-list-div" style="padding-bottom: 0.2rem;">
-              <div class="choice-time-list-left">所选日期</div>
+              <div class="choice-time-list-left">所选时间</div>
               <div>{{calendarData}}</div>
             </div>
-            <div v-show="noTime" class="choice-time-list-div" style="padding-bottom: 0.3rem">暂无储存时间</div>
             <div v-show="choseDiv">
               <div class="flex-row-between choice-time-list-div">
                 <div class="choice-time-list-left">可预约时间范围</div>
                 <div>
-                  <p>{{timeSaveBegin}} 至 {{timeSaveEnd}}</p>
+                  <p>{{day}} {{timeSaveBegin}} 至 {{timeSaveEnd}}</p>
                 </div>
               </div>
               <div class="flex-row-between choice-time-list-div padding-top-15">
@@ -37,10 +36,11 @@
                   <div class="choice-time-list-right-border"> <yd-datetime type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
                 </div>
               </div>
-              <div class="choice-btn">
-                <div class="btn-border" @click="appointmentClick">下一步</div>
-              </div>
             </div>
+          </div>
+          <div class="choice-btn">
+            <div class="btn-border" @click="appointmentClick" v-if="this.choseList.message !== '当日无储存时间'">下一步</div>
+            <div class="btn-border-opacity" v-if="this.choseList.message === '当日无储存时间'">下一步</div>
           </div>
         </div>
       </div>
@@ -144,8 +144,7 @@ export default {
       day: '',
       timeSaveBegin: '',
       timeSaveEnd: '',
-      choseDiv: false,
-      noTime: false
+      choseDiv: false
     }
   },
   computed: {
@@ -219,12 +218,12 @@ export default {
             if (item.className === 0) {
               item.className = 'mark1'
             }
-            // if (item.className === 1) {
-            //   item.className = 'mark2'
-            // }
-            // if (item.className === 2) {
-            //   item.className = 'mark3'
-            // }
+            if (item.className === 1) {
+              item.className = 'mark2'
+            }
+            if (item.className === 2) {
+              item.className = 'mark3'
+            }
           }
           console.log(_this.listDatasTime)
         } else {
@@ -241,16 +240,15 @@ export default {
       formData.append('date', calendarTime)
       _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
+          lib.MessageAlert_None(res.message)
           _this.choseList = res
-          if (_this.choseList.message === '当日无储存时间' || res.result.order !== null) {
+          if (_this.choseList.message === '当日无储存时间') {
             _this.choseDiv = false
-            _this.noTime = true
           } else {
             _this.day = res.result.timeSave.date.substring(0, 10)
             _this.timeSaveBegin = res.result.timeSave.begin.substring(11, 16)
             _this.timeSaveEnd = res.result.timeSave.end.substring(11, 16)
             _this.choseDiv = true
-            _this.noTime = false
           }
           _this.chose = res.result
           _this.chose.timeSave = res.result.timeSave
@@ -286,8 +284,8 @@ export default {
       _this.$_HTTPData.getAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.appointmentList = res.result
-          console.log(_this.appointmentList.id)
-          _this.$router.push(`/user/enterprise-payment/${_this.appointmentList.price}/${_this.appointmentList.id}`)
+          console.log(_this.appointmentList.price)
+          _this.$router.push(`/personal/payment/${_this.appointmentList.price}`)
           lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)
@@ -343,7 +341,7 @@ export default {
 </script>
 
 <style scoped>
-  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;padding-top: 0.3rem;}
+  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
   .padding-top-15{padding-top: 0.15rem;}
   .choice-time-list{padding: 0.2rem 0;border-bottom: 0.01rem solid #E8E8E8;margin: 0 0.2rem;}
   .choice-time-list .choice-time-list-div{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;}
@@ -363,5 +361,4 @@ export default {
   .wh_container >>> .mark1 {color: rgba(249,91,64,1);}
   .wh_container >>> .mark2 {background: rgba(249,91,64,1);color: #fff;border-radius: 1rem;width: 0.4rem!important;}
   .wh_container >>> .mark3 {color: rgba(249,91,64,1);border: 0.01rem solid rgba(249,91,64,1);border-radius: 1rem;width: 0.4rem!important;}
-  .btn-border-none{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #C8C8C9;background: #C8C8C9;color:rgba(255,255,255,1);}
 </style>

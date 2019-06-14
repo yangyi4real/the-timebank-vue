@@ -8,7 +8,7 @@
         <div class="head flex-row-start">
           <div class="head-img">
             <!--<img :src="userIconUrl" @click="userIconDidClicked" class="User-icon">-->
-            <img :src="src" alt=""/>
+            <img :src="src" alt="" @click="personalCenterClicked"/>
           </div>
           <div>
             <p class="head-text" @click="addInfo">{{listData.name}} <span v-if="this.listData.name === null || this.listData.name === ''" class="main-color wanshan">点我完善信息</span></p>
@@ -40,25 +40,25 @@
         <div class="modular3-title-right" @click="orderCenterClick">查看全部订单</div>
       </div>
       <div class="modular3-sort flex-row-between">
-        <div @click="statusClicked1">
+        <div>
           <i class="iconfont icondaifukuan"></i>
           <p>待付款</p>
         </div>
-        <div @click="statusClicked2">
+        <div>
           <i class="iconfont iconqueren1"></i>
-          <p>待确认</p>
+          <p>待付款</p>
         </div>
-        <div @click="statusClicked3">
+        <div>
           <i class="iconfont iconkaishijixi"></i>
           <p>待开课</p>
         </div>
-        <div @click="statusClicked4">
+        <div>
           <i class="iconfont iconpingjia"></i>
           <p>待评价</p>
         </div>
-        <div @click="statusClicked5">
+        <div>
           <i class="iconfont icontubiaolunkuo-"></i>
-          <p>已取消</p>
+          <p>退款/售后</p>
         </div>
       </div>
     </div>
@@ -69,54 +69,42 @@
           <p>邀请好友</p>
         </div>
         <div>
-          <a :href="'tel:' + '05328888888'">
-            <img src="../../../assets/icon/kefu.png"/>
-            <p>联系客服</p>
-          </a>
+          <img src="../../../assets/icon/shoucang.png"/>
+          <p>收藏夹</p>
         </div>
-        <div @click="personalCenterClicked">
-          <img src="../../../assets/icon/shezhi.png"/>
-          <p>设置</p>
+        <div @click="linkSetUp">
+          <img src="../../../assets/icon/liulan.png"/>
+          <p>浏览记录</p>
         </div>
-        <!--<div>-->
-          <!--<img src="../../../assets/icon/shoucang.png"/>-->
-          <!--<p>收藏夹</p>-->
-        <!--</div>-->
-        <!--<div>-->
-          <!--<img src="../../../assets/icon/liulan.png"/>-->
-          <!--<p>浏览记录</p>-->
-        <!--</div>-->
       </div>
-      <!--<div class="modular4-div flex-row-around">-->
-        <!--<div>-->
-          <!--<img src="../../../assets/icon/bangzhu.png"/>-->
-          <!--<p>帮助中心</p>-->
-        <!--</div>-->
-        <!--<div>-->
-          <!--<img src="../../../assets/icon/yonghu.png"/>-->
-          <!--<p>服务协议</p>-->
-        <!--</div>-->
-        <!--<div>-->
-          <!--<a :href="'tel:' + '05328888888'">-->
-            <!--<img src="../../../assets/icon/kefu.png"/>-->
-            <!--<p>联系客服</p>-->
-          <!--</a>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="modular4-div flex-row-around">-->
-        <!--<div>-->
-          <!--<img src="../../../assets/icon/yijian.png"/>-->
-          <!--<p>意见反馈</p>-->
-        <!--</div>-->
-        <!--<div @click="personalCenterClicked">-->
-          <!--<img src="../../../assets/icon/shezhi.png"/>-->
-          <!--<p>设置</p>-->
-        <!--</div>-->
-        <!--<div style="visibility:hidden">-->
-          <!--<img src=""/>-->
-          <!--<p>联系客服</p>-->
-        <!--</div>-->
-      <!--</div>-->
+      <div class="modular4-div flex-row-around">
+        <div>
+          <img src="../../../assets/icon/kefu.png"/>
+          <p>联系客服</p>
+        </div>
+        <div>
+          <img src="../../../assets/icon/bangzhu.png"/>
+          <p>帮助中心</p>
+        </div>
+        <div @click="linkSetUp">
+          <img src="../../../assets/icon/yonghu.png"/>
+          <p>服务协议</p>
+        </div>
+      </div>
+      <div class="modular4-div flex-row-around">
+        <div>
+          <img src="../../../assets/icon/yijian.png"/>
+          <p>意见反馈</p>
+        </div>
+        <div style="visibility:hidden">
+          <img src=""/>
+          <p>联系客服</p>
+        </div>
+        <div style="visibility:hidden">
+          <img src=""/>
+          <p>联系客服</p>
+        </div>
+      </div>
     </div>
     <tabbar-ent :idx="2"></tabbar-ent>
   </div>
@@ -154,21 +142,6 @@ export default {
     this.loadData()
   },
   methods: {
-    statusClicked1 () {
-      this.$router.push('/user/allorder-payment')
-    },
-    statusClicked2 () {
-      this.$router.push('/user/allorder-confirm')
-    },
-    statusClicked3 () {
-      this.$router.push('/user/allorder-class')
-    },
-    statusClicked4 () {
-      this.$router.push('/user/allorder-evaluate')
-    },
-    statusClicked5 () {
-      this.$router.push('/user/allorder-refund')
-    },
     personalCenterClicked () {
       this.$router.push('/user/personalcenter')
     },
@@ -202,7 +175,7 @@ export default {
     },
     // 钱包
     walletClick () {
-      this.$router.push(`/personal/wallet/index/${this.listData.balance}`)
+      this.$router.push('/personal/wallet/index')
     },
     // 订单中心
     orderCenterClick () {
@@ -215,6 +188,10 @@ export default {
     // 设置
     linkSetUp () {
       this.$router.push('/personal/setup/index')
+    },
+    // 完善资料
+    baseDataClick () {
+      this.$router.push('/personal/information/basedata')
     }
   }
 }

@@ -7,7 +7,7 @@
           <div class="flex-row-between">
             <div class="basedata-list-left">认证状态</div>
             <div>
-              <span class="text-primary" v-if="this.listData.authStatus === 0 || this.listData.authStatus === null">未认证</span>
+              <span class="text-primary" v-if="this.listData.authStatus === '' || this.listData.authStatus === null">未认证</span>
               <span class="text-primary" v-if="this.listData.authStatus === 1">已认证</span><i class="iconfont iconjiantou"></i>
             </div>
           </div>
@@ -339,7 +339,7 @@ export default {
       _this.$_HTTPData.getLectureAuth(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
-          _this.$router.push('/personal/lecturer-payment/300')
+          _this.$router.push('/personal/payment/300')
         } else {
           lib.MessageAlert_Error(res.message)
         }

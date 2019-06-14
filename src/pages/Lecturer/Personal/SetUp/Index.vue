@@ -3,12 +3,12 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="setUp-main">
-        <!--<div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/phoneverification')">-->
-          <!--<div>手机绑定</div>-->
-          <!--<div>-->
-            <!--<span></span><i class="iconfont iconjiantou"></i>-->
-          <!--</div>-->
-        <!--</div>-->
+        <div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/phoneverification')">
+          <div>手机绑定</div>
+          <div>
+            <span></span><i class="iconfont iconjiantou"></i>
+          </div>
+        </div>
         <div class="setUp-list flex-row-between" @click="$router.push('/personal/setup/inputpaypassword')">
           <div>支付密码</div>
           <div>
@@ -49,12 +49,10 @@
 </template>
 
 <script>
-// import { SHOW_GLOBAL_LOGIN } from '../../../../store/MutationTypes'
 import Navbar from '../../../../views/navbar/navbar'
 import TipsTools from '../../../../common/TipsTools'
 let lib = new TipsTools()
 export default {
-  inject: ['reload'],
   name: 'SetUp',
   components: {
     Navbar
@@ -114,12 +112,10 @@ export default {
             color: true,
             callback: () => {
               this.$SaiLei.cookiesClear('user_info')
-              this.$SaiLei.cookiesClear('user_loginStatus')
               this.$SaiLei.cookiesClear('user_id')
               this.$SaiLei.cookiesClear('user_name')
-              this.reload()
-              location.reload()
-              // this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
+              this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
+              this.$router.push('/')
             }
           }
         ]

@@ -126,25 +126,6 @@ export default {
   created () {},
   computed: {},
   methods: {
-    /**
-     * 验证输入框的值
-     * @return {boolean}
-     */
-    checkInputValue () {
-      if (this.skillValue === '') {
-        lib.MessageAlert_Error('请选择技能标签')
-        return false
-      }
-      if (this.areaValue === '') {
-        lib.MessageAlert_Error('请选择意向地点')
-        return false
-      }
-      if (this.Pay === '') {
-        lib.MessageAlert_Error('请输入金额')
-        return false
-      }
-      return true
-    },
     treeselectBtn () {
       this.sub1 = false
       this.showList = true
@@ -164,7 +145,7 @@ export default {
       this.sub2 = true
     },
     pushClick () {
-      if (!this.checkInputValue()) { return }
+      // if (!this.checkInputValue()) { return }
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))

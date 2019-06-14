@@ -36,31 +36,36 @@
             </div>
           </div>
           <div v-show="show1" class="lecturer-skill-div">
-            <div style="padding-top: 0.2rem">
-              {{listDatas.introduction}}
-            </div>
+            {{listDatas.introduction}}
           </div>
           <div v-show="show2" class="lecturer-skill-div">
-            <div class="lecturer-skill-div-class" v-for="(item,index) in listDatas.classIntroEntityList" :key="index" >
-              <div class="lecturer-skill-div-class-title">{{item.className}}</div>
-              <div class="flex-row-start">
-                <div class="tip">{{item.tags}}</div>
-              </div>
-              <div class="lecturer-skill-div-class-text">
-                {{item.description}}
-              </div>
+            <div class="lecturer-skill-div-class" v-for="(item,index) in listDatas.classExampleList" :key="index" >
+              <!--<div class="lecturer-skill-div-class-title">产品设计的思路</div>-->
+              <!--<div class="flex-row-start">-->
+                <!--<div class="tip">产品经理</div>-->
+                <!--<div class="tip">UI设计</div>-->
+              <!--</div>-->
+              <!--<div class="lecturer-skill-div-class-text">-->
+                <!--内容介绍介绍介绍介绍：讲师介绍，课程介绍、服务案例 （历史案例、平台案例）、评价，若点击每个菜单按钮直 接切换至此模块；4.咨询：咨询客服，点击弹出电话，可 以进行拨打。。-->
+              <!--</div>-->
             </div>
           </div>
           <div v-show="show3" class="lecturer-skill-div">
-            <div v-for="(item,index) in listDatas.classExampleEntityList" :key="index">
-              <div class="lecturer-skill-div-case" >
-                <label>{{item.className}}</label>
-                <label>{{item.companyName}}</label>
-              </div>
+            <div v-for="(item,index) in listDatas.classIntroEntityList" :key="index">
+              <!--<div class="lecturer-skill-div-case" >-->
+                <!--<p>历史案例</p>-->
+                <!--<label>课程名称</label>-->
+                <!--<label>企业名称</label>-->
+              <!--</div>-->
+              <!--<div class="lecturer-skill-div-case">-->
+                <!--<p>平台案例</p>-->
+                <!--<label>课程名称</label>-->
+                <!--<label>企业名称</label>-->
+              <!--</div>-->
             </div>
           </div>
           <div v-show="show4" class="lecturer-skill-div">
-            <!--<div class="lecturer-skill-evaluate flex-row-start" v-for="(item,index) in listDatas.evaluationEntityList" :key="index" >-->
+            <div class="lecturer-skill-evaluate flex-row-start" v-for="(item,index) in listDatas.evaluationEntityList" :key="index" >
               <!--<div class="lecturer-skill-evaluate-left"><img src=""/></div>-->
               <!--<div class="lecturer-skill-evaluate-right">-->
                 <!--<label>青岛赛雷科技有限公司</label>-->
@@ -68,12 +73,12 @@
                 <!--<p><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i> 非常推荐</p>-->
                 <!--<div class="right-text"></div>-->
               <!--</div>-->
-            <!--</div>-->
+            </div>
           </div>
         </div>
       </div>
       <div class="base-btn flex-row-start">
-        <div class="base-btn-div base-btn-left"><a :href="'tel:' + '05328888888'">咨询</a></div>
+        <div class="base-btn-div base-btn-left">资讯</div>
         <div class="base-btn-div base-btn-right" @click="appointmentClick()">预约</div>
       </div>
     </div>
@@ -157,9 +162,6 @@ export default {
           let d = new Date()
           let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
           _this.listDatas.birthday = age
-          let secondDate = new Date(_this.listDatas.workingAge.replace(/-/g, '/'))
-          let workYears = d.getFullYear() - secondDate.getFullYear()
-          _this.listDatas.workingAge = workYears
         } else {
           lib.MessageAlert_None(res.message)
         }
@@ -208,7 +210,6 @@ export default {
   .lecturer-skill-div-case{padding-top: 0.2rem;border-bottom: 0.01rem solid #E8E8E8;}
   .lecturer-skill-div-case p{font-size:0.15rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.15rem;}
   .lecturer-skill-div-case label{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);display: block;padding-left: 0.15rem;padding-bottom: 0.15rem;}
-  .lecturer-skill-div-class{border-bottom: 0.01rem solid #E8E8E8;padding-bottom: 0.1rem;}
   .lecturer-skill-div-class .lecturer-skill-div-class-title{font-size:0.15rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding: 0.2rem 0;}
   .lecturer-skill-div-class .tip{width: 0.84rem;height: 0.31rem;background:rgba(249,91,64,1);border-radius:5px;text-align: center;color: #fff;font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;line-height: 0.31rem;margin-right: 0.2rem;}
   .lecturer-skill-div-class .lecturer-skill-div-class-text{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.2rem;padding-top: 0.2rem}

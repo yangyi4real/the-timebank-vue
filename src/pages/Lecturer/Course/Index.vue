@@ -24,8 +24,7 @@
               <div class="tip fr" v-if="item.orderEntity.orderStatus === 2">待确认</div>
               <div class="tip fr" v-if="item.orderEntity.orderStatus === 3">待开课</div>
               <div class="tip fr" v-if="item.orderEntity.orderStatus === 4">待评价</div>
-              <div class="tip fr" v-if="item.orderEntity.orderStatus === 6">已完成</div>
-              <div class="tip fr" v-if="item.orderEntity.orderStatus === 5 || item.orderEntity.orderStatus === 7">已取消</div>
+              <div class="tip fr" v-if="item.orderEntity.orderStatus === 5">已完成</div>
             </div>
             <div class="msg-time">
               <div>约讲地址：{{item.orderEntity.address}}</div>
@@ -36,12 +35,12 @@
             </div>
           </div>
           <div class="order-center-list-opt">
-            <p class="text-right">参与人数：{{item.orderEntity.joinNum}}人&nbsp;&nbsp;&nbsp;&nbsp;合计：{{item.orderEntity.price}} 元</p>
+            <p class="text-right">参与人数：{{item.orderEntity.joinNum}}人&nbsp;&nbsp;&nbsp;&nbsp;合计：{{item.orderEntity.price}}</p>
             <div class="opt-btn flex-row-end">
-              <div @click="evaluateClick(item)" v-if="item.orderEntity.orderStatus === 4 || item.orderEntity.orderStatus === 6">评价</div>
+              <div @click="evaluateClick(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
               <div @click="acceptType(item)" v-if="item.orderEntity.orderStatus === 2">接受</div>
               <div @click="refuseType(item)" v-if="item.orderEntity.orderStatus === 2">拒绝</div>
-              <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 3">取消行程</div>
+              <div v-if="item.orderEntity.orderStatus === 3">取消行程</div>
               <div>联系客服</div>
             </div>
           </div>
@@ -89,13 +88,13 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', 0)
+      formData.append('status', '')
       formData.append('type', 1)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listRecord = res.result
           for (let i = _this.listRecord.length - 1; i > 0; i--) {
-            if (_this.listRecord[i].orderEntity.orderStatus === 1) {
+            if (_this.listRecord[i].companyEntity.status === 1) {
               _this.listRecord.splice(i, 1)
             }
           }
@@ -117,23 +116,17 @@ export default {
       let formData = new FormData()
       if (this.changeTab === 0) {
         formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-        formData.append('status', 0)
+        formData.append('status', '')
         formData.append('type', 1)
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
             for (let i = _this.listRecord.length - 1; i > 0; i--) {
-              if (_this.listRecord[i].orderEntity.orderStatus === 1) {
+              if (_this.listRecord[i].companyEntity.status === 1) {
                 _this.listRecord.splice(i, 1)
               }
             }
-            if (_this.listRecord.length === 0) {
-              _this.Tips = true
-              _this.listItem = false
-            } else {
-              _this.Tips = false
-              _this.listItem = true
-            }
+            console.log(_this.listRecord)
           } else {
             lib.MessageAlert_None(res.message)
           }
@@ -146,13 +139,7 @@ export default {
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
-            if (_this.listRecord.length === 0) {
-              _this.Tips = true
-              _this.listItem = false
-            } else {
-              _this.Tips = false
-              _this.listItem = true
-            }
+            console.log(_this.listRecord)
           } else {
             lib.MessageAlert_None(res.message)
           }
@@ -165,13 +152,7 @@ export default {
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
-            if (_this.listRecord.length === 0) {
-              _this.Tips = true
-              _this.listItem = false
-            } else {
-              _this.Tips = false
-              _this.listItem = true
-            }
+            console.log(_this.listRecord)
           } else {
             lib.MessageAlert_None(res.message)
           }
@@ -184,13 +165,7 @@ export default {
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
-            if (_this.listRecord.length === 0) {
-              _this.Tips = true
-              _this.listItem = false
-            } else {
-              _this.Tips = false
-              _this.listItem = true
-            }
+            console.log(_this.listRecord)
           } else {
             lib.MessageAlert_None(res.message)
           }
@@ -203,13 +178,7 @@ export default {
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.listRecord = res.result
-            if (_this.listRecord.length === 0) {
-              _this.Tips = true
-              _this.listItem = false
-            } else {
-              _this.Tips = false
-              _this.listItem = true
-            }
+            console.log(_this.listRecord)
           } else {
             lib.MessageAlert_None(res.message)
           }
@@ -231,27 +200,12 @@ export default {
         }
       })
     },
-    // 拒绝
-    refuseType (item) {
+    // 取消
+    refuseType () {
       let _this = this
       let formData = new FormData()
       formData.append('type', 2)
-      formData.append('orderId', item.orderEntity.id)
-      _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.loadData()
-          lib.MessageAlert_Success(res.message)
-        } else {
-          lib.MessageAlert_None(res.message)
-        }
-      })
-    },
-    // 取消行程
-    cancelOrder (item) {
-      let _this = this
-      let formData = new FormData()
-      formData.append('type', 1)
-      formData.append('orderId', item.orderEntity.id)
+      formData.append('orderId', this.getOrderId)
       _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.loadData()

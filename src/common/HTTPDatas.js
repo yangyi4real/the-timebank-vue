@@ -22,8 +22,8 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.141:8081'
-      // this.host = 'http://114.116.33.168:8081'
+      // this.host = 'http://192.168.1.123:8081'
+      this.host = 'http://114.116.33.168:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
@@ -76,11 +76,7 @@ class HTTPData {
       // 切换登录身份
       switchLogin: '/time-bank/user/switch_login',
       // 取消储存
-      cancelSave: '/time-bank/user/cancel_save',
-      // 取消行程
-      cancelOrder: '/time-bank/user/cancel_order',
-      // 修改登录密码
-      changeLoginPassword: '/time-bank/user/change_password'
+      cancelSave: '/time-bank/user/cancel_save'
     }
     // 请求拦截
     // 响应拦截
@@ -208,6 +204,15 @@ class HTTPData {
       return false
     }
     /**
+     * 汇付用户不存在
+     */
+    if (res.code === 49 || res.code === '049') {
+      if (!obj['isButtonAlert']) {
+        this.TipsTools.MessageAlert_Error('请先开通支付账户')
+      }
+      return false
+    }
+    /**
      * 未知异常
      */
     if (res.code === '999' || res.code === 999) {
@@ -267,13 +272,13 @@ class HTTPData {
     _this.POST(obj, `${_this.host}${_this.url.login}`, data, function (res) {
       if (res.code === 0 || res.code === '000') {
         _this.SaiLei.cookiesSave('user_info', res.result)
-        _this.SaiLei.cookiesSave('user_id', res.result.user.id) // id
-        _this.SaiLei.cookiesSave('user_name', res.result.user.name) // 姓名
-        _this.SaiLei.cookiesSave('user_nickname', res.result.user.nickname) // 昵称
-        _this.SaiLei.cookiesSave('user_sex', res.result.user.sex) // 性别
-        _this.SaiLei.cookiesSave('user_authStatus', res.result.user.authStatus) // 认证状态
-        _this.SaiLei.cookiesSave('user_loginId', res.result.user.loginId) // 手机号
-        _this.SaiLei.cookiesSave('user_email', res.result.user.email) // 邮箱
+        _this.SaiLei.cookiesSave('user_id', res.result.id) // id
+        _this.SaiLei.cookiesSave('user_name', res.result.name) // 姓名
+        _this.SaiLei.cookiesSave('user_nickname', res.result.nickname) // 昵称
+        _this.SaiLei.cookiesSave('user_sex', res.result.sex) // 性别
+        _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
+        _this.SaiLei.cookiesSave('user_loginId', res.result.loginId) // 手机号
+        _this.SaiLei.cookiesSave('user_email', res.result.email) // 邮箱
         let user = new UserModel(res.result)
         obj.$store.dispatch(SET_USER_INFO, user)
       }
@@ -290,6 +295,18 @@ class HTTPData {
     let _this = this
     data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.register}`, data, function (res) {
+      if (res.code === 0 || res.code === '000') {
+        _this.SaiLei.cookiesSave('user_info', res.result)
+        _this.SaiLei.cookiesSave('user_id', res.result.id) // id
+        _this.SaiLei.cookiesSave('user_name', res.result.name) // 姓名
+        _this.SaiLei.cookiesSave('user_nickname', res.result.nickname) // 昵称
+        _this.SaiLei.cookiesSave('user_sex', res.result.sex) // 性别
+        _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
+        _this.SaiLei.cookiesSave('user_loginId', res.result.loginId) // 手机号
+        _this.SaiLei.cookiesSave('user_email', res.result.email) // 邮箱
+        let user = new UserModel(res.result)
+        obj.$store.dispatch(SET_USER_INFO, user)
+      }
       callback(res)
     })
   }
@@ -566,32 +583,6 @@ class HTTPData {
     let _this = this
     // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.cancelSave}`, data, function (res) {
-      callback(res)
-    })
-  }
-  /**
-   * 取消行程
-   * @param obj 调用该方法所在的 vue 对象
-   * @param data 本次请求的参数
-   * @param callback 本次请求的回调
-   */
-  getCancelOrder (obj, data, callback) {
-    let _this = this
-    // data.append('tokenId', _this.SaiLei.GetUUID())
-    _this.POST(obj, `${_this.host}${_this.url.cancelOrder}`, data, function (res) {
-      callback(res)
-    })
-  }
-  /**
-   * 设置支付密码
-   * @param obj 调用该方法所在的 vue 对象
-   * @param data 本次请求的参数
-   * @param callback 本次请求的回调
-   */
-  getChangeLoginPassword (obj, data, callback) {
-    let _this = this
-    // data.append('tokenId', _this.SaiLei.GetUUID())
-    _this.POST(obj, `${_this.host}${_this.url.changeLoginPassword}`, data, function (res) {
       callback(res)
     })
   }

@@ -5,7 +5,7 @@
     </div>
     <div class="wapper">
       <div class="calendar">
-        <div class="none-rili" v-if="this.listData.authStatus === 0 || this.listData.authStatus === null">
+        <div class="none-rili" v-if="this.listData.authStatus === '' || this.listData.authStatus === null">
           <div style="background:rgba(255,255,255,1);">
             <div class="caozuo">
               <div>

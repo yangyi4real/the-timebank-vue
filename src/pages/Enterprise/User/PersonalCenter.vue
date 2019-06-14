@@ -3,7 +3,7 @@
     <navbar :title="titleMsg"></navbar>
     <div class="wapper">
       <div class="setUp-main">
-        <div class="setUp-list flex-row-between" @click="$router.push('/user/enterpriseInfo-show')">
+        <div class="setUp-list flex-row-between" @click="$router.push('/user/enterpriseInfo')">
           <div>企业信息</div>
           <div>
             <span></span><i class="iconfont iconjiantou"></i>
@@ -102,9 +102,8 @@ export default {
               this.$SaiLei.cookiesClear('user_info')
               this.$SaiLei.cookiesClear('user_id')
               this.$SaiLei.cookiesClear('user_name')
-              this.$SaiLei.cookiesClear('user_loginStatus')
               this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
-              location.reload()
+              this.$router.push('/')
             }
           }
         ]

@@ -7,32 +7,29 @@
           <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
         </div>
         <div class="login-form-div">
-          <input type="text" v-model="phoneNumberCode" placeholder="请输入短信验证码" v-on:input="inputValue"/>
-          <span class="fr" :class="{'get-code-btn': true, 'disable': !getMsgCodeButtonCanTap}" @click="getMsgCodeButtonClicked">
-            {{ getMsgCodeButtonTitle }}
-          </span>
-        </div>
-        <div class="login-form-div">
           <input type="password" v-model="password" placeholder="请输入登录密码" v-on:input="inputValue"/>
         </div>
         <div class="login-form-div">
           <input type="password" v-model="passwordSure" placeholder="请确认登录密码" v-on:input="inputValue"/>
         </div>
+        <div class="login-form-div">
+          <input type="text" v-model="phoneNumberCode" placeholder="请输入验证码" v-on:input="inputValue"/>
+          <span class="fr" :class="{'get-code-btn': true, 'disable': !getMsgCodeButtonCanTap}" @click="getMsgCodeButtonClicked">
+            {{ getMsgCodeButtonTitle }}
+          </span>
+        </div>
       </div>
       <p class="agreement">新用户默认同意<span @click="loginAgreementClicked">《协议》</span>并注册</p>
       <div class="login-btn">
-        <div @click="loginBtnClicked" class="login-btn-div">注册</div>
-        <div class="forgetPassword">
-          <span @click="returnLogin">返回登录</span>
-        </div>
+        <div @click="loginBtnClicked" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">注册</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
 import Navbar from '../../views/navbar/navbar'
+// import { SHOW_GLOBAL_LOGIN } from '../../store/MutationTypes'
 import TipsTools from '../../common/TipsTools'
 let lib = new TipsTools()
 
@@ -66,12 +63,12 @@ export default {
       } else {
         return `重新发送 ${this.getMsgCodeSecond} s`
       }
+    },
+    getUserType () {
+      return this.$route.params.userType
     }
   },
   methods: {
-    returnLogin () {
-      this.$router.push('/')
-    },
     loginAgreementClicked () {
       this.$router.push('/login-agreement')
     },
@@ -84,7 +81,6 @@ export default {
         this.operation = false
       }
     },
-    getLogin () {},
     /**
      * 验证输入框的值
      * @return {boolean}
@@ -167,16 +163,26 @@ export default {
       if (!this.checkInputValue()) { return }
       let _this = this
       let formData = new FormData()
-      formData.append('loginId', _this.phoneNumber)
-      formData.append('password', _this.passwordSure)
-      formData.append('authCode', _this.phoneNumberCode)
-      // formData.append('invitedUserId', 1)
+      formData.append('loginId', this.phoneNumber)
+      formData.append('authCode', this.phoneNumberCode)
+      formData.append('password', this.passwordSure)
+      // formData.append('invitedUserId', null)
+      formData.append('userType', this.getUserType)
       _this.$_HTTPData.getRegister(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          lib.MessageAlert_Success('您已注册成功，请登录')
-          _this.$router.push('/')
-        } else {
-          _this.TipsTools.MessageAlert_Error(res.message)
+        if (_this.getUserType === 1 || _this.getUserType === '1') {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_Success(res.message)
+            _this.$router.push(`/paypassword/${res.result.id}`)
+          } else {
+            _this.TipsTools.MessageAlert_Error(res.message)
+          }
+        } else if (_this.getUserType === 2 || _this.getUserType === '2') {
+          if (res.code === 0 || res.code === '000') {
+            lib.MessageAlert_Success(res.message)
+            _this.$router.push('/customized/index')
+          } else {
+            _this.TipsTools.MessageAlert_Error(res.message)
+          }
         }
       })
     }
@@ -206,9 +212,6 @@ export default {
   .login-form .login-form-div .get-code-btn{font-size: 0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);}
   .agreement{padding-top: 0.15rem;text-align: center;font-size:0.13rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(167,167,167,1);}
   .agreement span{color:rgba(249,91,64,1);}
-  .login-btn{padding-top: 1rem;padding-bottom: 0.5rem;}
+  .login-btn{padding-top: 1.77rem;padding-bottom: 1.5rem;}
   .disable {color: #A7A7A7!important;}
-  .login-denglu{padding-right: 0.2rem;text-align: right;padding-top: 0.1rem;font-size: 0.14rem;}
-  .login-btn-div{width:3.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40;background:rgba(249,91,64,1);color:rgba(255,255,255,1);}
-  .forgetPassword{padding-top: 0.2rem;color: rgba(167,167,167,1);font-size: 0.14rem;width:3.36rem;margin: 0 auto;text-align: right}
 </style>

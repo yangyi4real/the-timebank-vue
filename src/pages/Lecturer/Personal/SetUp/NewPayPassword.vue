@@ -110,9 +110,6 @@ export default {
         }
       })
     },
-    tiaoClick () {
-      this.$router.push('/calendar/index')
-    },
     inputValue () {
       if (this.payPassword !== '' && this.payPasswordSure !== '') {
         this.inOperation = false

@@ -16,8 +16,7 @@ import {
   SHOW_PTPAY_PASSWORDINPUT,
   HIDE_PTPAY_PASSWORDINPUT,
   SHOW_PTPAY_PASSWORDTEXT,
-  HIDE_PTPAY_PASSWORDTEXT,
-  SHOW_GLOBAL_REGISTER
+  HIDE_PTPAY_PASSWORDTEXT
 } from './MutationTypes'
 
 Vue.use(Vuex)
@@ -44,10 +43,6 @@ const state = {
    * 全局登录
    */
   showGlobalLogin: false,
-  /**
-   * 全局注册
-   */
-  showGlobalRegister: false,
   /**
    * 支付密码弹框
    */
@@ -161,14 +156,6 @@ const mutations = {
    */
   [SHOW_GLOBAL_LOGIN] (state, value) {
     state.showGlobalLogin = value
-  },
-  /**
-   * 显示全局注册
-   * @param state
-   * @param value
-   */
-  [SHOW_GLOBAL_REGISTER] (state, value) {
-    state.showGlobalRegister = value
   }
 }
 
@@ -244,14 +231,6 @@ const actions = {
    */
   [SHOW_GLOBAL_LOGIN] ({commit}, value) {
     commit(SHOW_GLOBAL_LOGIN, value)
-  },
-  /**
-   * 显示全局注册
-   * @param commit
-   * @param value
-   */
-  [SHOW_GLOBAL_REGISTER] ({commit}, value) {
-    commit(SHOW_GLOBAL_REGISTER, value)
   },
   /**
    * 支付密码显示
