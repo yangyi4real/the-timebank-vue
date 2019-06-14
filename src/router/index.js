@@ -153,7 +153,7 @@ const router = new Router({
     {
       path: '/personal/setup/feedback',
       name: 'Feedback',
-      component: () => import('../pages/Lecturer/Personal/Msg')
+      component: () => import('../pages/Lecturer/Personal/SetUp/Feedback')
     },
     // 基本信息
     {

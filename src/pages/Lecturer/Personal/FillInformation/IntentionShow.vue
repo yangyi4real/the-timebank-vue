@@ -185,7 +185,7 @@ export default {
       })
     },
     pushClick () {
-      if (!this.checkInputValue()) { return }
+      // if (!this.checkInputValue()) { return }
       console.log(this.skillLevel)
       console.log(this.areaValue)
       if (this.skillLevel === null && this.areaValue === null) {

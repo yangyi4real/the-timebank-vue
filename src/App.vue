@@ -36,12 +36,13 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store.state.showGlobalRegister)
+    console.log(this.$store.state.showGlobalLogin)
   },
   methods: {
     reload () {
       this.isRouterAlive = false
       this.$nextTick(function () {
+        console.log('进来了')
         this.isRouterAlive = true
       })
     }

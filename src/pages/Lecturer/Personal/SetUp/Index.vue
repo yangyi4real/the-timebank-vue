@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { SHOW_GLOBAL_LOGIN } from '../../../../store/MutationTypes'
+// import { SHOW_GLOBAL_LOGIN } from '../../../../store/MutationTypes'
 import Navbar from '../../../../views/navbar/navbar'
 import TipsTools from '../../../../common/TipsTools'
 let lib = new TipsTools()
@@ -118,7 +118,7 @@ export default {
               this.$SaiLei.cookiesClear('user_id')
               this.$SaiLei.cookiesClear('user_name')
               this.reload()
-              this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
+              location.reload()
               // this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)
             }
           }
