@@ -267,13 +267,13 @@ class HTTPData {
     _this.POST(obj, `${_this.host}${_this.url.login}`, data, function (res) {
       if (res.code === 0 || res.code === '000') {
         _this.SaiLei.cookiesSave('user_info', res.result)
-        _this.SaiLei.cookiesSave('user_id', res.result.id) // id
-        _this.SaiLei.cookiesSave('user_name', res.result.name) // 姓名
-        _this.SaiLei.cookiesSave('user_nickname', res.result.nickname) // 昵称
-        _this.SaiLei.cookiesSave('user_sex', res.result.sex) // 性别
-        _this.SaiLei.cookiesSave('user_authStatus', res.result.authStatus) // 认证状态
-        _this.SaiLei.cookiesSave('user_loginId', res.result.loginId) // 手机号
-        _this.SaiLei.cookiesSave('user_email', res.result.email) // 邮箱
+        _this.SaiLei.cookiesSave('user_id', res.result.user.id) // id
+        _this.SaiLei.cookiesSave('user_name', res.result.user.name) // 姓名
+        _this.SaiLei.cookiesSave('user_nickname', res.result.user.nickname) // 昵称
+        _this.SaiLei.cookiesSave('user_sex', res.result.user.sex) // 性别
+        _this.SaiLei.cookiesSave('user_authStatus', res.result.user.authStatus) // 认证状态
+        _this.SaiLei.cookiesSave('user_loginId', res.result.user.loginId) // 手机号
+        _this.SaiLei.cookiesSave('user_email', res.result.user.email) // 邮箱
         let user = new UserModel(res.result)
         obj.$store.dispatch(SET_USER_INFO, user)
       }
