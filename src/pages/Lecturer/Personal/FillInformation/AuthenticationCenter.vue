@@ -75,8 +75,7 @@
       </div>
       <p class="text-center main-color tips-p">以上信息作为平台审核认证讲师资格使用</p>
       <div class="authentication-btn">
-        <div class="btn-border-black" @click="pushClick" v-if="this.listData.authStatus === 0 || this.listData.authStatus === null">确定</div>
-        <!--<div class="btn-border-black" @click="cancelClick" v-if="this.listData.authStatus === 1">取消认证</div>-->
+        <div class="btn-border-black" @click="pushClick">确定</div>
       </div>
     </div>
   </div>
@@ -156,12 +155,10 @@ export default {
           let result = this.result
           let img = new Image()
           img.src = result
-          console.log()
           img.onload = function () {
             let data = self.compress(img)
             self.file = self.compress(img)
             file.src = self.file
-            console.log(file.src)
             let blob = self.dataURItoBlob(data)
             var formData = new FormData()
             formData.append('file', blob)
@@ -171,7 +168,6 @@ export default {
       this.imgList.push({
         file
       })
-      console.log(this.imgList)
     },
     // 压缩图片
     compress (img) {
@@ -186,9 +182,6 @@ export default {
       ctx.fillRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0, width, height)
       let ndata = canvas.toDataURL('image/jpeg', 0.1)
-      console.log('*******压缩后的图片大小*******')
-      console.log(ndata)
-      console.log(ndata.length)
       return ndata
     },
     fileAdd2 (file) {
@@ -203,7 +196,6 @@ export default {
           let result = this.result
           let img = new Image()
           img.src = result
-          console.log()
           img.onload = function () {
             let data = self.compresss(img)
             file.src = self.file
@@ -231,9 +223,6 @@ export default {
       ctx.fillRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0, width, height)
       let ndata = canvas.toDataURL('image/jpeg', 0.1)
-      console.log('*******压缩后的图片大小*******')
-      console.log(ndata)
-      console.log(ndata.length)
       return ndata
     },
     fileDel (index) {
@@ -302,11 +291,6 @@ export default {
       _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
-          _this.name = res.result
-          _this.name = res.result.name
-          _this.name = res.result.name
-          _this.name = res.result.name
-          _this.name = res.result.name
         } else {
           console.log(res.message)
         }
@@ -316,47 +300,38 @@ export default {
      * 点击确定
      */
     pushClick () {
-      if (this.listData.authStatus === 1) {
-        this.$router.push('/personal/lecturer-payment/300')
-      } else if (this.listData.authStatus === 0) {
-        if (!this.checkInputValue()) { return }
-        let tempImgs = []
-        let tempImgs2 = []
-        for (let i = 0; i < this.imgList.length; i++) {
-          tempImgs.push(this.imgList[i].file.src)
-        }
-        this.imgListempImgs = tempImgs
-        let myJSON = JSON.stringify(this.imgListempImgs)
-        myJSON = myJSON.replace('data:image/png;base64,', '')
-        myJSON = myJSON.replace('data:image/jpeg;base64,', '')
-        for (let i = 0; i < this.imgList2.length; i++) {
-          tempImgs2.push(this.imgList2[i].file.src)
-        }
-        this.imgListempImgs2 = tempImgs2
-        let myJSONT = JSON.stringify(this.imgListempImgs2)
-        myJSONT = myJSONT.replace('data:image/png;base64,', '')
-        myJSONT = myJSONT.replace('data:image/jpeg;base64,', '')
-        let _this = this
-        let formData = new FormData()
-        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-        formData.append('name', _this.name)
-        formData.append('IdNumber', _this.IdNumber)
-        formData.append('credentials', myJSON)
-        formData.append('classPhotos', myJSONT)
-        formData.append('traditional', true)
-        _this.$_HTTPData.getLectureAuth(_this, formData, function (res) {
-          if (res.code === 0 || res.code === '000') {
-            // lib.MessageAlert_Success(res.message)
-            if (_this.listData.payPassword === null) {
-              _this.$router.push('/personal/setup/inputpaypassword')
-            } else {
-              _this.$router.push('/personal/lecturer-payment/300')
-            }
-          } else {
-            lib.MessageAlert_Error(res.message)
-          }
-        })
+      if (!this.checkInputValue()) { return }
+      let tempImgs = []
+      let tempImgs2 = []
+      for (let i = 0; i < this.imgList.length; i++) {
+        tempImgs.push(this.imgList[i].file.src)
       }
+      this.imgListempImgs = tempImgs
+      let myJSON = JSON.stringify(this.imgListempImgs)
+      myJSON = myJSON.replace('data:image/png;base64,', '')
+      myJSON = myJSON.replace('data:image/jpeg;base64,', '')
+      for (let i = 0; i < this.imgList2.length; i++) {
+        tempImgs2.push(this.imgList2[i].file.src)
+      }
+      this.imgListempImgs2 = tempImgs2
+      let myJSONT = JSON.stringify(this.imgListempImgs2)
+      myJSONT = myJSONT.replace('data:image/png;base64,', '')
+      myJSONT = myJSONT.replace('data:image/jpeg;base64,', '')
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('name', _this.name)
+      formData.append('IdNumber', _this.IdNumber)
+      formData.append('credentials', myJSON)
+      formData.append('classPhotos', myJSONT)
+      formData.append('traditional', true)
+      _this.$_HTTPData.getLectureAuth(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.$router.push('/personal/lecturer-payment/300')
+        } else {
+          lib.MessageAlert_Error(res.message)
+        }
+      })
     }
     /**
      * 点击取消认证

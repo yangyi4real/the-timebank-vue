@@ -75,11 +75,13 @@ export default {
       checkedValue: '1',
       show1: false,
       msg: '',
-      msgLength: 0
+      msgLength: 0,
+      listData: ''
     }
   },
   created () {},
   mounted () {
+    this.loadData()
   },
   computed: {
     getPrice () {
@@ -87,8 +89,23 @@ export default {
     }
   },
   methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 1)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+          _this.getIf()
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     authentClicked () {
-      this.$router.push('/personal/information/authentication-center')
+      // this.$router.push('/personal/information/authentication-center')
+      this.$router.go(-1)
     },
     affirmPay () {
       this.show1 = true
@@ -101,6 +118,35 @@ export default {
     },
     ResetPwd () {
       this.$router.push('/personal/setup/newpaypassword')
+    },
+    getIf () {
+      if (this.listData.payPassword === null) {
+        this.getInputPassword()
+      } else {
+        console.log('111')
+      }
+    },
+    getInputPassword () {
+      this.$dialog.confirm({
+        title: '',
+        mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">您还有没有设置支付密码，是否前去设置？</p>',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {
+              this.$router.go(-1)
+            }
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              this.$router.push('/personal/setup/inputpaypassword')
+            }
+          }
+        ]
+      })
     },
     getPush () {
       this.$dialog.loading.open('支付中，请勿操作')

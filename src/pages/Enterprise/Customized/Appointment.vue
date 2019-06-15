@@ -167,7 +167,6 @@ export default {
       _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.myInfoData = res.result
-          console.log(_this.myInfoData)
         } else {
           console.log(res.message)
         }
@@ -178,12 +177,12 @@ export default {
      * @return {boolean}
      */
     checkInputValue () {
-      if (this.address === '') {
-        lib.MessageAlert_Error('请输入详细地址')
+      if (this.model1 === '') {
+        lib.MessageAlert_Error('请输入约讲地址')
         return false
       }
-      if (this.demand === '') {
-        lib.MessageAlert_Error('请输入您的需求')
+      if (this.address === '') {
+        lib.MessageAlert_Error('请输入详细地址')
         return false
       }
       if (this.number === '') {
@@ -198,8 +197,23 @@ export default {
         lib.MessageAlert_Error('请输入联系人手机号')
         return false
       }
-      if (this.model1 === '') {
-        lib.MessageAlert_Error('请输入约讲地址')
+      if (this.demand === '') {
+        lib.MessageAlert_Error('请输入您的需求')
+        return false
+      }
+      return true
+    },
+    checkInputValue2 () {
+      if (this.dateTimeBegin === '') {
+        lib.MessageAlert_Error('请输入起始时间')
+        return false
+      }
+      if (this.dateTimeEnd === '') {
+        lib.MessageAlert_Error('请输入结束时间')
+        return false
+      }
+      if (this.dateTimeEnd < this.dateTimeBegin) {
+        lib.MessageAlert_Error('时间范围有误，请重新选择')
         return false
       }
       return true
@@ -260,6 +274,7 @@ export default {
       })
     },
     appointmentClick () {
+      if (!this.checkInputValue2()) { return }
       this.calendarShow = false
       this.formDataShow = true
     },
@@ -286,9 +301,7 @@ export default {
       _this.$_HTTPData.getAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.appointmentList = res.result
-          console.log(_this.appointmentList.id)
           _this.$router.push(`/user/enterprise-payment/${_this.appointmentList.price}/${_this.appointmentList.id}`)
-          lib.MessageAlert_Success(res.message)
         } else {
           lib.MessageAlert_None(res.message)
         }

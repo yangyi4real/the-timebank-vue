@@ -21,9 +21,9 @@
           <div class="payment-mode-list-text">
             <img src=""/>微信支付
           </div>
-          <div class="payment-mode-list-radio">
-            <input id="item2" type="radio" name="payItem" value="2" v-model="checkedValue">
-            <label for="item2"></label>
+          <div class="payment-mode-list-radio" @click="noWinxin">
+            <input type="radio">
+            <label></label>
           </div>
         </div>
       </div>
@@ -95,6 +95,9 @@ export default {
     },
     ResetPwd () {
       this.$router.push('/personal/personalcenter')
+    },
+    noWinxin () {
+      lib.MessageAlert_None('暂时无法使用微信支付，敬请期待')
     },
     getPush () {
       this.$dialog.loading.open('支付中，请勿操作')

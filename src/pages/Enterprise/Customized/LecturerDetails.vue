@@ -74,7 +74,7 @@
       </div>
       <div class="base-btn flex-row-start">
         <div class="base-btn-div base-btn-left"><a :href="'tel:' + '05328888888'">咨询</a></div>
-        <div class="base-btn-div base-btn-right" @click="appointmentClick()">预约</div>
+        <div class="base-btn-div base-btn-right" @click="appointmentClick">预约</div>
       </div>
     </div>
 </template>

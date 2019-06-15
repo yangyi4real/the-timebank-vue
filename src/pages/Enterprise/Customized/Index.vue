@@ -70,21 +70,23 @@ export default {
   data () {
     return {
       searchValue: '',
-      classList: true,
-      classListNone: false,
+      classList: false,
+      classListNone: true,
       selected: '',
       selected2: '',
       selected3: '',
       optList: ['UI设计', '产品经理', '营销', '新媒体'],
       optList2: ['山东', '吉林', '北京', '上海'],
       optList3: ['100', '1000', '300', '500'],
-      listData: []
+      listData: [],
+      listDataMyInfo: ''
     }
   },
   computed: {
   },
   mounted () {
     this.loadData()
+    this.loadDataMyInfo()
   },
   methods: {
     allClick () {
@@ -98,6 +100,20 @@ export default {
     },
     pushClick () {
       this.$router.push('/user/enterpriseInfo')
+    },
+    loadDataMyInfo () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 2)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listDataMyInfo = res.result
+          _this.getIf()
+        } else {
+          console.log(res.message)
+        }
+      })
     },
     loadData () {
       let _this = this
@@ -121,6 +137,15 @@ export default {
           lib.MessageAlert_None(res.message)
         }
       })
+    },
+    getList () {
+      if (this.listDataMyInfo.authStatus === 1) {
+        this.classListNone = false
+        this.classList = true
+      } else {
+        this.classListNone = true
+        this.classList = false
+      }
     },
     getValue () {
       let _this = this

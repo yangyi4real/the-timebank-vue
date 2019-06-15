@@ -24,7 +24,7 @@ import Navbar from '../../../../views/navbar/navbar'
 import TipsTools from '../../../../common/TipsTools'
 let lib = new TipsTools()
 export default {
-  name: 'inputPayPassword',
+  name: 'InputPayPassword',
   components: {
     Navbar
   },
@@ -38,7 +38,11 @@ export default {
       // userInfoItem: ''
     }
   },
-  computed: {},
+  computed: {
+    getId () {
+      return this.$route.params.id
+    }
+  },
   methods: {
     /**
      * 验证输入框的值

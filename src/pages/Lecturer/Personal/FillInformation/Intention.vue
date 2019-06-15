@@ -5,27 +5,29 @@
       <div class="intention-main">
         <div class="intention-list flex-row-between" @click="showSub1">
           <div>技能标签</div>
+          <div style="min-width: 0;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;width: 1rem;display: block">{{skillLevelValue}}</div>
           <div><i class="iconfont iconjiantou"></i></div>
         </div>
         <div class="intention-list flex-row-between" @click="showSub2">
           <div>意向地点</div>
+          <div style="min-width: 0;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;width: 2rem;display: block">{{expectLocation}}</div>
           <div><i class="iconfont iconjiantou"></i></div>
         </div>
         <div class="intention-list flex-row-between" style="border: 0">
           <div>意向薪酬</div>
           <div>
-            <input type="text" v-model="Pay" placeholder="请输入金额 "/> 元/小时
+            <input type="text" v-model="price" placeholder="请输入金额 "/> 元/小时
           </div>
         </div>
       </div>
       <div class="intention-btn">
-        <div @click="pushClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">下一步</div>
+        <div @click="pushClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">保存</div>
       </div>
     </div>
     <div class="wapper" v-show="sub1">
       <div class="treeselect">
         <div class="flex-row-between">
-          <treeselect class="treeselect-input" v-model="skillValue" :multiple="true" :alwaysOpen="true" :options="skillOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请输入技能" :searchable="true" :limit='5'/>
+          <treeselect class="treeselect-input" v-model="skillLevel" :multiple="true" :alwaysOpen="true" :options="skillOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请输入技能" :searchable="true" :limit='5'/>
           <div class="treeselectBtn" @click="treeselectBtn">完成</div>
         </div>
       </div>
@@ -57,7 +59,7 @@ export default {
   data () {
     return {
       areaValue: null,
-      skillValue: null,
+      skillLevel: null,
       areaIsDisabled: false,
       skillOptions: [
         {
@@ -114,17 +116,27 @@ export default {
       ],
       areaOptions: AreaJson,
       titleMsg: '存储意向',
-      Pay: '',
+      price: '',
       showList: true,
       sub1: false,
       sub2: false,
       inOperation: true, // 灰色按钮
       operation: false,
-      isDisabledSkill: null
+      isDisabledSkill: null,
+      expectLocation: null,
+      skillLevelValue: null
     }
   },
   created () {},
   computed: {},
+  mounted () {
+    let temp = JSON.stringify(AreaJson)
+    let temp2 = temp.replace(/v/g, 'id')
+    let temp3 = temp2.replace(/n/g, 'label')
+    let temp4 = temp3.replace(/c/g, 'children')
+    this.areaOptions = JSON.parse(temp4)
+    this.loadData()
+  },
   methods: {
     /**
      * 验证输入框的值
@@ -139,7 +151,7 @@ export default {
         lib.MessageAlert_Error('请选择意向地点')
         return false
       }
-      if (this.Pay === '') {
+      if (this.price === '') {
         lib.MessageAlert_Error('请输入金额')
         return false
       }
@@ -148,12 +160,24 @@ export default {
     treeselectBtn () {
       this.sub1 = false
       this.showList = true
-      this.skillValue.toString()
+      this.skillLevelValue = this.skillLevel.toString()
     },
     treeselectBtn2 () {
       this.sub2 = false
       this.showList = true
-      this.areaValue.toString()
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      // formData.append('skillLevel', this.skillLevel.toString())
+      formData.append('expectSalary', 0)
+      formData.append('expectLocation', _this.areaValue.toString())
+      _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.loadData()
+        } else {
+          lib.MessageAlert_Error(res.message)
+        }
+      })
     },
     showSub1 () {
       this.showList = false
@@ -163,31 +187,37 @@ export default {
       this.showList = false
       this.sub2 = true
     },
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 1)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.expectLocation = res.result.expectLocation
+          console.log(res.result)
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     pushClick () {
       if (!this.checkInputValue()) { return }
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('skillLevel', this.skillValue.toString())
-      formData.append('expectSalary', _this.Pay)
+      formData.append('skillLevel', this.skillLevel.toString())
+      formData.append('expectSalary', _this.price)
       formData.append('expectLocation', _this.areaValue.toString())
       _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
-          console.log('1111')
           _this.$router.push('/personal/information/profile')
         } else {
           lib.MessageAlert_Error(res.message)
         }
       })
     }
-  },
-  mounted () {
-    let temp = JSON.stringify(AreaJson)
-    let temp2 = temp.replace(/v/g, 'id')
-    let temp3 = temp2.replace(/n/g, 'label')
-    let temp4 = temp3.replace(/c/g, 'children')
-    this.areaOptions = JSON.parse(temp4)
   },
   watch: {
     // numberData () {
