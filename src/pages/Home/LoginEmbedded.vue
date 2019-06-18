@@ -25,7 +25,7 @@
         <div class="login-btn">
           <div @click="loginBtnClicked" class="login-btn-div">登录</div>
           <div class="forgetPassword clearfix">
-            <span class="fl" @click="registerClicked">没有账号，<i class="main-color">立即注册！</i></span><span class="fr">忘记密码？</span>
+            <span class="fl" @click="registerClicked">没有账号，<i class="main-color">立即注册！</i></span><span class="fr" @click="forGetPwClicked">忘记密码？</span>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { SHOW_GLOBAL_LOGIN, SHOW_GLOBAL_REGISTER } from '../../store/MutationTypes'
+import { SHOW_GLOBAL_LOGIN, SHOW_GLOBAL_REGISTER, SHOW_GLOBAL_PASSWORD } from '../../store/MutationTypes'
 import TipsTools from '../../common/TipsTools'
 let lib = new TipsTools()
 
@@ -91,6 +91,10 @@ export default {
       this.$store.dispatch(SHOW_GLOBAL_REGISTER, true)
       this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
       // this.$router.push('/register')
+    },
+    forGetPwClicked () {
+      this.$store.dispatch(SHOW_GLOBAL_PASSWORD, true)
+      this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
     },
     jsClick () {
       this.shows = 1

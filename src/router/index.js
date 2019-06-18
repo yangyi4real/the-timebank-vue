@@ -405,28 +405,26 @@ Vue.use(Router)
  * @param route
  * @returns {boolean}
  */
-function checkRouteName (route) {
-  if (route.name === 'Register') {
-    return false
-  } else {
-    return true
-  }
-}
+// function checkRouteName (route) {
+//   if (route.name === 'Register') {
+//     return false
+//   } else {
+//     return true
+//   }
+// }
 
 router.beforeEach(function (to, form, next) {
-  if (checkRouteName(to)) {
-    if (!sailei.cookiesGet('user_loginStatus')) {
-      new Http().clearUserInfo()
-      store.dispatch(SHOW_GLOBAL_LOGIN, true)
-      console.log('111')
-    } else if (sailei.cookiesGet('user_loginStatus') === 1) {
-      console.log(sailei.cookiesGet('user_loginStatus'))
-      next()
-    } else if (sailei.cookiesGet('user_loginStatus') === 2) {
-      console.log(sailei.cookiesGet('user_loginStatus'))
-      next()
-    }
-  } else { next() }
+  if (!sailei.cookiesGet('user_loginStatus')) {
+    new Http().clearUserInfo()
+    store.dispatch(SHOW_GLOBAL_LOGIN, true)
+    console.log('111')
+  } else if (sailei.cookiesGet('user_loginStatus') === 1) {
+    console.log(sailei.cookiesGet('user_loginStatus'))
+    next()
+  } else if (sailei.cookiesGet('user_loginStatus') === 2) {
+    console.log(sailei.cookiesGet('user_loginStatus'))
+    next()
+  }
 })
 
 export default router

@@ -3,6 +3,7 @@
     <router-view v-if="isRouterAlive"></router-view>
     <login-embedded v-if="showLogin"></login-embedded>
     <register-embedded v-if="showRegister"></register-embedded>
+    <password-embedded v-if="showPassword"></password-embedded>
   </div>
 </template>
 
@@ -11,8 +12,10 @@ import UserModel from './store/UserModel'
 import {SET_USER_INFO} from './store/MutationTypes'
 import LoginEmbedded from './pages/Home/LoginEmbedded'
 import RegisterEmbedded from './pages/Home/RegisterEmbedded'
+import PasswordEmbedded from './pages/Home/PasswordEmbedded'
 export default {
   components: {
+    PasswordEmbedded,
     RegisterEmbedded,
     LoginEmbedded
   },
@@ -33,6 +36,9 @@ export default {
     },
     showRegister () {
       return this.$store.state.showGlobalRegister
+    },
+    showPassword () {
+      return this.$store.state.showGlobalPassword
     }
   },
   mounted () {
