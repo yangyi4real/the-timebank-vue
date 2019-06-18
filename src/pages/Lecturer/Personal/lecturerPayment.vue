@@ -24,9 +24,9 @@
           <div class="payment-mode-list-text">
             <img src=""/>微信支付
           </div>
-          <div class="payment-mode-list-radio" @click="noWinxin">
-            <input type="radio">
-            <label></label>
+          <div class="payment-mode-list-radio">
+            <input id="item2" type="radio" name="payItem" value="2" v-model="checkedValue">
+            <label for="item2"></label>
           </div>
         </div>
       </div>
@@ -86,6 +86,9 @@ export default {
   computed: {
     getPrice () {
       return this.$route.params.price
+    },
+    getId () {
+      return this.$route.params.id
     }
   },
   methods: {
@@ -108,7 +111,23 @@ export default {
       this.$router.go(-1)
     },
     affirmPay () {
-      this.show1 = true
+      if (this.checkedValue === '1') {
+        this.show1 = true
+      } else if (this.checkedValue === '2') {
+        let _this = this
+        let formData = new FormData()
+        formData.append('certificateId', _this.getId)
+        // formData.append('certificateId', '1560843771562')
+        _this.$_HTTPData.getCreate(_this, formData, function (res) {
+          lib.MessageAlert_None('支付成功')
+          console.log(res)
+          // if (res.code === 0 || res.code === '000') {
+          //   _this.getIf()
+          // } else {
+          //   console.log(res.message)
+          // }
+        })
+      }
     },
     noWinxin () {
       lib.MessageAlert_None('暂时无法使用微信支付，敬请期待')

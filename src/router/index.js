@@ -205,7 +205,7 @@ const router = new Router({
     },
     // 讲师支付
     {
-      path: '/personal/lecturer-payment/:price',
+      path: '/personal/lecturer-payment/:price/:id',
       name: 'Payment',
       component: () => import('../pages/Lecturer/Personal/lecturerPayment')
     },

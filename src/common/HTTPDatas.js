@@ -80,7 +80,9 @@ class HTTPData {
       // 取消行程
       cancelOrder: '/time-bank/user/cancel_order',
       // 修改登录密码
-      changeLoginPassword: '/time-bank/user/change_password'
+      changeLoginPassword: '/time-bank/user/change_password',
+      // 微信下单支付
+      create: '/time-bank/wx/order/create'
     }
     // 请求拦截
     // 响应拦截
@@ -591,6 +593,19 @@ class HTTPData {
     let _this = this
     // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.changeLoginPassword}`, data, function (res) {
+      callback(res)
+    })
+  }
+  /**
+   * 微信下单支付
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getCreate (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.create}`, data, function (res) {
       callback(res)
     })
   }

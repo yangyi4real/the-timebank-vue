@@ -107,7 +107,8 @@ export default {
       size: 0,
       limit: 9,
       limit2: 3,
-      listData: []
+      listData: [],
+      winxinId: ''
     }
   },
   created () {},
@@ -327,7 +328,8 @@ export default {
       formData.append('traditional', true)
       _this.$_HTTPData.getLectureAuth(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          _this.$router.push('/personal/lecturer-payment/300')
+          _this.winxinId = res.result.id
+          _this.$router.push(`/personal/lecturer-payment/300/${_this.winxinId}`)
         } else {
           lib.MessageAlert_Error(res.message)
         }
