@@ -11,10 +11,10 @@
       </div>
       <div v-show="jsBtnClick">
         <div class="login-form">
-          <div class="login-form-div" v-show="phone">1
+          <div class="login-form-div" v-show="phone">
             <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
           </div>
-          <div class="login-form-div" v-show="phone2">2
+          <div class="login-form-div" v-show="phone2">
             <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
           </div>
           <div class="login-form-div">

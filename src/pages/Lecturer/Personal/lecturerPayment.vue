@@ -119,13 +119,12 @@ export default {
         formData.append('certificateId', _this.getId)
         // formData.append('certificateId', '1560843771562')
         _this.$_HTTPData.getCreate(_this, formData, function (res) {
-          lib.MessageAlert_None('支付成功')
-          console.log(res)
-          // if (res.code === 0 || res.code === '000') {
-          //   _this.getIf()
-          // } else {
-          //   console.log(res.message)
-          // }
+          // lib.MessageAlert_None('支付成功')
+          if (res.code === 0 || res.code === '000') {
+            window.open('https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?prepay_id=wx181623354033500938fcd50a1405420400&package=2628107963')
+          } else {
+            console.log(res.message)
+          }
         })
       }
     },

@@ -311,6 +311,7 @@ export default {
       let myJSON = JSON.stringify(this.imgListempImgs)
       myJSON = myJSON.replace('data:image/png;base64,', '')
       myJSON = myJSON.replace('data:image/jpeg;base64,', '')
+
       for (let i = 0; i < this.imgList2.length; i++) {
         tempImgs2.push(this.imgList2[i].file.src)
       }
