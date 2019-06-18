@@ -121,7 +121,12 @@ export default {
         _this.$_HTTPData.getCreate(_this, formData, function (res) {
           // lib.MessageAlert_None('支付成功')
           if (res.code === 0 || res.code === '000') {
-            window.open(res.result)
+            console.log(res)
+            if (res.result === null) {
+              console.log(res.message)
+            } else {
+              window.open(res.result)
+            }
           } else {
             console.log(res.message)
           }
