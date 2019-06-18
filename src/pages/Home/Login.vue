@@ -11,11 +11,14 @@
       </div>
       <div v-show="jsBtnClick">
         <div class="login-form">
-          <div class="login-form-div">
-            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
+          <div class="login-form-div" v-show="phone">
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号"/>
+          </div>
+          <div class="login-form-div" v-show="phone2">
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号"/>
           </div>
           <div class="login-form-div">
-            <input type="password" v-model="password" placeholder="请输入密码" v-on:input="inputValue"/>
+            <input type="password" v-model="password" placeholder="请输入密码"/>
           </div>
         </div>
         <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
@@ -28,11 +31,14 @@
       </div>
       <div v-show="qyBtnClick">
         <div class="login-form">
-          <div class="login-form-div">
-            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
+          <div class="login-form-div" v-show="phone">
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号"/>
+          </div>
+          <div class="login-form-div" v-show="phone2">
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号"/>
           </div>
           <div class="login-form-div">
-            <input type="password" v-model="password" placeholder="请输入密码" v-on:input="inputValue"/>
+            <input type="password" v-model="password" placeholder="请输入密码"/>
           </div>
         </div>
         <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
@@ -63,11 +69,24 @@ export default {
       jsBtnClick: true,
       qyBtnClick: false,
       inOperation: true, // 灰色按钮
-      operation: false
+      operation: false,
+      phone: false,
+      phone2: false
     }
   },
   computed: {},
   methods: {
+    getLoginInput () {
+      console.log(this.$SaiLei.cookiesGet('user_loginIdUser'))
+      if (this.$SaiLei.cookiesGet('user_loginIdUser') === false) {
+        this.phone = true
+        this.phone2 = false
+      } else {
+        this.phone = false
+        this.phone2 = true
+        this.phoneNumber = this.$SaiLei.cookiesGet('user_loginIdUser')
+      }
+    },
     registerClicked () {
       this.$router.push('/register')
     },
@@ -83,15 +102,6 @@ export default {
     },
     loginAgreementClicked () {
       this.$router.push('/login-agreement')
-    },
-    inputValue () {
-      if (this.phoneNumber !== '' && this.phoneNumberCode !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
     },
     /**
      * 验证输入框的值
@@ -160,17 +170,10 @@ export default {
       })
     }
   },
-  mounted () {},
+  mounted () {
+    this.getLoginInput()
+  },
   watch: {
-    inputValue () {
-      if (this.phoneNumber !== '' && this.phoneNumberCode !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
-    }
   }
 }
 </script>

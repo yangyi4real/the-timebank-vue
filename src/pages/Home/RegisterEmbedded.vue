@@ -183,6 +183,7 @@ export default {
           _this.$store.dispatch(SHOW_GLOBAL_REGISTER, false)
           _this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
           _this.$SaiLei.cookiesSave('user_loginIdUser', _this.phoneNumber)
+          console.log(_this.$SaiLei.cookiesGet('user_loginIdUser'))
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)
         }

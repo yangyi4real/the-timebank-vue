@@ -11,10 +11,10 @@
       </div>
       <div v-show="jsBtnClick">
         <div class="login-form">
-          <div class="login-form-div" v-show="phone">
+          <div class="login-form-div" v-show="phone">1
             <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
           </div>
-          <div class="login-form-div" v-show="phone2">
+          <div class="login-form-div" v-show="phone2">2
             <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
           </div>
           <div class="login-form-div">
@@ -31,10 +31,10 @@
       </div>
       <div v-show="qyBtnClick">
         <div class="login-form">
-          <div class="login-form-div" v-show="phone">
+          <div class="login-form-div" v-show="phone">1
             <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
           </div>
-          <div class="login-form-div" v-show="phone2">
+          <div class="login-form-div" v-show="phone2">2
             <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
           </div>
           <div class="login-form-div">
@@ -76,7 +76,7 @@ export default {
   },
   computed: {},
   methods: {
-    getLogin () {
+    getLoginInput () {
       console.log(this.$SaiLei.cookiesGet('user_loginIdUser'))
       if (this.$SaiLei.cookiesGet('user_loginIdUser') === false) {
         this.phone = true
@@ -108,15 +108,6 @@ export default {
     },
     loginAgreementClicked () {
       this.$router.push('/login-agreement')
-    },
-    inputValue () {
-      if (this.phoneNumber !== '' && this.phoneNumberCode !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
     },
     /**
      * 验证输入框的值
@@ -181,6 +172,7 @@ export default {
           } else {
             window.location = '/#/customized/index'
             location.reload()
+            console.log('111')
           }
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)
@@ -189,18 +181,9 @@ export default {
     }
   },
   mounted () {
-    this.getLogin()
+    this.getLoginInput()
   },
   watch: {
-    inputValue () {
-      if (this.phoneNumber !== '' && this.phoneNumberCode !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
-    }
   }
 }
 </script>

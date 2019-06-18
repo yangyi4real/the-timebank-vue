@@ -42,7 +42,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store.state.showGlobalLogin)
+    // console.log(this.$store.state.showGlobalLogin)
   },
   methods: {
     reload () {

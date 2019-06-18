@@ -175,6 +175,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('您已注册成功，请登录')
           _this.$router.push('/')
+          _this.$SaiLei.cookiesSave('user_loginIdUser', _this.phoneNumber)
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)
         }
