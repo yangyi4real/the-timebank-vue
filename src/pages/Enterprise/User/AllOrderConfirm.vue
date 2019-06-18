@@ -79,6 +79,7 @@ import TipsTools from '../../../common/TipsTools'
 import AllOrderPayment from './AllOrderPayment'
 let lib = new TipsTools()
 export default {
+  inject: ['reload'],
   name: 'AllOrderConfirm',
   components: {
     AllOrderPayment,
@@ -185,17 +186,35 @@ export default {
       this.$router.push(`/user/enterprise-payment/${item.orderEntity.price}/${item.orderEntity.id}`)
     },
     cancelOrder (item) {
-      let _this = this
-      let formData = new FormData()
-      formData.append('type', 2)
-      formData.append('orderId', item.orderEntity.id)
-      _this.$_HTTPData.getCancelOrder(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.loadData()
-          lib.MessageAlert_Success(res.message)
-        } else {
-          lib.MessageAlert_None(res.message)
-        }
+      this.$dialog.confirm({
+        title: '确认取消行程？',
+        mes: '',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {}
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              let _this = this
+              let formData = new FormData()
+              formData.append('type', 2)
+              formData.append('orderId', item.orderEntity.id)
+              _this.$_HTTPData.getCancelOrder(_this, formData, function (res) {
+                if (res.code === 0 || res.code === '000') {
+                  _this.loadData()
+                  _this.reload()
+                  lib.MessageAlert_Success(res.message)
+                } else {
+                  lib.MessageAlert_None(res.message)
+                }
+              })
+            }
+          }
+        ]
       })
     },
     evaluateClicked (item) {

@@ -419,10 +419,8 @@ router.beforeEach(function (to, form, next) {
     store.dispatch(SHOW_GLOBAL_LOGIN, true)
     console.log('111')
   } else if (sailei.cookiesGet('user_loginStatus') === 1) {
-    console.log(sailei.cookiesGet('user_loginStatus'))
     next()
   } else if (sailei.cookiesGet('user_loginStatus') === 2) {
-    console.log(sailei.cookiesGet('user_loginStatus'))
     next()
   }
 })

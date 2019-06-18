@@ -152,7 +152,9 @@ export default {
           if (res.result.account.payPassword === null) {
             _this.$router.push(`/paypassword/${res.result.user.id}/1`)
           } else {
-            _this.$router.push('/calendar/index')
+            // _this.$router.push('/calendar/index')
+            window.location = '/#/calendar/index'
+            location.reload()
           }
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)
@@ -174,11 +176,11 @@ export default {
           lib.MessageAlert_Success(res.message)
           _this.$SaiLei.cookiesSave('user_loginStatus', 2)
           _this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
-          console.log(res)
           if (res.result.account.payPassword === null) {
             _this.$router.push(`/paypassword/${res.result.user.id}/2`)
           } else {
-            _this.$router.push('/customized/index')
+            window.location = '/#/customized/index'
+            location.reload()
           }
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)

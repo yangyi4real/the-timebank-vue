@@ -84,10 +84,11 @@ export default {
     },
     tiaoClick () {
       if (this.getType === '1') {
-        this.$router.push('/calendar/index')
+        // this.$router.push('/calendar/index')
+        window.location = '/#/calendar/index'
       } else if (this.getType === '2') {
-        debugger
-        this.$router.push('/customized/index')
+        // this.$router.push('/customized/index')
+        window.location = '/#/customized/index'
       }
     },
     /**
@@ -107,9 +108,13 @@ export default {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('设置成功')
           if (_this.getType === '1') {
-            _this.$router.push('/calendar/index')
+            // _this.$router.push('/calendar/index')
+            window.location = '/#/calendar/index'
+            location.reload()
           } else if (_this.getType === '2') {
-            _this.$router.push('/customized/index')
+            window.location = '/#/customized/index'
+            location.reload()
+            // _this.$router.push('/customized/index')
           }
         } else {
           console.log(res.message)
