@@ -21,6 +21,7 @@ export default {
   methods: {
     leftItemTouched () {
       this.$router.go(-1)
+      console.log('进来了')
     }
   },
   mounted () {

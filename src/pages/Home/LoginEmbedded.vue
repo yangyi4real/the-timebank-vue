@@ -11,7 +11,10 @@
       </div>
       <div v-show="jsBtnClick">
         <div class="login-form">
-          <div class="login-form-div">
+          <div class="login-form-div" v-show="phone">
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
+          </div>
+          <div class="login-form-div" v-show="phone2">
             <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
           </div>
           <div class="login-form-div">
@@ -28,7 +31,10 @@
       </div>
       <div v-show="qyBtnClick">
         <div class="login-form">
-          <div class="login-form-div">
+          <div class="login-form-div" v-show="phone">
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
+          </div>
+          <div class="login-form-div" v-show="phone2">
             <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
           </div>
           <div class="login-form-div">
@@ -63,11 +69,24 @@ export default {
       jsBtnClick: true,
       qyBtnClick: false,
       inOperation: true, // 灰色按钮
-      operation: false
+      operation: false,
+      phone: false,
+      phone2: false
     }
   },
   computed: {},
   methods: {
+    getLogin () {
+      console.log(this.$SaiLei.cookiesGet('user_loginIdUser'))
+      if (this.$SaiLei.cookiesGet('user_loginIdUser') === false) {
+        this.phone = true
+        this.phone2 = false
+      } else {
+        this.phone = false
+        this.phone2 = true
+        this.phoneNumber = this.$SaiLei.cookiesGet('user_loginIdUser')
+      }
+    },
     registerClicked () {
       this.$store.dispatch(SHOW_GLOBAL_REGISTER, true)
       this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
@@ -126,7 +145,6 @@ export default {
           lib.MessageAlert_Success(res.message)
           _this.$store.dispatch(SHOW_GLOBAL_LOGIN, false)
           _this.$SaiLei.cookiesSave('user_loginStatus', 1)
-          console.log(res)
           if (res.result.account.payPassword === null) {
             _this.$router.push(`/paypassword/${res.result.user.id}/1`)
           } else {
@@ -164,7 +182,9 @@ export default {
       })
     }
   },
-  mounted () {},
+  mounted () {
+    this.getLogin()
+  },
   watch: {
     inputValue () {
       if (this.phoneNumber !== '' && this.phoneNumberCode !== '') {

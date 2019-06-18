@@ -109,6 +109,7 @@ export default {
       _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listDataMyInfo = res.result
+          _this.getList()
           _this.getIf()
         } else {
           console.log(res.message)

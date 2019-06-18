@@ -197,10 +197,6 @@ export default {
         lib.MessageAlert_Error('请输入联系人手机号')
         return false
       }
-      if (this.demand === '') {
-        lib.MessageAlert_Error('请输入您的需求')
-        return false
-      }
       return true
     },
     checkInputValue2 () {
@@ -210,6 +206,14 @@ export default {
       }
       if (this.dateTimeEnd === '') {
         lib.MessageAlert_Error('请输入结束时间')
+        return false
+      }
+      if (this.dateTimeEnd > this.timeSaveEnd) {
+        lib.MessageAlert_Error('时间范围有误，请重新选择')
+        return false
+      }
+      if (this.dateTimeBegin < this.timeSaveBegin) {
+        lib.MessageAlert_Error('时间范围有误，请重新选择')
         return false
       }
       if (this.dateTimeEnd < this.dateTimeBegin) {

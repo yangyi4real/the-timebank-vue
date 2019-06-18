@@ -55,7 +55,8 @@ export default {
       getMsgCodeButtonCanTap: true,
       timer: null,
       inOperation: true, // 灰色按钮
-      operation: false
+      operation: false,
+      loginId: ''
     }
   },
   computed: {
@@ -181,6 +182,7 @@ export default {
           // _this.$router.push('/')
           _this.$store.dispatch(SHOW_GLOBAL_REGISTER, false)
           _this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
+          _this.$SaiLei.cookiesSave('user_loginIdUser', _this.phoneNumber)
         } else {
           _this.TipsTools.MessageAlert_Error(res.message)
         }

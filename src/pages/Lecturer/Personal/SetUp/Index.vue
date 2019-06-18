@@ -141,6 +141,7 @@ export default {
               this.$SaiLei.cookiesClear('user_loginStatus')
               this.$SaiLei.cookiesClear('user_id')
               this.$SaiLei.cookiesClear('user_name')
+              this.$SaiLei.cookiesClear('user_loginIdUser')
               this.reload()
               location.reload()
               // this.$SaiLei.LocalStorageRemove(this.$SaiLei.USER_LOGIN_TOKEN_KEY)

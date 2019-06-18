@@ -318,13 +318,14 @@ export default {
     // 点击提交
     pushClick () {
       if (!this.checkInputValue()) { return }
-      let myImg = this.imgUrl
-      myImg = myImg.replace('data:image/png;base64,', '')
-      myImg = myImg.replace('data:image/jpeg;base64,', '')
+      this.imgUrl = this.imgUrl.replace('data:image/png;base64,', '')
+      this.license = this.license.replace('data:image/png;base64,', '')
+      this.imgUrl = this.imgUrl.replace('data:image/jpeg;base64,', '')
+      this.license = this.license.replace('data:image/jpeg;base64,', '')
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('profile', myImg)
+      formData.append('profile', _this.imgUrl)
       formData.append('name', _this.name)
       formData.append('shortName', _this.shortName)
       formData.append('foundingTime', _this.foundingTime)
