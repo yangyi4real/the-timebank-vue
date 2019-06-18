@@ -121,15 +121,12 @@ export default {
         _this.$_HTTPData.getCreate(_this, formData, function (res) {
           // lib.MessageAlert_None('支付成功')
           if (res.code === 0 || res.code === '000') {
-            window.open('https://wx.tenpay.com/cgi-bin/mmpayweb-bin/checkmweb?prepay_id=wx181623354033500938fcd50a1405420400&package=2628107963')
+            window.open(res.result)
           } else {
             console.log(res.message)
           }
         })
       }
-    },
-    noWinxin () {
-      lib.MessageAlert_None('暂时无法使用微信支付，敬请期待')
     },
     payFocus () {
       this.$refs.pwd.focus()
