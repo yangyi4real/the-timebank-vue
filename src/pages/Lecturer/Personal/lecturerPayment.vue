@@ -76,11 +76,15 @@ export default {
       show1: false,
       msg: '',
       msgLength: 0,
-      listData: ''
+      listData: '',
+      ip: ''
     }
   },
   created () {},
   mounted () {
+    this.getUserIP((ip) => {
+      this.ip = ip
+    })
     this.loadData()
   },
   computed: {
@@ -92,6 +96,33 @@ export default {
     }
   },
   methods: {
+    getUserIP (onNewIP) {
+      let MyPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection
+      let pc = new MyPeerConnection({
+        iceServers: []
+      })
+      let noop = () => {
+      }
+      let localIPs = {}
+      let ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g
+      let iterateIP = (ip) => {
+        if (!localIPs[ip]) onNewIP(ip)
+        localIPs[ip] = true
+      }
+      pc.createDataChannel('')
+      pc.createOffer().then((sdp) => {
+        sdp.sdp.split('\n').forEach(function (line) {
+          if (line.indexOf('candidate') < 0) return
+          line.match(ipRegex).forEach(iterateIP)
+        })
+        pc.setLocalDescription(sdp, noop, noop)
+      }).catch((reason) => {
+      })
+      pc.onicecandidate = (ice) => {
+        if (!ice || !ice.candidate || !ice.candidate.candidate || !ice.candidate.candidate.match(ipRegex)) return
+        ice.candidate.candidate.match(ipRegex).forEach(iterateIP)
+      }
+    },
     loadData () {
       let _this = this
       let formData = new FormData()
@@ -117,12 +148,14 @@ export default {
         let _this = this
         let formData = new FormData()
         formData.append('certificateId', _this.getId)
+        formData.append('IP', _this.ip)
         // formData.append('certificateId', '1560843771562')
         _this.$_HTTPData.getCreate(_this, formData, function (res) {
           // lib.MessageAlert_None('支付成功')
           if (res.code === 0 || res.code === '000') {
             console.log(res)
             if (res.result === null) {
+              lib.MessageAlert_None('未获取到地址')
               console.log(res.message)
             } else {
               window.open(res.result)
