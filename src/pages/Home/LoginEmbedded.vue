@@ -77,7 +77,6 @@ export default {
   computed: {},
   methods: {
     getLoginInput () {
-      console.log(this.$SaiLei.cookiesGet('user_loginIdUser'))
       if (this.$SaiLei.cookiesGet('user_loginIdUser') === false) {
         this.phone = true
         this.phone2 = false
@@ -129,6 +128,7 @@ export default {
      * 点击讲师登录按钮
      */
     loginBtnClicked () {
+      console.log(localStorage.getItem('Ip'))
       if (!this.checkInputValue()) { return }
       let _this = this
       let formData = new FormData()
@@ -182,6 +182,7 @@ export default {
   },
   mounted () {
     this.getLoginInput()
+    console.log(localStorage.getItem('Ip'))
   },
   watch: {
   }

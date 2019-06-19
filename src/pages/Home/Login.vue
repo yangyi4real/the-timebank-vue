@@ -77,7 +77,6 @@ export default {
   computed: {},
   methods: {
     getLoginInput () {
-      console.log(this.$SaiLei.cookiesGet('user_loginIdUser'))
       if (this.$SaiLei.cookiesGet('user_loginIdUser') === false) {
         this.phone = true
         this.phone2 = false
@@ -171,6 +170,7 @@ export default {
   },
   mounted () {
     this.getLoginInput()
+    console.log(localStorage.getItem('Ip'))
   },
   watch: {
   }

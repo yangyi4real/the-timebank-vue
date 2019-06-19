@@ -86,6 +86,7 @@ export default {
       this.ip = ip
     })
     this.loadData()
+    console.log(localStorage.getItem('Ip'))
   },
   computed: {
     getPrice () {
@@ -148,7 +149,7 @@ export default {
         let _this = this
         let formData = new FormData()
         formData.append('certificateId', _this.getId)
-        formData.append('IP', _this.ip)
+        formData.append('IP', localStorage.getItem('Ip'))
         // formData.append('certificateId', '1560843771562')
         _this.$_HTTPData.getCreate(_this, formData, function (res) {
           // lib.MessageAlert_None('支付成功')

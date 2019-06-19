@@ -176,8 +176,35 @@ export default {
   computed: {
   },
   methods: {
+    checkInputValueCourse () {
+      if (this.className === '') {
+        lib.MessageAlert_Error('请填写课程名称')
+        return false
+      }
+      if (this.tags === '') {
+        lib.MessageAlert_Error('请填写课程标签')
+        return false
+      }
+      if (this.description === '') {
+        lib.MessageAlert_Error('请填写课程内容/描述')
+        return false
+      }
+      return true
+    },
+    checkInputValueCase () {
+      if (this.className === '') {
+        lib.MessageAlert_Error('请填写课程名称')
+        return false
+      }
+      if (this.companyName === '') {
+        lib.MessageAlert_Error('请填写企业名称')
+        return false
+      }
+      return true
+    },
     // 课程介绍点击完成
     courseCompleteClick () {
+      if (!this.checkInputValueCourse()) { return }
       this.mainDiv = true
       this.courseDiv = false
       let temp = {className: this.className, tags: this.tags, description: this.description, userId: this.$SaiLei.cookiesGet('user_id')}
@@ -190,6 +217,7 @@ export default {
     },
     // 课程介绍点击修改完成
     courseCompleteClick2 () {
+      if (!this.checkInputValueCourse()) { return }
       this.mainDiv = true
       this.courseDiv2 = false
       this.introDataList.splice(this.dataIndex, 1)
@@ -211,6 +239,7 @@ export default {
     },
     // 课程案例点击完成
     caseCompleteClick () {
+      if (!this.checkInputValueCase()) { return }
       this.mainDiv = true
       this.serviceDiv = false
       let tempData = {className: this.className, companyName: this.companyName, userId: this.$SaiLei.cookiesGet('user_id')}
@@ -222,6 +251,7 @@ export default {
     },
     // 课程案例点击修改完成
     caseCompleteClick2 () {
+      if (!this.checkInputValueCase()) { return }
       this.mainDiv = true
       this.serviceDiv2 = false
       this.introDatasList.splice(this.dataIndex2, 1)

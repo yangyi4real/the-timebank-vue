@@ -253,34 +253,46 @@ export default {
     clickDay (data) {
       this.calendarData = data
       let calendarTime = Date.parse(this.calendarData)
-      let _this = this
-      let formData = new FormData()
-      formData.append('userId', _this.getId)
-      formData.append('date', calendarTime)
-      _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.choseList = res
-          if (_this.choseList.message === '当日无储存时间' || res.result.order !== null) {
-            _this.choseDiv = false
-            _this.noTime = true
+      let a = Math.round(new Date() / 1000)
+      if (a > calendarTime) {
+        lib.MessageAlert_Error('时间已过，无法预约')
+      } else {
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.getId)
+        formData.append('date', calendarTime)
+        _this.$_HTTPData.getDateInfo(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            _this.choseList = res
+            if (_this.choseList.message === '当日无储存时间' || res.result.order !== null) {
+              _this.choseDiv = false
+              _this.noTime = true
+            } else {
+              _this.day = res.result.timeSave.date.substring(0, 10)
+              _this.timeSaveBegin = res.result.timeSave.begin.substring(11, 16)
+              _this.timeSaveEnd = res.result.timeSave.end.substring(11, 16)
+              _this.choseDiv = true
+              _this.noTime = false
+            }
+            _this.chose = res.result
+            _this.chose.timeSave = res.result.timeSave
           } else {
-            _this.day = res.result.timeSave.date.substring(0, 10)
-            _this.timeSaveBegin = res.result.timeSave.begin.substring(11, 16)
-            _this.timeSaveEnd = res.result.timeSave.end.substring(11, 16)
-            _this.choseDiv = true
-            _this.noTime = false
+            lib.MessageAlert_Error(res.message)
           }
-          _this.chose = res.result
-          _this.chose.timeSave = res.result.timeSave
-        } else {
-          lib.MessageAlert_Error(res.message)
-        }
-      })
+        })
+      }
     },
     appointmentClick () {
       if (!this.checkInputValue2()) { return }
-      this.calendarShow = false
-      this.formDataShow = true
+      let a = Math.round(new Date() / 1000)
+      let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let beginDateTime = Date.parse(beginDate)
+      if (a > beginDateTime) {
+        lib.MessageAlert_Error('时间已过，无法预约')
+      } else {
+        this.calendarShow = false
+        this.formDataShow = true
+      }
     },
     appointmentFormDataClick () {
       let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
@@ -305,7 +317,7 @@ export default {
       _this.$_HTTPData.getAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.appointmentList = res.result
-          _this.$router.push(`/user/enterprise-payment/${_this.appointmentList.price}/${_this.appointmentList.id}`)
+          _this.$router.push(`/user/enterprise-payment/${_this.appointmentList.lessonOrder.price}/${_this.appointmentList.lessonOrder.id}/${_this.appointmentList.certificate.id}`)
         } else {
           lib.MessageAlert_None(res.message)
         }

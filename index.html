@@ -6,12 +6,16 @@
   <link rel="stylesheet" href="https://at.alicdn.com/t/font_1142181_yuc6dzaoif.css">
   <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
   <script>
-    (function () {
-      var dw = document.createElement("script");
-      dw.src = "https://dibaqu.com/ipm.js?389918337028587520"
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(dw, s);
-    })()
+    var Ip = returnCitySN['cip']
+    var cityname = returnCitySN['cname']
+    localStorage.setItem('Ip', Ip)
+    localStorage.setItem('cityname', cityname)
+    // (function () {
+    //   var dw = document.createElement("script");
+    //   dw.src = "https://dibaqu.com/ipm.js?389918337028587520"
+    //   var s = document.getElementsByTagName("script")[0];
+    //   s.parentNode.insertBefore(dw, s);
+    // })()
   </script>
   <title>时间银行</title>
 </head>

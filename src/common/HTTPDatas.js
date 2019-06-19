@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = ''
     } else {
-      this.host = 'http://192.168.1.116:8081'
+      this.host = 'http://192.168.1.140:8081'
       // this.host = 'http://114.116.33.168:8081'
     }
     this.TipsTools = new TipsTools()

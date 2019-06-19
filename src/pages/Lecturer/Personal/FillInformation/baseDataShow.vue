@@ -171,7 +171,11 @@ export default {
         return false
       }
       if (this.EMail === '') {
-        lib.MessageAlert_Error('请输入电子邮箱')
+        lib.MessageAlert_Error('请输入邮箱')
+        return false
+      }
+      if (!this.$SaiLei.IsEmailNumber(this.EMail)) {
+        lib.MessageAlert_Error('请输入正确的邮箱')
         return false
       }
       return true

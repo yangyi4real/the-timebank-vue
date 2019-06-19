@@ -53,14 +53,15 @@
           </div>
           <div class="msg-time">
             <div>约讲内容：{{item.orderEntity.purpose}}</div>
+            <div v-if="item.orderEntity.purpose === null">约讲内容：无</div>
             <div class="flex-row-start">
               <div>约讲时间：</div>
-              <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}} 元</p></div>
+              <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
             </div>
           </div>
         </div>
         <div class="order-center-list-opt">
-          <p class="text-right">合计：{{item.orderEntity.price}}</p>
+          <p class="text-right">合计：{{item.orderEntity.price}} 元</p>
           <div class="opt-btn flex-row-end">
             <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
             <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>

@@ -333,6 +333,10 @@ export default {
         lib.MessageAlert_Error('请输入企业邮箱')
         return false
       }
+      if (!this.$SaiLei.IsEmailNumber(this.email)) {
+        lib.MessageAlert_Error('请输入正确的邮箱')
+        return false
+      }
       if (this.license === '') {
         lib.MessageAlert_Error('请上传营业执照')
         return false

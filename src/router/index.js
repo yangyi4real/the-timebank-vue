@@ -211,7 +211,7 @@ const router = new Router({
     },
     // 企业支付
     {
-      path: '/user/enterprise-payment/:price/:id',
+      path: '/user/enterprise-payment/:price/:orderId/:id',
       name: 'EnterprisePayment',
       component: () => import('../pages/Enterprise/User/EnterprisePayment')
     },

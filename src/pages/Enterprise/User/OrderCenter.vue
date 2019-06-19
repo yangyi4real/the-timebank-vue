@@ -53,6 +53,7 @@
             </div>
             <div class="msg-time">
               <div>约讲内容：{{item.orderEntity.purpose}}</div>
+              <div v-if="item.orderEntity.purpose === null">约讲内容：无</div>
               <div class="flex-row-start">
                 <div>约讲时间：</div>
                 <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>

@@ -1,6 +1,9 @@
 <template>
   <div class="body">
-    <navbar :title="titleMsg"></navbar>
+    <div class="home-nav clearfix">
+      <i class="iconfont iconxiazai6 fl" @click="authentClicked"></i>
+      <span class="fl"> 支付</span>
+    </div>
     <div class="wapper">
       <div class="payment-title">
         <label>支付金额</label>
@@ -21,14 +24,15 @@
           <div class="payment-mode-list-text">
             <img src=""/>微信支付
           </div>
-          <div class="payment-mode-list-radio" @click="noWinxin">
-            <input type="radio">
-            <label></label>
+          <div class="payment-mode-list-radio">
+            <input id="item2" type="radio" name="payItem" value="2" v-model="checkedValue">
+            <label for="item2"></label>
           </div>
         </div>
       </div>
       <div class="payment-btn">
         <yd-button size="large" type="primary" @click.native="affirmPay" class="btn-border">确认支付</yd-button>
+        <div @click="tiaoClick" class="payment-btn-quxiao">暂不支付</div>
       </div>
     </div>
     <yd-popup v-model="show1" position="center" width="90%">
@@ -72,7 +76,8 @@ export default {
       checkedValue: '1',
       show1: false,
       msg: '',
-      msgLength: 0
+      msgLength: 0,
+      ip: ''
     }
   },
   created () {},
@@ -82,13 +87,45 @@ export default {
     getPrice () {
       return this.$route.params.price
     },
+    getOrderId () {
+      return this.$route.params.orderId
+    },
     getId () {
       return this.$route.params.id
     }
   },
   methods: {
+    tiaoClick () {
+      lib.MessageAlert_None('取消支付')
+      this.$router.push('/user/ordercenter')
+    },
+    authentClicked () {
+      lib.MessageAlert_None('取消支付')
+      this.$router.push('/user/ordercenter')
+    },
     affirmPay () {
-      this.show1 = true
+      if (this.checkedValue === '1') {
+        this.show1 = true
+      } else if (this.checkedValue === '2') {
+        let _this = this
+        let formData = new FormData()
+        formData.append('certificateId', _this.getId)
+        formData.append('IP', localStorage.getItem('Ip'))
+        // formData.append('certificateId', '1560843771562')
+        _this.$_HTTPData.getCreate(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            console.log(res)
+            if (res.result === null) {
+              lib.MessageAlert_None('未获取到地址')
+              console.log(res.message)
+            } else {
+              window.open(res.result)
+            }
+          } else {
+            console.log(res.message)
+          }
+        })
+      }
     },
     payFocus () {
       this.$refs.pwd.focus()
@@ -96,16 +133,13 @@ export default {
     ResetPwd () {
       this.$router.push('/personal/personalcenter')
     },
-    noWinxin () {
-      lib.MessageAlert_None('暂时无法使用微信支付，敬请期待')
-    },
     getPush () {
       this.$dialog.loading.open('支付中，请勿操作')
       setTimeout(() => {
         let _this = this
         let formData = new FormData()
         formData.append('payType', 1)
-        formData.append('orderId', _this.getId)
+        formData.append('orderId', _this.getOrderId)
         formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
         _this.$_HTTPData.getCompanyPay(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
@@ -214,4 +248,5 @@ export default {
     display: inline-block;
   }
   input:focus {outline: none;}
+  .payment-btn-quxiao{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0.2rem auto;border: 0.01rem solid #C8C8C8;background: #C8C8C8;color:rgba(255,255,255,1);}
 </style>
