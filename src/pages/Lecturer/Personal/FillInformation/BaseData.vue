@@ -290,33 +290,15 @@ export default {
           console.log(res.message)
         }
       })
-    },
+    }
     // pushClick () {
     //   this.$router.push('/personal/information/intention')
     // },
-    inputValue () {
-      if (this.name !== '' && this.birthDate !== '' && this.workDate !== '' && this.EMail !== '' && this.areaValue !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
-    }
   },
   mounted () {
     this.nowTimes()
   },
   watch: {
-    inputValue () {
-      if (this.name !== '' && this.birthDate !== '' && this.workDate !== '' && this.EMail !== '' && this.areaValue !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
-    }
   }
 }
 </script>

@@ -171,7 +171,9 @@ export default {
 
 <style scoped>
   input:focus {outline: none;}
-  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem;}
+  .home-nav{padding: 0.2rem 0;font-size: 0.2rem;font-family:PingFangSC-Semibold;font-weight:600;margin: 0 0.1rem;}
+  .home-nav span{padding-left: 1.6rem;}
+  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0 0.1rem;}
   .payment-title{padding-top: 0.6rem;padding-bottom: 0.48rem;text-align: center;}
   .payment-title label{font-size:0.19rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(0,0,0,1);}
   .payment-title p{font-size:0.32rem;ont-family:PingFangSC-Semibold;font-weight:600;color:rgba(249,91,64,1);padding-top: 0.4rem;}

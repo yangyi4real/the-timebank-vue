@@ -100,6 +100,7 @@ export default {
             if (_this.listRecord[i].orderEntity.orderStatus === 1) {
               _this.listRecord.splice(i, 1)
             }
+            console.log(_this.listRecord)
           }
           if (_this.listRecord.length === 0) {
             _this.Tips = true

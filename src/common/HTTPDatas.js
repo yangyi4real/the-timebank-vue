@@ -20,10 +20,10 @@ class HTTPData {
   constructor () {
     this.host = ''
     if (PUBLIC) {
-      this.host = ''
+      this.host = 'http://time.shangdiguo.com:8081'
     } else {
       this.host = 'http://192.168.1.140:8081'
-      // this.host = 'http://114.116.33.168:8081'
+      // this.host = 'http://time.shangdiguo.com:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()

@@ -35,7 +35,7 @@
           <div><i class="iconfont iconjiantou"></i><span>|</span></div>
           <div>
             <div v-if="listData.authStatus === 0 || listData.authStatus === null" @click="authenticationClicked">去认证<i class="iconfont iconjiantou"></i><span></span></div>
-            <div v-if="listData.authStatus === 1" @click="cancelAuthenticationClicked">已认证<span></span></div>
+            <div v-if="listData.authStatus === 1">已认证<span></span></div>
           </div>
         </div>
         <p v-if="listData.introduction === '' || listData.introduction === null" @click="skillLevelClicked">添加个人描述，可让企业更好地认识你</p>
@@ -84,8 +84,8 @@
 <script>
 import Tabbar from '../../../views/Tabbar/Tabbar'
 import icon from '../../../assets/icon/user_icon.png'
-import TipsTools from '../../../common/TipsTools'
-let lib = new TipsTools()
+// import TipsTools from '../../../common/TipsTools'
+// let lib = new TipsTools()
 
 export default {
   name: 'PersonalIndex',
@@ -132,27 +132,27 @@ export default {
     authenticationClicked () {
       this.$router.push('/personal/information/authentication-center')
     },
-    cancelAuthenticationClicked () {
-      this.$dialog.confirm({
-        title: '<p style="text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.1rem">确定取消认证？</p>',
-        mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">取消后，未来已存储时间将全部失效，并且不可继续约课</p>',
-        opts: [
-          {
-            txt: '取消',
-            color: '#ccc',
-            callback: () => {}
-          },
-          {
-            txt: '确定',
-            color: true,
-            callback: () => {
-              // this.$router.push('/calendar/index')
-              lib.MessageAlert_Error('系统维护中,请不支持此操作')
-            }
-          }
-        ]
-      })
-    },
+    // cancelAuthenticationClicked () {
+    //   this.$dialog.confirm({
+    //     title: '<p style="text-align: center;font-size:0.19rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.1rem">确定取消认证？</p>',
+    //     mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">取消后，未来已存储时间将全部失效，并且不可继续约课</p>',
+    //     opts: [
+    //       {
+    //         txt: '取消',
+    //         color: '#ccc',
+    //         callback: () => {}
+    //       },
+    //       {
+    //         txt: '确定',
+    //         color: true,
+    //         callback: () => {
+    //           // this.$router.push('/calendar/index')
+    //           lib.MessageAlert_Error('系统维护中,请不支持此操作')
+    //         }
+    //       }
+    //     ]
+    //   })
+    // },
     loadData () {
       let _this = this
       let formData = new FormData()

@@ -37,7 +37,7 @@
     <div class="modular3">
       <div class="modular3-title flex-row-between">
         <div class="modular3-title-left">订单中心</div>
-        <div class="modular3-title-right" @click="orderCenterClick">查看全部订单</div>
+        <div class="modular3-title-right" @click="orderCenterClick">查看全部订单<i class="iconfont iconjiantou"></i></div>
       </div>
       <div class="modular3-sort flex-row-between">
         <div @click="statusClicked1">
@@ -63,6 +63,9 @@
       </div>
     </div>
     <div class="modular4">
+      <div class="modular4-title">
+        <i class="iconfont iconqitapeizhi main-color"></i>其他服务
+      </div>
       <div class="modular4-div flex-row-around">
         <div @click="linkInvitation">
           <img src="../../../assets/icon/yaoqing.png"/>
@@ -248,6 +251,8 @@ export default {
   .modular4 .modular4-div{text-align: center;font-size:15px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);padding-top: 0.15rem;}
   .modular4 .modular4-div img{width: 0.3rem;height: 0.3rem;}
   .modular4 .modular4-div p{padding-top: 0.16rem}
+  .modular4 .modular4-title{font-size:0.16rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);margin-bottom: 0.4rem;}
+  .modular4 .modular4-title i{padding-right: 0.1rem}
   .modular-already div{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
   .modular-already div span{padding-left: 0.1rem;}
   .modular-already p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);padding-top: 0.15rem;}

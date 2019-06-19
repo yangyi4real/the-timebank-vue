@@ -13,7 +13,7 @@
         <p>支付方式</p>
         <div class="payment-mode-list flex-row-between" style="border-bottom: 0.01rem solid #E8E8E8;">
           <div class="payment-mode-list-text">
-            <img src=""/>钱包支付<span>（余额不足）</span>
+            <img src=""/>钱包支付<span v-if="this.getPrice > this.listData.balance">（余额不足）</span>
           </div>
           <div class="payment-mode-list-radio">
             <input id="item1" type="radio" name="payItem" value="1" v-model="checkedValue">
@@ -86,7 +86,6 @@ export default {
       this.ip = ip
     })
     this.loadData()
-    console.log(localStorage.getItem('Ip'))
   },
   computed: {
     getPrice () {
@@ -144,13 +143,17 @@ export default {
     },
     affirmPay () {
       if (this.checkedValue === '1') {
-        this.show1 = true
+        if (this.listData.balance < this.getPrice) {
+          lib.MessageAlert_None('余额不足')
+        } else {
+          this.show1 = true
+        }
       } else if (this.checkedValue === '2') {
         let _this = this
         let formData = new FormData()
         formData.append('certificateId', _this.getId)
         formData.append('IP', localStorage.getItem('Ip'))
-        // formData.append('certificateId', '1560843771562')
+        // formData.append('certificateId', '1560843771562')`
         _this.$_HTTPData.getCreate(_this, formData, function (res) {
           // lib.MessageAlert_None('支付成功')
           if (res.code === 0 || res.code === '000') {
@@ -159,7 +162,8 @@ export default {
               lib.MessageAlert_None('未获取到地址')
               console.log(res.message)
             } else {
-              window.open(res.result)
+              window.open(res.result + '&redirect_url=' + encodeURIComponent('http://time.shangdiguo.com/#/personal/index'))
+              console.log(res.result + '&redirect_url=' + encodeURIComponent('http://time.shangdiguo.com/#/personal/index'))
             }
           } else {
             console.log(res.message)

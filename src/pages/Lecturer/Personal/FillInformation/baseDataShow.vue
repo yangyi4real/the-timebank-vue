@@ -13,7 +13,7 @@
         <div class="basedata-list flex-row-between">
           <div>姓名</div>
           <div>
-            <input type="text" v-model="name" placeholder="请填写真实姓名" v-on:input="inputValue"/>
+            <input type="text" v-model="name" placeholder="请填写真实姓名" />
           </div>
         </div>
         <div class="basedata-list flex-row-between">
@@ -30,7 +30,7 @@
             <div>
               <yd-cell-group>
                 <yd-cell-item>
-                  <yd-datetime type="month" v-model="birthDate" slot="right" start-date="1920-01" :end-date="nowTime" v-on:input="inputValue"></yd-datetime>
+                  <yd-datetime type="month" v-model="birthDate" slot="right" start-date="1920-01" :end-date="nowTime" ></yd-datetime>
                 </yd-cell-item>
               </yd-cell-group>
             </div>
@@ -43,7 +43,7 @@
             <div>
               <yd-cell-group>
                 <yd-cell-item>
-                  <yd-datetime type="month" v-model="workDate" slot="right" start-date="1920-01" :end-date="nowTime" v-on:input="inputValue"></yd-datetime>
+                  <yd-datetime type="month" v-model="workDate" slot="right" start-date="1920-01" :end-date="nowTime" ></yd-datetime>
                 </yd-cell-item>
               </yd-cell-group>
             </div>
@@ -56,7 +56,7 @@
             <div>
               <yd-cell-group>
                 <yd-cell-item>
-                  <input slot="right" type="text" @click.stop="show1 = true" v-model="model1" readonly v-on:input="inputValue">
+                  <input slot="right" type="text" @click.stop="show1 = true" v-model="model1" readonly >
                 </yd-cell-item>
               </yd-cell-group>
               <yd-cityselect v-model="show1" :callback="result1" :items="district"></yd-cityselect>
@@ -67,7 +67,7 @@
         <div class="basedata-list flex-row-between" style="border: 0">
           <div>电子邮箱</div>
           <div>
-            <input type="text" v-model="email" v-on:input="inputValue" placeholder="点击编辑"/>
+            <input type="text" v-model="email"  placeholder="点击编辑"/>
           </div>
         </div>
       </div>
@@ -170,11 +170,11 @@ export default {
         lib.MessageAlert_Error('请输入现居地')
         return false
       }
-      if (this.EMail === '') {
+      if (this.email === '') {
         lib.MessageAlert_Error('请输入邮箱')
         return false
       }
-      if (!this.$SaiLei.IsEmailNumber(this.EMail)) {
+      if (!this.$SaiLei.IsEmailNumber(this.email)) {
         lib.MessageAlert_Error('请输入正确的邮箱')
         return false
       }
@@ -326,30 +326,12 @@ export default {
           }
         })
       }
-    },
+    }
     // pushClick () {
     //   this.$router.push('/personal/information/intention')
     // },
-    inputValue () {
-      if (this.name !== '' && this.birthDate !== '' && this.workDate !== '' && this.EMail !== '' && this.areaValue !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
-    }
   },
   watch: {
-    inputValue () {
-      if (this.name !== '' && this.birthDate !== '' && this.workDate !== '' && this.EMail !== '' && this.areaValue !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
-    }
   }
 }
 </script>
