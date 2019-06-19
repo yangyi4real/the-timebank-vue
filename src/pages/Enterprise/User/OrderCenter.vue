@@ -184,7 +184,7 @@ export default {
       this.$router.push('/user/allorder-refund')
     },
     paymentClicked (item) {
-      this.$router.push(`/user/enterprise-payment/${item.orderEntity.price}/${item.orderEntity.id}`)
+      this.$router.push(`/user/enterprise-payment/${item.orderEntity.price}/${item.orderEntity.id}/${item.orderEntity.certificateId}`)
     },
     cancelOrder (item) {
       this.$dialog.confirm({
@@ -234,7 +234,7 @@ export default {
 </script>
 
 <style scoped>
-  .wapper{border-radius:0.05rem;margin: 0.66rem 0.1rem;}
+  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0 0.1rem;}
   .order-center-tab{padding: 0.2rem;font-size:15px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);background: #fff;border-radius:0.05rem;margin-bottom: 0.1rem;}
   .active{color:rgba(249,91,64,1)}
   .order-center-list{padding: 0 0.2rem;background: #fff;}
@@ -301,5 +301,5 @@ export default {
   .navbar .right-btn:active {
     color: #dcbc6c;
   }
-  .list-null{font-size:0.15rem;font-family:PingFangSC-Regular;text-align: center;padding: 0.2rem 0;color:rgba(153,153,153,1)}
+  .wapper .list-null{text-align: center;font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);padding: 0.6rem 0;}
 </style>

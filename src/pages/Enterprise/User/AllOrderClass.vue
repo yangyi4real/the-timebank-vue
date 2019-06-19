@@ -185,7 +185,7 @@ export default {
       this.$router.push('/user/allorder-refund')
     },
     paymentClicked (item) {
-      this.$router.push(`/user/enterprise-payment/${item.orderEntity.price}/${item.orderEntity.id}`)
+      this.$router.push(`/user/enterprise-payment/${item.orderEntity.price}/${item.orderEntity.id}/${item.orderEntity.certificateId}`)
     },
     cancelOrder (item) {
       this.$dialog.confirm({
