@@ -8,7 +8,7 @@ import TipsTools from './TipsTools'
 import UserModel from '../store/UserModel'
 import { SET_USER_INFO, SHOW_GLOBAL_LOGIN } from '../store/MutationTypes'
 
-const PUBLIC = false // 发布状态
+const PUBLIC = true // 发布状态
 
 let currentVueObj = null
 const Axios = axios.create({
