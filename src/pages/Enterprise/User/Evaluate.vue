@@ -142,6 +142,7 @@ export default {
       _this.$_HTTPData.getAppraise(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
+          _this.$router.push('/user/ordercenter')
         } else {
           lib.MessageAlert_None(res.message)
         }

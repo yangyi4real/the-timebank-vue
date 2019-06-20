@@ -30,6 +30,16 @@
             已取消
           </div>
         </div>
+        <!--<yd-tab horizontal-scroll>-->
+          <!--<yd-tab-panel label="全部" @click="tabsClicked"></yd-tab-panel>-->
+          <!--<yd-tab-panel label="待付款" @click="tabsClicked2"></yd-tab-panel>-->
+          <!--<yd-tab-panel label="待确认" @click="tabsClicked3"></yd-tab-panel>-->
+          <!--<yd-tab-panel label="待开课" @click="tabsClicked4"></yd-tab-panel>-->
+          <!--<yd-tab-panel label="待评价" @click="tabsClicked5"></yd-tab-panel>-->
+          <!--<yd-tab-panel label="已完成"></yd-tab-panel>-->
+          <!--<yd-tab-panel label="已取消" @click="tabsClicked6"></yd-tab-panel>-->
+          <!--<yd-tab-panel label="已退款"></yd-tab-panel>-->
+        <!--</yd-tab>-->
         <div class="list-null" v-show="listDataNull">
           暂无订单
         </div>

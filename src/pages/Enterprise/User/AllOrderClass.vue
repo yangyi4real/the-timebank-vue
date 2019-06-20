@@ -8,28 +8,34 @@
         订单中心
       </div>
     </div>
+    <div class="order-center-tab clearfix">
+      <div @click="tabsClicked" class="fl">
+        全部
+      </div>
+      <div @click="tabsClicked2" class="fl">
+        待付款
+      </div>
+      <div @click="tabsClicked3" class="fl">
+        待确认
+      </div>
+      <div @click="tabsClicked4" class="active fl">
+        待开课
+      </div>
+      <div @click="tabsClicked5" class="fl">
+        待评价
+      </div>
+      <div @click="tabsClicked6" class="fl">
+        已取消
+      </div>
+      <!--<div class="fl">-->
+        <!--待评价-->
+      <!--</div>-->
+      <!--<div class="fl">-->
+        <!--已取消-->
+      <!--</div>-->
+    </div>
     <div class="wapper">
       <!--<div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>-->
-      <div class="order-center-tab flex-row-around">
-        <div @click="tabsClicked">
-          全部
-        </div>
-        <div @click="tabsClicked2">
-          待付款
-        </div>
-        <div @click="tabsClicked3">
-          待确认
-        </div>
-        <div @click="tabsClicked4" class="active">
-          待开课
-        </div>
-        <div @click="tabsClicked5">
-          待评价
-        </div>
-        <div @click="tabsClicked6">
-          已取消
-        </div>
-      </div>
       <div class="list-null" v-show="listDataNull">
         暂无订单
       </div>
@@ -267,8 +273,9 @@ export default {
 </script>
 
 <style scoped>
-  .wapper{border-radius:0.05rem;margin: 0.66rem 0.1rem;}
-  .order-center-tab{padding: 0.2rem;font-size:15px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);background: #fff;border-radius:0.05rem;margin-bottom: 0.1rem;}
+  .wapper{border-radius:0.05rem;background: #fff;margin: 0 0.1rem;}
+  .order-center-tab{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem 0.1rem 0.1rem;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;height: 0.46rem;line-height: 0.46rem;}
+  .order-center-tab div{padding: 0 0.1rem;}
   .active{color:rgba(249,91,64,1)}
   .order-center-list{padding: 0 0.2rem;background: #fff;}
   .order-center-list .order-center-list-msg{padding: 0.2rem 0;}
@@ -334,5 +341,5 @@ export default {
   .navbar .right-btn:active {
     color: #dcbc6c;
   }
-  .list-null{font-size:0.15rem;font-family:PingFangSC-Regular;text-align: center;padding: 0.2rem 0;color:rgba(153,153,153,1)}
+  .list-null{font-size:0.15rem;font-family:PingFangSC-Regular;text-align: center;padding: 0.6rem 0;color:rgba(153,153,153,1);}
 </style>

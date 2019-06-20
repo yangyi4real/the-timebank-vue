@@ -155,6 +155,10 @@ export default {
         lib.MessageAlert_Error('请输入金额')
         return false
       }
+      if (this.price % 1 !== 0) {
+        lib.MessageAlert_Error('请输入整数金额')
+        return false
+      }
       return true
     },
     treeselectBtn () {

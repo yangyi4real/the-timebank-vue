@@ -195,7 +195,7 @@ export default {
   .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0 0.1rem;}
   .payment-title{padding-top: 0.6rem;padding-bottom: 0.48rem;text-align: center;}
   .payment-title label{font-size:0.19rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(0,0,0,1);}
-  .payment-title p{font-size:0.32rem;ont-family:PingFangSC-Semibold;font-weight:600;color:rgba(249,91,64,1);padding-top: 0.4rem;}
+  .payment-title p{font-size:0.32rem;ont-family:PingFangSC-Semibold;font-weight:800;color:rgba(249,91,64,1);padding-top: 0.4rem;}
   .payment-title p span{font-size:0.21rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(249,91,64,1);padding-right: 0.15rem;}
   .payment-mode{margin: 0 0.2rem;}
   .payment-mode p{font-size:0.16rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(0,0,0,1);}

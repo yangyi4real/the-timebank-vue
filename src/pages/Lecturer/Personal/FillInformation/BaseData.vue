@@ -28,16 +28,17 @@
           <div>出生年月</div>
           <div class="flex-row-between">
             <div>
-              <!--<yd-cell-group>-->
-              <!--<yd-cell-item>-->
-                <!--<yd-datetime type="month" v-model="birthDate" slot="right" start-date="1920-01" :end-date="nowTime" v-on:input="inputValue"></yd-datetime>-->
-              <!--</yd-cell-item>-->
-            <!--</yd-cell-group>-->
-              <mt-datetime-picker
-                ref="picker"
-                type="time"
-                v-model="pickerValue">
-              </mt-datetime-picker>
+              <yd-cell-group>
+              <yd-cell-item>
+                <yd-datetime type="month" v-model="birthDate" slot="right" start-date="1920-01" :end-date="nowTime"></yd-datetime>
+              </yd-cell-item>
+            </yd-cell-group>
+              <!--<div @click="openPicker">11111</div>-->
+              <!--<mt-datetime-picker-->
+                <!--ref="picker"-->
+                <!--type="date"-->
+                <!--v-model="pickerValue" @confirm="handleConfirm">-->
+              <!--</mt-datetime-picker>-->
             </div>
             <div><i class="iconfont iconjiantou"></i></div>
           </div>
@@ -133,6 +134,9 @@ export default {
   methods: {
     openPicker () {
       this.$refs.picker.open()
+    },
+    handleConfirm () {
+      console.log(this.pickerValue)
     },
     /**
      * 验证输入框的值

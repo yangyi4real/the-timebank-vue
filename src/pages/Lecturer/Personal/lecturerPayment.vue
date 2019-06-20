@@ -241,7 +241,7 @@ export default {
   .payment-title p{font-size:0.32rem;ont-family:PingFangSC-Semibold;font-weight:600;color:rgba(249,91,64,1);padding-top: 0.4rem;}
   .payment-title p span{font-size:0.21rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(249,91,64,1);padding-right: 0.15rem;}
   .payment-mode{margin: 0 0.2rem;}
-  .payment-mode p{font-size:0.16rem;font-family:PingFangSC-Semibold;font-weight:600;color:rgba(0,0,0,1);}
+  .payment-mode p{font-size:0.16rem;font-family:PingFangSC-Semibold;font-weight:800;color:rgba(0,0,0,1);}
   .payment-mode .payment-mode-list{padding: 0.2rem 0;}
   .payment-btn{padding: 1rem 0;}
   .payment-mode-list-text{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}

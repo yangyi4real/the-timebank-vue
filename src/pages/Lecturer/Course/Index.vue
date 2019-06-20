@@ -20,12 +20,12 @@
               <div class="order-center-list-msg-div fl">
                 约讲企业：{{item.companyEntity.companyName}}
               </div>
-              <div class="tip fr" v-if="item.orderEntity.orderStatus === 1">待付款</div>
+              <!--<div class="tip fr" v-if="item.orderEntity.orderStatus === 1">待付款</div>-->
               <div class="tip fr" v-if="item.orderEntity.orderStatus === 2">待确认</div>
               <div class="tip fr" v-if="item.orderEntity.orderStatus === 3">待开课</div>
               <div class="tip fr" v-if="item.orderEntity.orderStatus === 4">待评价</div>
               <div class="tip fr" v-if="item.orderEntity.orderStatus === 6">已完成</div>
-              <div class="tip fr" v-if="item.orderEntity.orderStatus === 5 || item.orderEntity.orderStatus === 7">已取消</div>
+              <div class="tip fr" v-if="item.orderEntity.orderStatus === 7">已取消</div>
             </div>
             <div class="msg-time">
               <div>约讲地址：{{item.orderEntity.address}}</div>
@@ -69,7 +69,8 @@ export default {
         {name: '待确认'},
         {name: '待开课'},
         {name: '待评价'},
-        {name: '已完成'}
+        {name: '已完成'},
+        {name: '已取消'}
       ],
       changeTab: 0,
       Tips: false,
@@ -196,7 +197,26 @@ export default {
       }
       if (this.changeTab === 4) {
         formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-        formData.append('status', 5)
+        formData.append('status', 6)
+        formData.append('type', 1)
+        _this.$_HTTPData.getOrderList(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            _this.listRecord = res.result
+            if (_this.listRecord.length === 0) {
+              _this.Tips = true
+              _this.listItem = false
+            } else {
+              _this.Tips = false
+              _this.listItem = true
+            }
+          } else {
+            lib.MessageAlert_None(res.message)
+          }
+        })
+      }
+      if (this.changeTab === 5) {
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        formData.append('status', 7)
         formData.append('type', 1)
         _this.$_HTTPData.getOrderList(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
