@@ -18,8 +18,8 @@
                   <Calendar
                     ref='Calendar'
                     :markDateMore='timeList'
-                    agoDayHide='1554048000'
-                    futureDayHide='1561910399'
+                    agoDayHide='1561132799'
+                    futureDayHide='1564588799'
                     :sundayStart = 'true'
                     v-on:choseDay='clickDay'
                   ></Calendar>
