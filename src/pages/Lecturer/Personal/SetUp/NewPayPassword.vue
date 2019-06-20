@@ -100,7 +100,7 @@ export default {
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
       formData.append('newPayPassword', _this.payPasswordSure)
-      formData.append('anthCode', _this.phoneNumberCode)
+      formData.append('authCode', _this.phoneNumberCode)
       _this.$_HTTPData.getResetPayPassword(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success('设置成功')

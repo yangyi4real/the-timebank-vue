@@ -65,7 +65,8 @@
             <div class="opt-btn flex-row-end">
               <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
               <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
-              <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 1 || item.orderEntity.orderStatus === 2 || item.orderEntity.orderStatus === 3">取消订单</div>
+              <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 3">取消行程</div>
+              <div v-if="item.orderEntity.orderStatus === 1" @click="cancelOrderOrder(item)">取消订单</div>
               <div>联系客服</div>
             </div>
           </div>
@@ -186,6 +187,7 @@ export default {
     paymentClicked (item) {
       this.$router.push(`/user/enterprise-payment/${item.orderEntity.price}/${item.orderEntity.id}/${item.orderEntity.certificateId}`)
     },
+    // 取消行程
     cancelOrder (item) {
       this.$dialog.confirm({
         title: '确认取消行程？',
@@ -205,6 +207,38 @@ export default {
               formData.append('type', 2)
               formData.append('orderId', item.orderEntity.id)
               _this.$_HTTPData.getCancelOrder(_this, formData, function (res) {
+                if (res.code === 0 || res.code === '000') {
+                  _this.loadData()
+                  _this.reload()
+                  lib.MessageAlert_Success(res.message)
+                } else {
+                  lib.MessageAlert_None(res.message)
+                }
+              })
+            }
+          }
+        ]
+      })
+    },
+    // 取消订单
+    cancelOrderOrder (item) {
+      this.$dialog.confirm({
+        title: '确认取消订单？',
+        mes: '',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {}
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              let _this = this
+              let formData = new FormData()
+              formData.append('orderId', item.orderEntity.id)
+              _this.$_HTTPData.getCompanyCancelOrder(_this, formData, function (res) {
                 if (res.code === 0 || res.code === '000') {
                   _this.loadData()
                   _this.reload()

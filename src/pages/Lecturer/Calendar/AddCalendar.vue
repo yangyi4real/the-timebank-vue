@@ -16,19 +16,41 @@
           ></Calendar>
         </div>
         <div class="calebdar-time" v-show="tiemShow">
-          <p>时间段</p>
+          <p>请选择时间段</p>
           <div class="calebdar-time-div flex-row-around">
-            <div class="calebdar-time-div-border"><yd-datetime start-hour="9" end-hour="23" type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
-            <div class="calebdar-time-div-block">—</div>
-            <div class="calebdar-time-div-border"><yd-datetime start-hour="10" end-hour="23" type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
+            <div class="flex-row-between padding-bottom-15">
+              <div>
+                <el-time-select
+                  placeholder="起始时间"
+                  v-model="startTime"
+                  :picker-options="{
+                        start: '09:00',
+                        step: '01:00',
+                        end: '23:00'
+                      }">
+                </el-time-select>
+              </div>
+              <div>
+                <el-time-select
+                  placeholder="结束时间"
+                  v-model="endTime"
+                  :picker-options="{
+                        start: '10:00',
+                        step: '01:00',
+                        end: '23:00',
+                        minTime: startTime
+                      }">
+                </el-time-select>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="none-rili">
-        <p>温馨提示：存储时间后，企业可以在您存储的时间内进行约讲，讲课费用将在企业评价后进入钱包中，平台将收取n%的服务费</p>
-      </div>
-      <div class="class-btn">
-        <div class="btn-border" @click="subClick">提交</div>
+        <div class="none-rili">
+          <p>温馨提示：存储时间后，企业可以在您存储的时间内进行约讲，讲课费用将在企业评价后进入钱包中，平台将收取n%的服务费</p>
+        </div>
+        <div class="class-btn" v-show="tiemShow">
+          <div class="btn-border" @click="subClick">提交</div>
+        </div>
       </div>
     </div>
   </div>
@@ -57,7 +79,9 @@ export default {
       dateTimeEnd: '',
       dateInfo: [],
       calendarTimeToday: '1559635453',
-      tiemShow: false
+      tiemShow: false,
+      startTime: '',
+      endTime: ''
     }
   },
   computed: {
@@ -120,11 +144,11 @@ export default {
       let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
       let D = date.getDate() + ' '
       this.calendarData = Y + M + D
-      let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
-      let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
-      let calendarTime = Date.parse(this.calendarData)
-      let beginDateTime = Date.parse(beginDate)
-      let endDateTime = Date.parse(endDate)
+      let beginDate = moment(`${this.calendarData} ${this.startTime}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let endDate = moment(`${this.calendarData} ${this.endTime}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let calendarTime = Date.parse(this.calendarData.replace(/-/g, '/'))
+      let beginDateTime = Date.parse(beginDate.replace(/-/g, '/'))
+      let endDateTime = Date.parse(endDate.replace(/-/g, '/'))
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -155,13 +179,13 @@ export default {
   .wh_container >>> .mark1 {color: rgba(249,91,64,1);}
   .wh_container >>> .mark2 {color: rgba(249,91,64,1);border: 0.01rem solid rgba(249,91,64,1);border-radius: 1rem;width: 0.4rem!important;}
   .wh_container >>> .mark3 {background: rgba(249,91,64,1);color: #fff;border-radius: 1rem;width: 0.4rem!important;}
-  .none-rili{text-align: center;padding: 0.2rem 0.35rem 0 0.35rem;}
+  .none-rili{text-align: center;padding: 0.2rem 0.35rem 0.6rem 0.35rem;}
   .none-rili p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);}
-  .class-btn{padding: 0.6rem 0;}
+  .class-btn{padding-bottom: 0.6rem;}
   .calebdar-time{padding: 0.3rem 0.2rem 0.2rem 0.2rem;}
-  .calebdar-time p{font-size:0.16rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.08rem;}
+  .calebdar-time p{font-size:0.16rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);padding-bottom: 0.15rem;}
   .calebdar-time{font-size:18px;font-family:PingFangSC-Medium;font-weight:500;color:rgba(249,91,64,1);}
-  .calebdar-time-div{padding: 0 0.8rem;}
+  .calebdar-time-div{}
   .calebdar-time-div .calebdar-time-div-border{border-bottom: 0.01rem solid #E8E8E8;padding-bottom: 0.14rem;}
   .calebdar-time-div-block{color: #999999!important;}
 </style>

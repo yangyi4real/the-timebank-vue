@@ -86,14 +86,39 @@
                 </div>
               </div>
               <div v-show="storageTime">
-                <div class="flex-row-between padding-bottom-15">
-                  <div>时间段</div>
-                  <div class="clearfix">
-                    <div class="fl main-color"><yd-datetime start-hour="9" end-hour="23" type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
-                    <div class="fl" style="padding: 0 0.1rem;"> - </div>
-                    <div class="fl main-color"><yd-datetime start-hour="10" end-hour="23" type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
+                <div class="padding-bottom-15">
+                  <div class="padding-bottom-15">请选择时间段</div>
+                  <div class="">
+                    <div class="flex-row-between padding-bottom-15">
+                      <div>
+                        <el-time-select
+                          placeholder="起始时间"
+                          v-model="startTime"
+                          :picker-options="{
+                        start: '09:00',
+                        step: '01:00',
+                        end: '23:00'
+                      }">
+                        </el-time-select>
+                      </div>
+                      <div>
+                        <el-time-select
+                          placeholder="结束时间"
+                          v-model="endTime"
+                          :picker-options="{
+                        start: '10:00',
+                        step: '01:00',
+                        end: '23:00',
+                        minTime: startTime
+                      }">
+                        </el-time-select>
+                      </div>
+                    </div>
+                    <div class="flex-row-between">
+                      <div></div>
+                      <div class="btn-main" @click="addTime">保存时间</div>
+                    </div>
                   </div>
-                  <div class="btn-main" @click="addTime">保存时间</div>
                 </div>
                 <div class="flex-row-between">
                   <div>约讲</div>
@@ -220,7 +245,9 @@ export default {
       ChoseAbout: false, // 已约
       notChoseEd: false, // 过去未储存
       storageTime: false, // 未来未储存time
-      ChoseNotAboutTiem: true // 已存未约time
+      ChoseNotAboutTiem: true, // 已存未约time
+      startTime: '',
+      endTime: ''
     }
   },
   computed: {},
@@ -436,8 +463,8 @@ export default {
       let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
       let D = date.getDate() + ' '
       this.calendarTime = Y + M + D
-      let beginDate = moment(`${this.calendarTime} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
-      let endDate = moment(`${this.calendarTime} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let beginDate = moment(`${this.calendarTime} ${this.startTime}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let endDate = moment(`${this.calendarTime} ${this.endTime}`, 'YYYY-MM-DD HH:mm:ss').format()
       let calendarTime = Date.parse(this.calendarTime)
       let beginDateTime = Date.parse(beginDate)
       let endDateTime = Date.parse(endDate)
@@ -530,5 +557,5 @@ export default {
   .choseItems div{height: 0.24rem;float: left;font-size: 0.14rem;color: #fff;padding: 0 0.05rem;}
   .active{background: rgba(249,91,64,1);}
   .active2{background: rgba(249,91,64,1);}
-  .btn-main{color: #fff;background: rgba(249,91,64,1);padding: 0.03rem;border-radius: 0.05rem;}
+  .btn-main{color: #fff;background: rgba(249,91,64,1);border-radius: 0.05rem;text-align: right;width: 0.8rem;height: 0.3rem;line-height: 0.3rem;text-align: center;float: right;}
 </style>

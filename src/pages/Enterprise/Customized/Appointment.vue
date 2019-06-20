@@ -29,12 +29,34 @@
                   <p>{{timeSaveBegin}} 至 {{timeSaveEnd}}</p>
                 </div>
               </div>
-              <div class="flex-row-between choice-time-list-div padding-top-15">
-                <div class="choice-time-list-left">约讲时间</div>
-                <div class="choice-time-list-right flex-row-between">
-                  <div class="choice-time-list-right-border"><yd-datetime type="time" v-model="dateTimeBegin" slot="right"></yd-datetime></div>
-                  <div class="">&nbsp;—&nbsp;</div>
-                  <div class="choice-time-list-right-border"> <yd-datetime type="time" v-model="dateTimeEnd" slot="right"></yd-datetime></div>
+              <div class="choice-time-list-div padding-top-15">
+                <div class="choice-time-list-left">请选择约讲时间</div>
+                <div class="choice-time-list-right padding-top-15">
+                  <div class="flex-row-between padding-bottom-15">
+                    <div>
+                      <el-time-select
+                        placeholder="起始时间"
+                        v-model="startTime"
+                        :picker-options="{
+                        start: this.timeSaveBegin,
+                        step: '01:00',
+                        end: this.timeSaveEnd
+                      }">
+                      </el-time-select>
+                    </div>
+                    <div>
+                      <el-time-select
+                        placeholder="结束时间"
+                        v-model="endTime"
+                        :picker-options="{
+                        start: this.timeSaveBegin,
+                        step: '01:00',
+                        end: this.timeSaveEnd,
+                        minTime: startTime
+                      }">
+                      </el-time-select>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="choice-btn">
@@ -87,7 +109,7 @@
           <div class="CoData-list flex-row-between" style="border: 0">
             <div class="CoData-list-left">约讲时间</div>
             <div class="CoData-list-right">
-              <div class="time">{{calendarData}}&nbsp;&nbsp;<span>{{dateTimeBegin}}-{{dateTimeEnd}}</span></div>
+              <div class="time">{{calendarData}}&nbsp;&nbsp;<span>{{startTime}}-{{endTime}}</span></div>
             </div>
           </div>
         </div>
@@ -145,7 +167,9 @@ export default {
       timeSaveBegin: '',
       timeSaveEnd: '',
       choseDiv: false,
-      noTime: false
+      noTime: false,
+      startTime: '',
+      endTime: ''
     }
   },
   computed: {
@@ -200,23 +224,23 @@ export default {
       return true
     },
     checkInputValue2 () {
-      if (this.dateTimeBegin === '') {
+      if (this.startTime === '') {
         lib.MessageAlert_Error('请输入起始时间')
         return false
       }
-      if (this.dateTimeEnd === '') {
+      if (this.endTime === '') {
         lib.MessageAlert_Error('请输入结束时间')
         return false
       }
-      if (this.dateTimeEnd > this.timeSaveEnd) {
+      if (this.endTime > this.timeSaveEnd) {
         lib.MessageAlert_Error('时间范围有误，请重新选择')
         return false
       }
-      if (this.dateTimeBegin < this.timeSaveBegin) {
+      if (this.startTime < this.timeSaveBegin) {
         lib.MessageAlert_Error('时间范围有误，请重新选择')
         return false
       }
-      if (this.dateTimeEnd < this.dateTimeBegin) {
+      if (this.endTime < this.startTime) {
         lib.MessageAlert_Error('时间范围有误，请重新选择')
         return false
       }
@@ -285,7 +309,7 @@ export default {
     appointmentClick () {
       if (!this.checkInputValue2()) { return }
       let a = Math.round(new Date() / 1000)
-      let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let beginDate = moment(`${this.calendarData} ${this.startTime}`, 'YYYY-MM-DD HH:mm:ss').format()
       let beginDateTime = Date.parse(beginDate)
       if (a > beginDateTime) {
         lib.MessageAlert_Error('时间已过，无法预约')
@@ -295,8 +319,8 @@ export default {
       }
     },
     appointmentFormDataClick () {
-      let beginDate = moment(`${this.calendarData} ${this.dateTimeBegin}`, 'YYYY-MM-DD HH:mm:ss').format()
-      let endDate = moment(`${this.calendarData} ${this.dateTimeEnd}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let beginDate = moment(`${this.calendarData} ${this.startTime}`, 'YYYY-MM-DD HH:mm:ss').format()
+      let endDate = moment(`${this.calendarData} ${this.endTime}`, 'YYYY-MM-DD HH:mm:ss').format()
       let calendarTime = Date.parse(this.calendarData)
       let beginDateTime = Date.parse(beginDate)
       let endDateTime = Date.parse(endDate)

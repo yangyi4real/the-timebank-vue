@@ -216,4 +216,5 @@ export default {
     border: 0.01rem solid rgba(249,91,64,1)!important;
     color: rgba(249,91,64,1)!important;
   }
+  .el-date-editor.el-input, .el-date-editor.el-input__inner{width: auto!important;}
 </style>

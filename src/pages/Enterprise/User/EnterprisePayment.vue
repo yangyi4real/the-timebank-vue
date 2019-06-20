@@ -13,7 +13,7 @@
         <p>支付方式</p>
         <div class="payment-mode-list flex-row-between" style="border-bottom: 0.01rem solid #E8E8E8;">
           <div class="payment-mode-list-text">
-            <img src=""/>钱包支付<span>（余额不足）</span>
+            <img src=""/>钱包支付<span v-if="this.getPrice > this.listData.balance">（余额不足）</span>
           </div>
           <div class="payment-mode-list-radio">
             <input id="item1" type="radio" name="payItem" value="1" v-model="checkedValue">
@@ -39,7 +39,7 @@
       <div class="payPopup" style="background-color:#fff;border-radius:0.08rem">
         <div class="payPopup-title text-center">
           <label>支付金额</label>
-          <p>￥300.00</p>
+          <p>￥{{getPrice}}</p>
         </div>
         <div class="payPassword-form">
           <div class="payPwd">
@@ -77,11 +77,13 @@ export default {
       show1: false,
       msg: '',
       msgLength: 0,
-      ip: ''
+      ip: '',
+      listData: ''
     }
   },
   created () {},
   mounted () {
+    this.loadData()
   },
   computed: {
     getPrice () {
@@ -95,17 +97,34 @@ export default {
     }
   },
   methods: {
+    loadData () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+      formData.append('type', 2)
+      _this.$_HTTPData.getMyInfo(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listData = res.result
+          _this.getIf()
+        } else {
+          console.log(res.message)
+        }
+      })
+    },
     tiaoClick () {
       lib.MessageAlert_None('取消支付')
       this.$router.push('/user/ordercenter')
     },
     authentClicked () {
-      lib.MessageAlert_None('取消支付')
       this.$router.push('/user/ordercenter')
     },
     affirmPay () {
       if (this.checkedValue === '1') {
-        this.show1 = true
+        if (this.listData.balance < this.getPrice) {
+          lib.MessageAlert_None('余额不足，无法支付')
+        } else {
+          this.show1 = true
+        }
       } else if (this.checkedValue === '2') {
         let _this = this
         let formData = new FormData()
@@ -131,7 +150,7 @@ export default {
       this.$refs.pwd.focus()
     },
     ResetPwd () {
-      this.$router.push('/personal/personalcenter')
+      this.$router.push('/personal/setup/newpaypassword')
     },
     getPush () {
       this.$dialog.loading.open('支付中，请勿操作')

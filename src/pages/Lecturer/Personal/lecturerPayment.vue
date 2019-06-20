@@ -38,7 +38,7 @@
       <div class="payPopup" style="background-color:#fff;border-radius:0.08rem">
         <div class="payPopup-title text-center">
           <label>支付金额</label>
-          <p>￥300.00</p>
+          <p>￥{{getPrice}}</p>
         </div>
         <div class="payPassword-form">
           <div class="payPwd">
@@ -144,7 +144,7 @@ export default {
     affirmPay () {
       if (this.checkedValue === '1') {
         if (this.listData.balance < this.getPrice) {
-          lib.MessageAlert_None('余额不足')
+          lib.MessageAlert_None('余额不足，无法支付')
         } else {
           this.show1 = true
         }

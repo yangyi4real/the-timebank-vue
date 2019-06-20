@@ -14,8 +14,8 @@
     </div>
     <div class="wapper" v-show="isShow2">
       <div class="no-record">
-        <img src="" alt="aa"/>
-        <p>暂无记录，敬请期待</p>
+        <!--<img src="" alt="aa"/>-->
+        <p>暂无记录</p>
       </div>
     </div>
   </div>
@@ -31,8 +31,8 @@ export default {
   data () {
     return {
       titleMsg: '明细',
-      isShow: true,
-      isShow2: false,
+      isShow: false,
+      isShow2: true,
       detailedItems: [
         {title: '充值', time: '2019-02-12 12:22:15', amount: '+100.00'},
         {title: '课程收入', time: '2019-02-12 12:22:15', amount: '+500.00'},
