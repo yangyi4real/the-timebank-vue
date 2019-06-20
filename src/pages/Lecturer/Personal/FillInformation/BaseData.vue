@@ -13,7 +13,7 @@
         <div class="basedata-list flex-row-between">
           <div>姓名</div>
           <div>
-            <input type="text" v-model="name" placeholder="请填写真实姓名" v-on:input="inputValue"/>
+            <input type="text" v-model="name" placeholder="请填写真实姓名"/>
           </div>
         </div>
         <div class="basedata-list flex-row-between">
@@ -28,11 +28,16 @@
           <div>出生年月</div>
           <div class="flex-row-between">
             <div>
-              <yd-cell-group>
-              <yd-cell-item>
-                <yd-datetime type="month" v-model="birthDate" slot="right" start-date="1920-01" :end-date="nowTime" v-on:input="inputValue"></yd-datetime>
-              </yd-cell-item>
-            </yd-cell-group>
+              <!--<yd-cell-group>-->
+              <!--<yd-cell-item>-->
+                <!--<yd-datetime type="month" v-model="birthDate" slot="right" start-date="1920-01" :end-date="nowTime" v-on:input="inputValue"></yd-datetime>-->
+              <!--</yd-cell-item>-->
+            <!--</yd-cell-group>-->
+              <mt-datetime-picker
+                ref="picker"
+                type="time"
+                v-model="pickerValue">
+              </mt-datetime-picker>
             </div>
             <div><i class="iconfont iconjiantou"></i></div>
           </div>
@@ -43,7 +48,7 @@
             <div>
               <yd-cell-group>
                 <yd-cell-item>
-                  <yd-datetime type="month" v-model="workDate" slot="right" start-date="1920-01" :end-date="nowTime" v-on:input="inputValue"></yd-datetime>
+                  <yd-datetime type="month" v-model="workDate" slot="right" start-date="1920-01" :end-date="nowTime"></yd-datetime>
                 </yd-cell-item>
               </yd-cell-group>
             </div>
@@ -56,7 +61,7 @@
             <div>
               <yd-cell-group>
                 <yd-cell-item>
-                  <input slot="right" type="text" @click.stop="show1 = true" v-model="model1" readonly v-on:input="inputValue">
+                  <input slot="right" type="text" @click.stop="show1 = true" v-model="model1" readonly>
                 </yd-cell-item>
               </yd-cell-group>
               <yd-cityselect v-model="show1" :callback="result1" :items="district"></yd-cityselect>
@@ -67,12 +72,12 @@
         <div class="basedata-list flex-row-between" style="border: 0">
           <div>电子邮箱</div>
           <div>
-            <input type="text" v-model="EMail" v-on:input="inputValue" placeholder="点击编辑"/>
+            <input type="text" v-model="EMail" placeholder="点击编辑"/>
           </div>
         </div>
       </div>
       <div class="basedata-btn">
-        <div @click="pushClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">下一步</div>
+        <div @click="pushClick" class="btn-border">下一步</div>
       </div>
     </div>
   </div>
@@ -107,8 +112,7 @@ export default {
       show1: false,
       model1: '',
       district: AreaJson,
-      inOperation: true, // 灰色按钮
-      operation: false
+      pickerValue: ''
     }
   },
   created () {
@@ -127,6 +131,9 @@ export default {
     // }
   },
   methods: {
+    openPicker () {
+      this.$refs.picker.open()
+    },
     /**
      * 验证输入框的值
      * @return {boolean}
