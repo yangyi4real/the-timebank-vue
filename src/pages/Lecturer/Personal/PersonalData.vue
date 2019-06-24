@@ -1,6 +1,13 @@
 <template>
   <div class="body">
-    <navbar :title="titleMsg"></navbar>
+    <div class="navbar">
+      <div class="left-btn" @click="leftItemTouched">
+        <i class="iconfont iconxiazai6"></i>
+      </div>
+      <div class="item title">
+        个人资料
+      </div>
+    </div>
     <div class="wapper">
       <div class="pro-data" v-if="this.listData.sex === '' || this.listData.sex === null">
         <div class="pro-data-head padding-20">
@@ -170,6 +177,9 @@ export default {
     this.getMyinfo()
   },
   methods: {
+    leftItemTouched () {
+      this.$router.push('/personal/index')
+    },
     getMyinfo () {
       let _this = this
       let formData = new FormData()
@@ -186,7 +196,7 @@ export default {
           let workYears = d.getFullYear() - secondDate.getFullYear()
           _this.listData.workAge = workYears
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -227,4 +237,54 @@ export default {
   pro-data-introduce-cont{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);}
   .pro-data-introduce-cont img{margin: 0.15rem 0;}
   .class-list{padding-bottom: 0.2rem}
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 0.66rem;
+    z-index: 10;
+    text-align: center;
+    background: #f5f5f5;
+  }
+  .navbar .item {
+    min-width: 0.2rem;
+  }
+  .navbar .left-btn {
+    text-align: left;
+    margin-left: 0.1rem;
+    padding: 0.1rem 0;
+    user-select: none;
+    color: black;
+    font-size: 0.18rem;
+  }
+  .navbar .left-btn:active {
+    color: #dcbc6c;
+  }
+  .navbar .title {
+    padding: 0.2rem 0;
+    user-select: none;
+    color: black;
+    font-size: 0.2rem;
+    font-family:PingFangSC-Semibold;
+    font-weight:600;
+    flex: 1;
+    text-align: center;
+  }
+  .navbar .right-btn {
+    width: 0.6rem;
+    margin-right: 0.1rem;
+    padding: 0.12rem 0 0.08rem 0;
+    user-select: none;
+    color: black;
+    font-size: 0.15rem;
+    text-align: right;
+  }
+  .navbar .right-btn:active {
+    color: #dcbc6c;
+  }
 </style>

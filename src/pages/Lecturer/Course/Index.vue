@@ -42,7 +42,9 @@
               <div @click="acceptType(item)" v-if="item.orderEntity.orderStatus === 2">接受</div>
               <div @click="refuseType(item)" v-if="item.orderEntity.orderStatus === 2">拒绝</div>
               <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 3">取消行程</div>
-              <div>联系客服</div>
+              <div>
+                <a :href="'tel:' + '05328888888'">联系客服</a>
+              </div>
             </div>
           </div>
         </div>
@@ -111,7 +113,7 @@ export default {
             _this.listItem = true
           }
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -134,7 +136,7 @@ export default {
               _this.listItem = true
             }
           } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
       }
@@ -153,7 +155,7 @@ export default {
               _this.listItem = true
             }
           } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
       }
@@ -172,7 +174,7 @@ export default {
               _this.listItem = true
             }
           } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
       }
@@ -191,7 +193,7 @@ export default {
               _this.listItem = true
             }
           } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
       }
@@ -210,7 +212,7 @@ export default {
               _this.listItem = true
             }
           } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
       }
@@ -229,7 +231,7 @@ export default {
               _this.listItem = true
             }
           } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
       }
@@ -245,7 +247,7 @@ export default {
           _this.loadData()
           lib.MessageAlert_Success(res.message)
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -260,14 +262,14 @@ export default {
           _this.loadData()
           lib.MessageAlert_Success(res.message)
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
     // 取消行程
     cancelOrder (item) {
       this.$dialog.confirm({
-        title: '确认取消行程？',
+        title: '取消行程将扣除100枚SDG，累计三次取消行程将直接取消认证，确认取消行程？',
         mes: '',
         opts: [
           {
@@ -289,7 +291,7 @@ export default {
                   _this.reload()
                   lib.MessageAlert_Success(res.message)
                 } else {
-                  lib.MessageAlert_None(res.message)
+                  lib.MessageAlert_Success(res.message)
                 }
               })
             }

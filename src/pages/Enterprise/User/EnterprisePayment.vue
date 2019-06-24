@@ -31,7 +31,8 @@
         </div>
       </div>
       <div class="payment-btn">
-        <yd-button size="large" type="primary" @click.native="affirmPay" class="btn-border">确认支付</yd-button>
+        <!--<yd-button size="large" type="primary" @click.native="affirmPay" class="btn-border"></yd-button>-->
+        <div @click="affirmPay" class="btn-border">确认支付</div>
         <div @click="tiaoClick" class="payment-btn-quxiao">暂不支付</div>
       </div>
     </div>
@@ -97,6 +98,35 @@ export default {
     }
   },
   methods: {
+    getIf () {
+      if (this.listData.payPassword === null) {
+        this.getInputPassword()
+      } else {
+        console.log('111')
+      }
+    },
+    getInputPassword () {
+      this.$dialog.confirm({
+        title: '',
+        mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">您还有没有设置支付密码，是否前去设置？</p>',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {
+              this.$router.go(-1)
+            }
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              this.$router.push('/personal/setup/inputpaypassword')
+            }
+          }
+        ]
+      })
+    },
     loadData () {
       let _this = this
       let formData = new FormData()
@@ -112,7 +142,7 @@ export default {
       })
     },
     tiaoClick () {
-      lib.MessageAlert_None('取消支付')
+      lib.MessageAlert_Success('取消支付')
       this.$router.push('/user/ordercenter')
     },
     authentClicked () {
@@ -121,7 +151,7 @@ export default {
     affirmPay () {
       if (this.checkedValue === '1') {
         if (this.listData.balance < this.getPrice) {
-          lib.MessageAlert_None('余额不足，无法支付')
+          lib.MessageAlert_Success('余额不足，无法支付')
         } else {
           this.show1 = true
         }
@@ -135,7 +165,7 @@ export default {
           if (res.code === 0 || res.code === '000') {
             console.log(res)
             if (res.result === null) {
-              lib.MessageAlert_None('未获取到地址')
+              lib.MessageAlert_Success('未获取到地址')
               console.log(res.message)
             } else {
               window.open(res.result)
@@ -163,10 +193,10 @@ export default {
         _this.$_HTTPData.getCompanyPay(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
             _this.$dialog.loading.close()
-            lib.MessageAlert_None('支付成功')
+            lib.MessageAlert_Success('支付成功')
             _this.$router.push('/user/ordercenter')
           } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
       }, 2000)

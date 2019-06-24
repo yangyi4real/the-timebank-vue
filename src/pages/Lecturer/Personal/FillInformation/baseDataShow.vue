@@ -14,6 +14,7 @@
           <div>姓名</div>
           <div>
             <input type="text" v-model="name" placeholder="请填写真实姓名" />
+            <input type="text" v-model="nickname" placeholder="请填写真实姓名" v-if="this.name === null"/>
           </div>
         </div>
         <div class="basedata-list flex-row-between">
@@ -72,7 +73,7 @@
         </div>
       </div>
       <div class="basedata-btn">
-        <div @click="pushClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">保存</div>
+        <div @click="pushClick" class="btn-border-opacity">保存</div>
       </div>
     </div>
   </div>
@@ -106,9 +107,8 @@ export default {
       areaValue: [],
       show1: false,
       model1: '',
-      district: AreaJson,
-      inOperation: true, // 灰色按钮
-      operation: false
+      nickname: '',
+      district: AreaJson
     }
   },
   created () {
@@ -130,6 +130,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.imgUrl = res.result.photo
           _this.name = res.result.name
+          _this.nickname = res.result.nickname
           _this.changeSex = res.result.sex
           _this.email = res.result.email
           _this.model1 = res.result.livingLocation
@@ -146,15 +147,15 @@ export default {
      * @return {boolean}
      */
     checkInputValue () {
-      if (this.src === '') {
+      if (this.imgUrl === '') {
         lib.MessageAlert_Error('请上传头像')
         return false
       }
-      if (this.neme === '') {
+      if (this.name === '') {
         lib.MessageAlert_Error('请输入姓名')
         return false
       }
-      if (this.sex === '') {
+      if (this.changeSex === '') {
         lib.MessageAlert_Error('请输入性别')
         return false
       }

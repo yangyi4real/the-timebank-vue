@@ -8,6 +8,8 @@
         <div v-if="this.listDatas.orderEntity.orderStatus === 3">待开课</div>
         <div v-if="this.listDatas.orderEntity.orderStatus === 4">待评价</div>
         <div v-if="this.listDatas.orderEntity.orderStatus === 5">已退款</div>
+        <div v-if="this.listDatas.orderEntity.orderStatus === 6">已完成</div>
+        <div v-if="this.listDatas.orderEntity.orderStatus === 7">已取消</div>
       </div>
       <div class="about-details-main">
         <div class="about-details-main-text">
@@ -25,15 +27,15 @@
             <div class="fl"><p>{{listDatas.orderEntity.begin}}</p><p>{{listDatas.orderEntity.end}}</p></div>
           </div>
           <div class="padding-top-10">约讲地址：{{listDatas.orderEntity.address}}</div>
-          <div class="padding-top-10">参与人数：{{listDatas.orderEntity.joinNum}}</div>
-          <div class="padding-top-10">需求：{{listDatas.orderEntity.purpose}}</div>
+          <div class="padding-top-10">参与人数：{{listDatas.orderEntity.joinNum}}人</div>
+          <div class="padding-top-10">需求：{{listDatas.orderEntity.purpose == null? '暂无' : listDatas.orderEntity.purpose == ''? '暂无' : listDatas.orderEntity.purpose}}</div>
         </div>
-        <div class="about-details-main-msg">
+        <div class="about-details-main-msg" v-if="this.listDatas.orderEntity.orderStatus !== 2">
           <p>时间信息</p>
-          <div>订单时间：{{listDatas.orderEntity.confirmDate}}</div>
-          <div>确认时间：{{listDatas.orderEntity.confirmDate}}</div>
+          <!--<div v-if="this.listDatas.orderEntity.cancelDate === null">订单时间：{{listDatas.orderEntity.confirmDate}}</div>-->
+          <div v-if="this.listDatas.orderEntity.cancelDate === null">确认时间：{{listDatas.orderEntity.confirmDate}}</div>
           <div v-if="this.listDatas.orderEntity.cancelDate !== null">取消时间：{{listDatas.orderEntity.cancelDate}}</div>
-          <div v-if="this.listDatas.orderEntity.cancelDate !== null">拒绝/取消原因：</div>
+          <div v-if="this.listDatas.orderEntity.cancelDate !== null">拒绝/取消原因：暂无</div>
         </div>
       </div>
       <div class="order-center-list-opt">
@@ -87,13 +89,13 @@ export default {
     loadData () {
       let _this = this
       let formData = new FormData()
-      formData.append('orderId', this.getOrderId)
+      formData.append('orderId', _this.getOrderId)
       _this.$_HTTPData.getOrderDetail(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.listDatas = res.result
           console.log(_this.listDatas)
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -102,12 +104,13 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('type', 1)
-      formData.append('orderId', this.getOrderId)
+      formData.append('orderId', _this.getOrderId)
       _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
+          _this.$router.push('/course/index')
           lib.MessageAlert_Success(res.message)
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -116,16 +119,47 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('type', 2)
-      formData.append('orderId', this.getOrderId)
+      formData.append('orderId', _this.getOrderId)
       _this.$_HTTPData.getConfirmAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
+          _this.$router.push('/course/index')
           lib.MessageAlert_Success(res.message)
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
-    cancelType () {},
+    cancelType () {
+      this.$dialog.confirm({
+        title: '取消行程将扣除100枚SDG，累计三次取消行程将直接取消认证，确认取消行程？',
+        mes: '',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {}
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              let _this = this
+              let formData = new FormData()
+              formData.append('type', 1)
+              formData.append('orderId', _this.getOrderId)
+              _this.$_HTTPData.getCancelOrder(_this, formData, function (res) {
+                if (res.code === 0 || res.code === '000') {
+                  _this.$router.push('/course/index')
+                  lib.MessageAlert_Success(res.message)
+                } else {
+                  lib.MessageAlert_Success(res.message)
+                }
+              })
+            }
+          }
+        ]
+      })
+    },
     evaluateType () {
       this.$router.push(`/course/evaluate/${this.getOrderId}`)
     }

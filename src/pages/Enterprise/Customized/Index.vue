@@ -4,32 +4,21 @@
       时间银行
     </div>
     <div class="search">
-      <yd-search v-model="searchValue" :on-submit="submitHandler" placeholder="输入讲师名字或授课内容关键字"></yd-search>
+      <yd-search v-model="searchValue" :on-submit="submitHandler" placeholder="输入关键字进行搜索"></yd-search>
     </div>
     <div class="banner">
-      <img src="" />
+      <swiper :options="swiperOption">
+        <swiper-slide><img src="../../../assets/icon/qiye.jpg"></swiper-slide>
+        <swiper-slide><img src="../../../assets/icon/dingzhi.jpg"></swiper-slide>
+      </swiper>
+      <div class="swiper-pagination"></div>
     </div>
     <div class="wapper">
       <div class="class-select flex-row-between">
         <div class="all" @click="allClick">全部讲师</div>
-        <div>
-          <select v-model="selected" @change='getValue'>
-            <option value="" class="class-select-div">授课类别<i class="iconfont iconnv main-color"></i></option>
-            <option v-for="(item,index) in optList" :key="index">{{ item }}</option>
-          </select>
-        </div>
-        <div>
-          <select v-model="selected2" @change='getValue2'>
-            <option value="" class="class-select-div">授课区域<i class="iconfont iconnv main-color"></i></option>
-            <option v-for="(item,index) in optList" :key="index">{{ item }}</option>
-          </select>
-        </div>
-        <div>
-          <select v-model="selected3" @change='getValue3'>
-            <option value="" class="class-select-div">价格<i class="iconfont iconnv main-color"></i></option>
-            <option v-for="(item,index) in optList" :key="index">{{ item }}</option>
-          </select>
-        </div>
+        <yd-button type="hollow" @click.native="show1 = true">按区域筛选</yd-button>
+        <yd-button type="hollow" @click.native="show2 = true">按技能筛选</yd-button>
+        <yd-button type="hollow" @click.native="show3 = true">按价格筛选</yd-button>
       </div>
       <div class="class-list" v-show="classList">
         <div class="class-list-div flex-row-start" v-for='(item, index) of listData' :key="index" @click="pushDetailsClick(item)">
@@ -54,18 +43,53 @@
       </div>
     </div>
     <tabbar-ent :idx="0"></tabbar-ent>
+    <div class="index-popup">
+      <!--区域-->
+      <yd-popup v-model="show1" position="bottom">
+        <div class="index-popup-div">
+          <div class="flex-row-around">
+            <div class="index-popup-div-font">请选择要搜索的区域：</div>
+            <div class="index-popup-div-font">
+              <yd-cell-group>
+                <yd-cell-item>
+                  <input slot="right" type="text" @click.stop="cell1 = true" v-model="model1" readonly>
+                </yd-cell-item>
+              </yd-cell-group>
+              <yd-cityselect v-model="cell1" :callback="result1" :items="district"></yd-cityselect>
+            </div>
+          </div>
+        </div>
+        <yd-button type="danger" style="margin: 30px;" @click.native="show1 = false">完成1</yd-button>
+      </yd-popup>
+      <!--技能-->
+      <yd-popup v-model="show2" position="bottom">
+        <yd-button type="danger" style="margin: 30px;" @click.native="show2 = false">完成2</yd-button>
+      </yd-popup>
+      <!--价格-->
+      <yd-popup v-model="show3" position="bottom">
+        <yd-button type="danger" style="margin: 30px;" @click.native="show3 = false">完成3</yd-button>
+      </yd-popup>
+    </div>
   </div>
 </template>
 
 <script>
 import TabbarEnt from '../../../views/Tabbar/TabbarEnt'
 import TipsTools from '../../../common/TipsTools'
+import AreaJson from '../../../common/areaCode'
+import 'swiper/dist/css/swiper.css'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import { Popup } from 'mint-ui'
+import 'mint-ui/lib/style.css'
 
 let lib = new TipsTools()
 export default {
   name: 'CustomizedIndex',
   components: {
-    TabbarEnt
+    TabbarEnt,
+    Popup,
+    swiper,
+    swiperSlide
   },
   data () {
     return {
@@ -75,11 +99,32 @@ export default {
       selected: '',
       selected2: '',
       selected3: '',
-      optList: ['UI设计', '产品经理', '营销', '新媒体'],
-      optList2: ['山东', '吉林', '北京', '上海'],
-      optList3: ['100', '1000', '300', '500'],
       listData: [],
-      listDataMyInfo: ''
+      listDataMyInfo: '',
+      show1: false,
+      show2: false,
+      show3: false,
+      swiperOption: {
+        autoplay: {
+          delay: 2000,
+          disableOnInteraction: false
+        },
+        speed: 1000,
+        pagination: {
+          el: '.swiper-pagination',
+          type: 'bullets',
+          progressbarOpposite: true,
+          paginationClickable: true,
+          dynamicBullets: true,
+          dynamicMainBullets: 2,
+          hideOnClick: true,
+          clickable: true
+        }
+      },
+      areaValue: [],
+      cell1: false,
+      model1: '',
+      district: AreaJson
     }
   },
   computed: {
@@ -89,6 +134,18 @@ export default {
     this.loadDataMyInfo()
   },
   methods: {
+    result1 (ret) {
+      this.model1 = `${ret.itemName1} ${ret.itemName2} ${ret.itemName3}`
+      let temp = []
+      temp.push(ret.itemValue1)
+      temp.push(ret.itemValue2)
+      temp.push(ret.itemValue3)
+      this.areaValue = temp
+      console.log(this.areaValue)
+    },
+    handleChange (value) {
+      console.log(value)
+    },
     allClick () {
       this.loadData()
     },
@@ -110,7 +167,6 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.listDataMyInfo = res.result
           _this.getList()
-          _this.getIf()
         } else {
           console.log(res.message)
         }
@@ -135,7 +191,7 @@ export default {
             _this.listData[i].workingAge = workYears
           }
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Error(res.message)
         }
       })
     },
@@ -147,66 +203,6 @@ export default {
         this.classListNone = true
         this.classList = false
       }
-    },
-    getValue () {
-      let _this = this
-      let formData = new FormData()
-      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('skillLevel', _this.selected)
-      _this.$_HTTPData.getLectureList(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.listData = res.result
-          for (let i = 0; i < _this.listData.length; i++) {
-            let newBirthday = _this.listData[i].birthday
-            let birthday = new Date(newBirthday.replace(/-/g, '/'))
-            let d = new Date()
-            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
-            _this.listData[i].birthday = age
-          }
-        } else {
-          lib.MessageAlert_None(res.message)
-        }
-      })
-    },
-    getValue2 () {
-      let _this = this
-      let formData = new FormData()
-      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('location', _this.selected2)
-      _this.$_HTTPData.getLectureList(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.listData = res.result
-          for (let i = 0; i < _this.listData.length; i++) {
-            let newBirthday = _this.listData[i].birthday
-            let birthday = new Date(newBirthday.replace(/-/g, '/'))
-            let d = new Date()
-            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
-            _this.listData[i].birthday = age
-          }
-        } else {
-          lib.MessageAlert_None(res.message)
-        }
-      })
-    },
-    getValue3 () {
-      let _this = this
-      let formData = new FormData()
-      formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('price', _this.selected3)
-      _this.$_HTTPData.getLectureList(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.listData = res.result
-          for (let i = 0; i < _this.listData.length; i++) {
-            let newBirthday = _this.listData[i].birthday
-            let birthday = new Date(newBirthday.replace(/-/g, '/'))
-            let d = new Date()
-            let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
-            _this.listData[i].birthday = age
-          }
-        } else {
-          lib.MessageAlert_None(res.message)
-        }
-      })
     }
   }
 }
@@ -216,7 +212,7 @@ export default {
   .home-nav{padding: 0.2rem 0 0.2rem 0;font-size: 0.2rem;font-family:PingFangSC-Semibold;font-weight:600;}
   .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0 0.1rem;text-align: center}
   .search{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;margin: 0 0.1rem;}
-  .banner{margin: 0.1rem;}
+  .banner{margin: 0.1rem;position: relative;}
   .banner img{width: 100%;height:1.6rem;}
   .class-select{padding: 0.15rem 0;border-bottom: 0.01rem solid #E8E8E8;margin: 0 0.2rem;}
   .class-list{margin: 0 0.2rem;padding-bottom: 0.8rem;}
@@ -238,4 +234,6 @@ export default {
   }
   .class-select select{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
   .class-select .all{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
+  .index-popup-div{padding: 0.2rem;}
+  .index-popup-div-font{font-size: 0.15rem;font-family:PingFangSC-Regular;font-weight:400;}
 </style>

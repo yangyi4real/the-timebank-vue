@@ -18,13 +18,13 @@
       <a @click="tabsClicked3">
         待确认
       </a>
-      <a @click="tabsClicked4" class="active">
+      <a @click="tabsClicked4">
         待开课
       </a>
       <a @click="tabsClicked5">
         待评价
       </a>
-      <a @click="tabsClicked6">
+      <a @click="tabsClicked6" class="active">
         已完成
       </a>
       <a @click="tabsClicked7">
@@ -33,12 +33,6 @@
       <a @click="tabsClicked8">
         已退款
       </a>
-      <!--<div class="fl">-->
-        <!--待评价-->
-      <!--</div>-->
-      <!--<div class="fl">-->
-        <!--已取消-->
-      <!--</div>-->
     </div>
     <div class="wapper">
       <!--<div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>-->
@@ -94,7 +88,7 @@ import AllOrderPayment from './AllOrderPayment'
 let lib = new TipsTools()
 export default {
   inject: ['reload'],
-  name: 'AllOrderClass',
+  name: 'AllOrderComplete',
   components: {
     AllOrderPayment,
     Navbar
@@ -123,7 +117,7 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', 3)
+      formData.append('status', 6)
       formData.append('type', 2)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
@@ -161,10 +155,16 @@ export default {
       this.$router.push('/user/allorder-confirm')
     },
     tabsClicked4 () {
+      this.$router.push('/user/allorder-class')
+    },
+    tabsClicked5 () {
+      this.$router.push('/user/allorder-evaluate')
+    },
+    tabsClicked6 () {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('status', 3)
+      formData.append('status', 6)
       formData.append('type', 2)
       _this.$_HTTPData.getOrderList(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
@@ -190,12 +190,6 @@ export default {
           lib.MessageAlert_Success(res.message)
         }
       })
-    },
-    tabsClicked5 () {
-      this.$router.push('/user/allorder-evaluate')
-    },
-    tabsClicked6 () {
-      this.$router.push('/user/allorder-complete')
     },
     tabsClicked7 () {
       this.$router.push('/user/allorder-cancel')

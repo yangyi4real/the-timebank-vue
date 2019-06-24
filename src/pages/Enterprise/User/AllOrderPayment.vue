@@ -8,25 +8,31 @@
         订单中心
       </div>
     </div>
-    <div class="order-center-tab flex-row-around">
-      <div @click="tabsClicked">
+    <div class="order-center-tab">
+      <a @click="tabsClicked">
         全部
-      </div>
-      <div @click="tabsClicked2" class="active">
+      </a>
+      <a @click="tabsClicked2" class="active">
         待付款
-      </div>
-      <div @click="tabsClicked3">
+      </a>
+      <a @click="tabsClicked3">
         待确认
-      </div>
-      <div @click="tabsClicked4">
+      </a>
+      <a @click="tabsClicked4">
         待开课
-      </div>
-      <div @click="tabsClicked5">
+      </a>
+      <a @click="tabsClicked5">
         待评价
-      </div>
-      <div @click="tabsClicked6">
+      </a>
+      <a @click="tabsClicked6">
+        已完成
+      </a>
+      <a @click="tabsClicked7">
         已取消
-      </div>
+      </a>
+      <a @click="tabsClicked8">
+        已退款
+      </a>
     </div>
     <div class="wapper">
       <!--<div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>-->
@@ -134,7 +140,7 @@ export default {
             _this.listData[i].userEntity.workingAge = workYears
           }
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -168,7 +174,7 @@ export default {
             _this.listData[i].userEntity.workingAge = workYears
           }
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -182,6 +188,12 @@ export default {
       this.$router.push('/user/allorder-evaluate')
     },
     tabsClicked6 () {
+      this.$router.push('/user/allorder-complete')
+    },
+    tabsClicked7 () {
+      this.$router.push('/user/allorder-cancel')
+    },
+    tabsClicked8 () {
       this.$router.push('/user/allorder-refund')
     },
     paymentClicked (item) {
@@ -189,7 +201,7 @@ export default {
     },
     cancelOrder (item) {
       this.$dialog.confirm({
-        title: '确认取消行程？',
+        title: '取消行程将扣除100枚SDG，累计三次取消行程将直接取消认证，确认取消行程？',
         mes: '',
         opts: [
           {
@@ -211,7 +223,7 @@ export default {
                   _this.reload()
                   lib.MessageAlert_Success(res.message)
                 } else {
-                  lib.MessageAlert_None(res.message)
+                  lib.MessageAlert_Success(res.message)
                 }
               })
             }
@@ -243,7 +255,7 @@ export default {
                   _this.reload()
                   lib.MessageAlert_Success(res.message)
                 } else {
-                  lib.MessageAlert_None(res.message)
+                  lib.MessageAlert_Success(res.message)
                 }
               })
             }
@@ -267,15 +279,18 @@ export default {
 
 <style scoped>
   .wapper{border-radius:0.05rem;background: #fff;margin: 0 0.1rem;}
-  .order-center-tab{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem 0.1rem 0.1rem;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;height: 0.46rem;line-height: 0.46rem;}
+  .order-center-tab{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem 0.1rem 0.1rem;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;height: 0.46rem;line-height: 0.46rem;white-space: nowrap;overflow-x: scroll;overflow-y: hidden;-webkit-backface-visibility: hidden;-webkit-perspective: 1000;-webkit-overflow-scrolling: touch;text-align: justify;box-sizing: border-box;}
+  .order-center-tab::-webkit-scrollbar{display: none;}
+  .order-center-tab a{padding: 0 0.1rem;}
   .active{color:rgba(249,91,64,1)}
   .order-center-list{padding: 0 0.2rem;background: #fff;}
   .order-center-list .order-center-list-msg{padding: 0.2rem 0;}
   .order-center-list-msg .order-center-list-msg-div .msg-left{padding-right: 0.15rem;}
   .order-center-list-msg .order-center-list-msg-div .msg-left img{width: 0.6rem;height: 0.6rem;}
+  .order-center-list-msg .order-center-list-msg-div .msg-right{width: 2rem;}
   .order-center-list-msg .order-center-list-msg-div .msg-right label{font-size:0.16rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);}
   .order-center-list-msg .order-center-list-msg-div .msg-right label i{padding-left: 0.1rem;}
-  .order-center-list-msg .order-center-list-msg-div .msg-right p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);line-height: 0.3rem;}
+  .order-center-list-msg .order-center-list-msg-div .msg-right p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);line-height: 0.3rem;width: 2rem;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;}
   .order-center-list-msg .tip{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);}
   .order-center-list-opt p{padding: 0.15rem 0;font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);}
   .msg-time{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
@@ -333,5 +348,5 @@ export default {
   .navbar .right-btn:active {
     color: #dcbc6c;
   }
-  .list-null{font-size:0.15rem;font-family:PingFangSC-Regular;text-align: center;padding: 0.2rem 0;color:rgba(153,153,153,1)}
+  .list-null{font-size:0.15rem;font-family:PingFangSC-Regular;text-align: center;padding: 0.6rem 0;color:rgba(153,153,153,1);}
 </style>

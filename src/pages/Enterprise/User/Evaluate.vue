@@ -144,7 +144,7 @@ export default {
           lib.MessageAlert_Success(res.message)
           _this.$router.push('/user/ordercenter')
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     }

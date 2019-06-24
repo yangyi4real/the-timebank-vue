@@ -143,15 +143,15 @@ export default {
      * @return {boolean}
      */
     checkInputValue () {
-      if (this.src === '') {
+      if (this.imgUrl === '') {
         lib.MessageAlert_Error('请上传头像')
         return false
       }
-      if (this.neme === '') {
+      if (this.name === '') {
         lib.MessageAlert_Error('请输入姓名')
         return false
       }
-      if (this.sex === '') {
+      if (this.changeSex === '') {
         lib.MessageAlert_Error('请输入性别')
         return false
       }

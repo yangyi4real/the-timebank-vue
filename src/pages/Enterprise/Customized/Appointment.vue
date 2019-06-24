@@ -76,7 +76,7 @@
               <div>
                 <yd-cell-group>
                   <yd-cell-item>
-                    <input slot="right" type="text" @click.stop="show1 = true" v-model="model1" readonly v-on:input="inputValue">
+                    <input slot="right" type="text" @click.stop="show1 = true" v-model="model1" readonly >
                   </yd-cell-item>
                 </yd-cell-group>
                 <yd-cityselect v-model="show1" :callback="result1" :items="district"></yd-cityselect>
@@ -86,23 +86,23 @@
           </div>
           <div class="CoData-list flex-row-between">
             <div class="CoData-list-left">详细地址</div>
-            <div class="CoData-list-right"><input type="text" v-model="address" placeholder="请填写详细地址" v-on:input="inputValue"/></div>
+            <div class="CoData-list-right"><input type="text" v-model="address" placeholder="请填写详细地址" /></div>
           </div>
           <div class="CoData-list flex-row-between">
             <div class="CoData-list-left">参与人数</div>
-            <div class="CoData-list-right"><input type="text" v-model="number" placeholder="请填写参与人数" v-on:input="inputValue"/></div>
+            <div class="CoData-list-right"><input type="text" v-model="number" placeholder="请填写参与人数" /></div>
           </div>
           <div class="CoData-list flex-row-between">
             <div class="CoData-list-left">联系人</div>
-            <div class="CoData-list-right"><input type="text" v-model="linkman" placeholder="请填写联系人" v-on:input="inputValue"/></div>
+            <div class="CoData-list-right"><input type="text" v-model="linkman" placeholder="请填写联系人" /></div>
           </div>
           <div class="CoData-list flex-row-between">
             <div class="CoData-list-left">联系方式</div>
-            <div class="CoData-list-right"><input type="text" v-model="phone" placeholder="请填写联系方式" v-on:input="inputValue"/></div>
+            <div class="CoData-list-right"><input type="text" v-model="phone" placeholder="请填写联系方式" /></div>
           </div>
           <div class="CoData-list flex-row-between">
             <div class="CoData-list-left">需求</div>
-            <div class="CoData-list-right"><input type="text" v-model="demand" placeholder="请填写您的需求" v-on:input="inputValue"/></div>
+            <div class="CoData-list-right"><input type="text" v-model="demand" placeholder="请填写您的需求" /></div>
           </div>
           <div class="CoData-list flex-row-between" style="border: 0">
             <div class="CoData-list-left">约讲时间</div>
@@ -112,7 +112,7 @@
           </div>
         </div>
         <div class="CoData-btn">
-          <div @click="appointmentFormDataClick" :class="{ 'btn-border-opacity': inOperation, 'btn-border': operation}">确定</div>
+          <div @click="appointmentFormDataClick" class="btn-border-opacity">确定</div>
         </div>
       </div>
     </div>
@@ -149,8 +149,6 @@ export default {
       show1: false,
       model1: '',
       district: AreaJson,
-      inOperation: true, // 灰色按钮
-      operation: false,
       listDatasTime: [],
       myInfoData: {
         name: ''
@@ -268,7 +266,7 @@ export default {
           }
           console.log(_this.listDatasTime)
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -339,9 +337,9 @@ export default {
       _this.$_HTTPData.getAppoint(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
           _this.appointmentList = res.result
-          _this.$router.push(`/user/enterprise-payment/${_this.appointmentList.lessonOrder.price}/${_this.appointmentList.lessonOrder.id}/${_this.appointmentList.certificate.id}`)
+          _this.$router.push(`/user/enterprise-payment/${_this.appointmentList.price}/${_this.appointmentList.id}/${_this.appointmentList.certificateId}`)
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -368,27 +366,9 @@ export default {
     nowTimes () {
       this.timeFormate(new Date())
       setInterval(this.nowTimes, 30 * 1000)
-    },
-    inputValue () {
-      if (this.address !== '' && this.demand !== '' && this.number !== '' && this.areaValue !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
     }
   },
   watch: {
-    inputValue () {
-      if (this.address !== '' && this.demand !== '' && this.number !== '' && this.areaValue !== '') {
-        this.inOperation = false
-        this.operation = true
-      } else {
-        this.inOperation = true
-        this.operation = false
-      }
-    }
   }
 }
 </script>

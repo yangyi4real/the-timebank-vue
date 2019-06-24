@@ -128,7 +128,7 @@ export default {
           lib.MessageAlert_Success(res.message)
           _this.$router.push('/course/index')
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     }

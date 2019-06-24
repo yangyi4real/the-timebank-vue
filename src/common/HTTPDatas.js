@@ -8,7 +8,7 @@ import TipsTools from './TipsTools'
 import UserModel from '../store/UserModel'
 import { SET_USER_INFO, SHOW_GLOBAL_LOGIN } from '../store/MutationTypes'
 
-const PUBLIC = false // 发布状态
+const PUBLIC = true // 发布状态
 
 let currentVueObj = null
 const Axios = axios.create({
@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = 'http://time.shangdiguo.com:8081'
     } else {
-      this.host = 'http://192.168.1.137:8081'
+      this.host = 'http://192.168.1.120:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
@@ -237,12 +237,15 @@ class HTTPData {
    */
   POST (obj, url, data, callback) {
     currentVueObj = obj
-    // let _this = this
+    let _this = this
+    this.TipsTools.LoadingShow()
     let params = this._setRequiredParams(data)
     Axios.post(url, params, {}).then(function (response) {
+      _this.TipsTools.LoadingHide()
       callback(response.data)
     }).catch(function (e) {
-      // _this.$dialog.loading.close('加载中')
+      _this.TipsTools.LoadingHide()
+      // _this.TipsTools.MessageAlert_Warning('当前网络繁忙，请稍后重试')
     })
   }
   /**

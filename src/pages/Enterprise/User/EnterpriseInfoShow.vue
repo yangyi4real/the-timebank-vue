@@ -177,17 +177,9 @@ export default {
           let img = new Image()
           img.src = result
           console.log('********未压缩前的图片大小********')
-          console.log(result.length)
+          console.log(result)
           img.onload = function () {
-            let data = self.compress(img)
             self.imgUrl = self.compress(img)
-            let blob = self.dataURItoBlob(data)
-            console.log('*******base64转blob对象******')
-            console.log(blob)
-            var formData = new FormData()
-            formData.append('file', blob)
-            console.log('********将blob对象转成formData对象********')
-            console.log(formData.get('file'))
           }
         }
       }
@@ -207,26 +199,7 @@ export default {
       let ndata = canvas.toDataURL('image/jpeg', 0.1)
       console.log('*******压缩后的图片大小*******')
       console.log(ndata)
-      console.log(ndata.length)
       return ndata
-    },
-    // base64转成bolb对象
-    dataURItoBlob (base64Data) {
-      var byteString
-      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
-        byteString = atob(base64Data.split(',')[1])
-      } else {
-        byteString = unescape(base64Data.split(',')[1])
-      }
-      var mimeString = base64Data
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0]
-      var ia = new Uint8Array(byteString.length)
-      for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i)
-      }
-      return new Blob([ia], { type: mimeString })
     },
     // 上传营业执照
     getLicense (e) {
@@ -253,17 +226,9 @@ export default {
           let img = new Image()
           img.src = result
           console.log('********未压缩前的图片大小********')
-          console.log(result.length)
+          console.log(result)
           img.onload = function () {
-            let data = self.compresss(img)
-            self.license = result
-            let blob = self.dataURItoBlob(data)
-            console.log('*******base64转blob对象******')
-            console.log(blob)
-            var formData = new FormData()
-            formData.append('file', blob)
-            console.log('********将blob对象转成formData对象********')
-            console.log(formData.get('file'))
+            self.license = self.compresss(img)
           }
         }
       }
@@ -283,7 +248,6 @@ export default {
       let ndata = canvas.toDataURL('image/jpeg', 0.1)
       console.log('*******压缩后的图片大小*******')
       console.log(ndata)
-      console.log(ndata.length)
       return ndata
     },
     // getLicense (e) {
@@ -371,31 +335,7 @@ export default {
       let myImg = this.imgUrl
       myImg = myImg.replace('data:image/png;base64,', '')
       myImg = myImg.replace('data:image/jpeg;base64,', '')
-      if (this.imgUrl.search('http') !== -1) {
-        console.log('11')
-        let _this = this
-        let formData = new FormData()
-        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-        // formData.append('profile', myImg)
-        formData.append('name', _this.name)
-        formData.append('shortName', _this.shortName)
-        formData.append('foundingTime', _this.foundingTime)
-        formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
-        formData.append('address', _this.address)
-        formData.append('linkman', _this.linkman)
-        formData.append('phone', _this.phone)
-        formData.append('email', _this.email)
-        formData.append('license', _this.license)
-        _this.$_HTTPData.getCompanyFillInfo(_this, formData, function (res) {
-          if (res.code === 0 || res.code === '000') {
-            lib.MessageAlert_None(res.message)
-            _this.$router.push('/user/index')
-          } else {
-            lib.MessageAlert_None(res.message)
-          }
-        })
-      } else if (this.areaValue.length === 0) {
-        console.log('22')
+      if (this.areaValue.length === 0) {
         let _this = this
         let formData = new FormData()
         formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -411,14 +351,13 @@ export default {
         formData.append('license', _this.license)
         _this.$_HTTPData.getCompanyFillInfo(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
             _this.$router.push('/user/index')
           } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
-      } else if (this.license.search('http') !== -1) {
-        console.log('没上传营业执照')
+      } else {
         let _this = this
         let formData = new FormData()
         formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -431,64 +370,18 @@ export default {
         formData.append('linkman', _this.linkman)
         formData.append('phone', _this.phone)
         formData.append('email', _this.email)
-        // formData.append('license', _this.license)
+        formData.append('license', _this.license)
         _this.$_HTTPData.getCompanyFillInfo(_this, formData, function (res) {
           if (res.code === 0 || res.code === '000') {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
             _this.$router.push('/user/index')
           } else {
-            lib.MessageAlert_None(res.message)
-          }
-        })
-      // } else if (this.license.indexOf('http') > -1 && this.areaValue.length === 0 && this.imgUrl.indexOf('http') > -1) {
-      } else if (this.areaValue.length === 0 && this.license.search('http') !== -1) {
-        console.log('没营业执照没地址')
-        let _this = this
-        let formData = new FormData()
-        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-        formData.append('profile', myImg)
-        formData.append('name', _this.name)
-        formData.append('shortName', _this.shortName)
-        formData.append('foundingTime', _this.foundingTime)
-        // formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
-        formData.append('address', _this.address)
-        formData.append('linkman', _this.linkman)
-        formData.append('phone', _this.phone)
-        formData.append('email', _this.email)
-        // formData.append('license', _this.license)
-        _this.$_HTTPData.getCompanyFillInfo(_this, formData, function (res) {
-          if (res.code === 0 || res.code === '000') {
-            lib.MessageAlert_None(res.message)
-            _this.$router.push('/user/index')
-          } else {
-            lib.MessageAlert_None(res.message)
+            lib.MessageAlert_Success(res.message)
           }
         })
       }
-      // else if (this.license.search('http') !== -1 > -1 && this.areaValue.length === 0) {
-      //   let _this = this
-      //   let formData = new FormData()
-      //   formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      //   formData.append('profile', myImg)
-      //   formData.append('name', _this.name)
-      //   formData.append('shortName', _this.shortName)
-      //   formData.append('foundingTime', _this.foundingTime)
-      //   // formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
-      //   formData.append('address', _this.address)
-      //   formData.append('linkman', _this.linkman)
-      //   formData.append('phone', _this.phone)
-      //   formData.append('email', _this.email)
-      //   // formData.append('license', _this.license)
-      //   _this.$_HTTPData.getCompanyFillInfo(_this, formData, function (res) {
-      //     if (res.code === 0 || res.code === '000') {
-      //       lib.MessageAlert_None(res.message)
-      //       _this.$router.push('/user/index')
-      //     } else {
-      //       lib.MessageAlert_None(res.message)
-      //     }
-      //   })
-      // }
-      // else if (this.license.search('http') !== -1 > -1 && this.imgUrl.indexOf('http') > -1) {
+      // if (this.imgUrl.search('http') !== -1) {
+      //   console.log('11')
       //   let _this = this
       //   let formData = new FormData()
       //   formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -501,39 +394,15 @@ export default {
       //   formData.append('linkman', _this.linkman)
       //   formData.append('phone', _this.phone)
       //   formData.append('email', _this.email)
-      //   // formData.append('license', _this.license)
-      //   _this.$_HTTPData.getCompanyFillInfo(_this, formData, function (res) {
-      //     if (res.code === 0 || res.code === '000') {
-      //       lib.MessageAlert_None(res.message)
-      //       _this.$router.push('/user/index')
-      //     } else {
-      //       lib.MessageAlert_None(res.message)
-      //     }
-      //   })
-      // }
-      // } else if (this.areaValue.length === 0 && this.imgUrl.indexOf('http') > -1) {
-      //   let _this = this
-      //   let formData = new FormData()
-      //   formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      //   // formData.append('profile', myImg)
-      //   formData.append('name', _this.name)
-      //   formData.append('shortName', _this.shortName)
-      //   formData.append('foundingTime', _this.foundingTime)
-      //   // formData.append('location', _this.areaValue.length > 1 ? this.areaValue[1] : '')
-      //   formData.append('address', _this.address)
-      //   formData.append('linkman', _this.linkman)
-      //   formData.append('phone', _this.phone)
-      //   formData.append('email', _this.email)
       //   formData.append('license', _this.license)
       //   _this.$_HTTPData.getCompanyFillInfo(_this, formData, function (res) {
       //     if (res.code === 0 || res.code === '000') {
-      //       lib.MessageAlert_None(res.message)
+      //       lib.MessageAlert_Success(res.message)
       //       _this.$router.push('/user/index')
       //     } else {
-      //       lib.MessageAlert_None(res.message)
+      //       lib.MessageAlert_Success(res.message)
       //     }
       //   })
-      // }
     },
     inputValue () {
       if (this.CoName !== '' && this.CoAbbName !== '' && this.userName !== '' && this.CoEMail !== '' && this.registerDate !== '' && this.areaValue !== '') {

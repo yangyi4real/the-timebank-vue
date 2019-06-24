@@ -11,51 +11,52 @@
       </div>
       <div class="payment-mode">
         <p>支付方式</p>
-        <div class="payment-mode-list flex-row-between" style="border-bottom: 0.01rem solid #E8E8E8;">
+        <!--<div class="payment-mode-list flex-row-between" style="border-bottom: 0.01rem solid #E8E8E8;">-->
+          <!--<div class="payment-mode-list-text">-->
+            <!--<img src=""/>钱包支付<span v-if="this.getPrice > this.listData.balance">（余额不足）</span>-->
+          <!--</div>-->
+          <!--<div class="payment-mode-list-radio">-->
+            <!--<input id="item1" type="radio" name="payItem" value="1" v-model="checkedValue">-->
+            <!--<label for="item1"></label>-->
+          <!--</div>-->
+        <!--</div>-->
+        <div class="payment-mode-list flex-row-between">
           <div class="payment-mode-list-text">
-            <img src=""/>钱包支付<span v-if="this.getPrice > this.listData.balance">（余额不足）</span>
+            <img src=""/>微信支付
           </div>
           <div class="payment-mode-list-radio">
             <input id="item1" type="radio" name="payItem" value="1" v-model="checkedValue">
             <label for="item1"></label>
           </div>
         </div>
-        <div class="payment-mode-list flex-row-between">
-          <div class="payment-mode-list-text">
-            <img src=""/>微信支付
-          </div>
-          <div class="payment-mode-list-radio">
-            <input id="item2" type="radio" name="payItem" value="2" v-model="checkedValue">
-            <label for="item2"></label>
-          </div>
-        </div>
       </div>
       <div class="payment-btn">
-        <yd-button size="large" type="primary" @click.native="affirmPay" class="btn-border">确认支付</yd-button>
+        <div @click="affirmPay" class="btn-border">确认支付</div>
+        <!--<yd-button size="large" type="primary" @click.native="affirmPay" class="btn-border">确认支付</yd-button>-->
       </div>
     </div>
-    <yd-popup v-model="show1" position="center" width="90%">
-      <div class="payPopup" style="background-color:#fff;border-radius:0.08rem">
-        <div class="payPopup-title text-center">
-          <label>支付金额</label>
-          <p>￥{{getPrice}}</p>
-        </div>
-        <div class="payPassword-form">
-          <div class="payPwd">
-            <input ref="pwd" type="password" maxlength="6" v-model="msg"  style="position: absolute;z-index: -1;left:-100%;opacity: 0"/>
-            <ul class="pwd-wrap" @click="payFocus">
-              <li><i v-if="msgLength > 0"></i></li>
-              <li><i v-if="msgLength > 1"></i></li>
-              <li><i v-if="msgLength > 2"></i></li>
-              <li><i v-if="msgLength > 3"></i></li>
-              <li><i v-if="msgLength > 4"></i></li>
-              <li><i v-if="msgLength > 5"></i></li>
-            </ul>
-          </div>
-          <p class="text-right" @click="ResetPwd">忘记密码？</p>
-        </div>
-      </div>
-    </yd-popup>
+    <!--<yd-popup v-model="show1" position="center" width="90%">-->
+      <!--<div class="payPopup" style="background-color:#fff;border-radius:0.08rem">-->
+        <!--<div class="payPopup-title text-center">-->
+          <!--<label>支付金额</label>-->
+          <!--<p>￥{{getPrice}}</p>-->
+        <!--</div>-->
+        <!--<div class="payPassword-form">-->
+          <!--<div class="payPwd">-->
+            <!--<input ref="pwd" type="password" maxlength="6" v-model="msg"  style="position: absolute;z-index: -1;left:-100%;opacity: 0"/>-->
+            <!--<ul class="pwd-wrap" @click="payFocus">-->
+              <!--<li><i v-if="msgLength > 0"></i></li>-->
+              <!--<li><i v-if="msgLength > 1"></i></li>-->
+              <!--<li><i v-if="msgLength > 2"></i></li>-->
+              <!--<li><i v-if="msgLength > 3"></i></li>-->
+              <!--<li><i v-if="msgLength > 4"></i></li>-->
+              <!--<li><i v-if="msgLength > 5"></i></li>-->
+            <!--</ul>-->
+          <!--</div>-->
+          <!--<p class="text-right" @click="ResetPwd">忘记密码？</p>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</yd-popup>-->
   </div>
 </template>
 
@@ -142,91 +143,94 @@ export default {
       this.$router.go(-1)
     },
     affirmPay () {
-      if (this.checkedValue === '1') {
-        if (this.listData.balance < this.getPrice) {
-          lib.MessageAlert_None('余额不足，无法支付')
-        } else {
-          this.show1 = true
-        }
-      } else if (this.checkedValue === '2') {
-        let _this = this
-        let formData = new FormData()
-        formData.append('certificateId', _this.getId)
-        formData.append('IP', localStorage.getItem('Ip'))
-        // formData.append('certificateId', '1560843771562')`
-        _this.$_HTTPData.getCreate(_this, formData, function (res) {
-          // lib.MessageAlert_None('支付成功')
-          if (res.code === 0 || res.code === '000') {
-            console.log(res)
-            if (res.result === null) {
-              lib.MessageAlert_None('未获取到地址')
-              console.log(res.message)
-            } else {
-              window.open(res.result + '&redirect_url=' + encodeURIComponent('http://time.shangdiguo.com/#/personal/index'))
-              console.log(res.result + '&redirect_url=' + encodeURIComponent('http://time.shangdiguo.com/#/personal/index'))
-            }
-          } else {
+      let _this = this
+      let formData = new FormData()
+      formData.append('certificateId', _this.getId)
+      formData.append('IP', localStorage.getItem('Ip'))
+      // formData.append('certificateId', '1560843771562')`
+      _this.$_HTTPData.getCreate(_this, formData, function (res) {
+        // lib.MessageAlert_Success('支付成功')
+        if (res.code === 0 || res.code === '000') {
+          console.log(res)
+          if (res.result === null) {
+            lib.MessageAlert_Success('未获取到地址')
             console.log(res.message)
+          } else {
+            window.open(res.result + '&redirect_url=' + encodeURIComponent('http://time.shangdiguo.com/#/personal/index'))
+            console.log(res.result + '&redirect_url=' + encodeURIComponent('http://time.shangdiguo.com/#/personal/index'))
           }
-        })
-      }
-    },
-    payFocus () {
-      this.$refs.pwd.focus()
-    },
-    ResetPwd () {
-      this.$router.push('/personal/setup/newpaypassword')
-    },
-    getIf () {
-      if (this.listData.payPassword === null) {
-        this.getInputPassword()
-      } else {
-        console.log('111')
-      }
-    },
-    getInputPassword () {
-      this.$dialog.confirm({
-        title: '',
-        mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">您还有没有设置支付密码，是否前去设置？</p>',
-        opts: [
-          {
-            txt: '取消',
-            color: '#ccc',
-            callback: () => {
-              this.$router.go(-1)
-            }
-          },
-          {
-            txt: '确定',
-            color: true,
-            callback: () => {
-              this.$router.push('/personal/setup/inputpaypassword')
-            }
-          }
-        ]
+        } else {
+          console.log(res.message)
+        }
       })
-    },
-    getPush () {
-      this.$dialog.loading.open('支付中，请勿操作')
-      setTimeout(() => {
-        this.$dialog.loading.close()
-        lib.MessageAlert_None('支付成功')
-        this.$router.push('/personal/index')
-      }, 2000)
-      this.show1 = false
     }
+    // payFocus () {
+    //   this.$refs.pwd.focus()
+    // },
+    // ResetPwd () {
+    //   this.$router.push('/personal/setup/newpaypassword')
+    // }
+    // getIf () {
+    //   if (this.listData.payPassword === null) {
+    //     this.getInputPassword()
+    //   } else {
+    //     console.log('111')
+    //   }
+    // },
+    // getInputPassword () {
+    //   this.$dialog.confirm({
+    //     title: '',
+    //     mes: '<p style="text-align: center;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);line-height: 0.22rem!important;">您还有没有设置支付密码，是否前去设置？</p>',
+    //     opts: [
+    //       {
+    //         txt: '取消',
+    //         color: '#ccc',
+    //         callback: () => {
+    //           this.$router.go(-1)
+    //         }
+    //       },
+    //       {
+    //         txt: '确定',
+    //         color: true,
+    //         callback: () => {
+    //           this.$router.push('/personal/setup/inputpaypassword')
+    //         }
+    //       }
+    //     ]
+    //   })
+    // }
+    // getPush () {
+    //   this.$dialog.loading.open('支付中，请勿操作')
+    //   setTimeout(() => {
+    //     let _this = this
+    //     let formData = new FormData()
+    //     formData.append('payType', 1)
+    //     formData.append('orderId', _this.getOrderId)
+    //     formData.append('companyId', _this.$SaiLei.cookiesGet('user_id'))
+    //     _this.$_HTTPData.getCompanyPay(_this, formData, function (res) {
+    //       if (res.code === 0 || res.code === '000') {
+    //         _this.$dialog.loading.close()
+    //         lib.MessageAlert_Success('支付成功')
+    //         _this.$router.push('/personal/index')
+    //       } else {
+    //         lib.MessageAlert_Success(res.message)
+    //       }
+    //     })
+    //   }, 2000)
+    //   this.show1 = false
+    // }
   },
   watch: {
-    msg (curVal) {
-      if (/[^\d]/g.test(curVal)) {
-        this.msg = this.msg.replace(/[^\d]/g, '')
-      } else {
-        this.msgLength = curVal.length
-        if (this.msgLength === 6) {
-          this.getPush()
-        }
-      }
-    }
+    // msg (curVal) {
+    //   if (/[^\d]/g.test(curVal)) {
+    //     this.msg = this.msg.replace(/[^\d]/g, '')
+    //   } else {
+    //     this.msgLength = curVal.length
+    //     if (this.msgLength === 6) {
+    //       this.getPush()
+    //     }
+    //   }
+    // }
   }
 }
 </script>

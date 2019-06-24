@@ -12,8 +12,6 @@ import YDUI from 'vue-ydui'
 import 'vue-ydui/dist/ydui.px.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import Mint from 'mint-ui'
-import 'mint-ui/lib/style.css'
 
 Vue.config.productionTip = false
 Vue.config.devtool = true
@@ -24,7 +22,6 @@ Vue.prototype.$_lib = new LibTools()
 Vue.prototype.$_HTTPData = new HTTPData()
 Vue.use(YDUI)
 Vue.use(ElementUI)
-Vue.use(Mint)
 
 /* eslint-disable no-new */
 new Vue({

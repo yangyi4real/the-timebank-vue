@@ -142,6 +142,7 @@ export default {
   .CoData-list .yd-cell-right{padding: 0!important;}
   .payment-btn .yd-btn-primary{background:rgba(249,91,64,1)!important;}
   /*.main-center-title-star .yd-rate a{background:rgba(232,232,232,1);}*/
+  .index-popup .yd-popup-bottom{height: 5rem!important;}
   /*按钮黄框黑色字*/
   .btn-border-black{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40}
   /*按钮背景色透明*/
@@ -217,4 +218,6 @@ export default {
     color: rgba(249,91,64,1)!important;
   }
   .el-date-editor.el-input, .el-date-editor.el-input__inner{width: auto!important;}
+  .banner .swiper-pagination{top: 1.45rem!important;width: 100%!important;}
+  .banner2 .swiper-pagination{top: 1.45rem!important;width: 100%!important;}
 </style>

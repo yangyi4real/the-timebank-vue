@@ -5,7 +5,7 @@
       <div class="order-details">
         <div class="order-info flex-row-around">
           <div class="order-info-left"><img :src="listDatas.userEntity.photo"/></div>
-          <div class="order-info-right">
+          <div class="order-info-right" style="width: 60%">
             <label>{{listDatas.userEntity.name}}<i class="iconfont iconnv main-color" v-if="listDatas.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="listDatas.userEntity.sexuality === 2"></i></label>
             <p>{{listDatas.userEntity.birthday}}岁 | 工作{{listDatas.userEntity.workingAge}}年 | {{listDatas.userEntity.livingLocation}}</p>
             <p>{{listDatas.userEntity.skillLevel}}</p>
@@ -21,24 +21,29 @@
             </div>
           </div>
           <div class="order-content-text">约讲地址：{{listDatas.orderEntity.location}}</div>
-          <div>需求：{{listDatas.orderEntity.purpose}}</div>
+          <div>需求：{{listDatas.orderEntity.purpose == null? '暂无' : listDatas.orderEntity.purpose == ''? '暂无' : listDatas.orderEntity.purpose}}</div>
         </div>
         <div class="order-sign-up">
           <div class="order-sign-up-title">报名信息</div>
           <div class="order-sign-up-info">
-            <p>联系人：{{listDatas.orderEntity.linkman}}</p>
-            <p>联系方式：{{listDatas.orderEntity.phone}}</p>
+            <p>联系人：{{listDatas.orderEntity.linkman == null? '暂无' : listDatas.orderEntity.linkman}}</p>
+            <p>联系方式：{{listDatas.orderEntity.phone == null? '暂无' : listDatas.orderEntity.phone}}</p>
             <p>参与人数：{{listDatas.orderEntity.joinNum}}人</p>
-            <p>创建时间：2019-04-21 9:21:23</p>
-            <p>支付时间：2019-04-21 9:21:23</p>
+            <!--<p>创建时间：2019-04-21 9:21:23</p>-->
+            <p>支付时间：{{listDatas.orderEntity.cancelDate == null? '暂无' : listDatas.orderEntity.cancelDate}}</p>
           </div>
           <div class="order-opt">
             <p class="text-right">实付金额：<span>{{listDatas.orderEntity.price}}</span> 元</p>
             <div class="order-opt-btn flex-row-end">
               <div @click="paymentClicked" v-if="listDatas.orderEntity.orderStatus === 1">去支付</div>
               <div v-if="listDatas.orderEntity.orderStatus === 4">评价</div>
-              <div>取消订单</div>
-              <div>联系客服</div>
+              <div @click="cancelOrder" v-if="listDatas.orderEntity.orderStatus === 3">取消行程</div>
+              <div v-if="listDatas.orderEntity.orderStatus === 1" @click="cancelOrderOrder">取消订单</div>
+              <div>
+                <a :href="'tel:' + '05328888888'">
+                  联系客服
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -88,7 +93,7 @@ export default {
           let age = d.getFullYear() - birthday.getFullYear() - ((d.getMonth() < birthday.getMonth() || d.getMonth() === birthday.getMonth() || d.getDate() < birthday.getDate()) ? 1 : 0)
           _this.listDatas.userEntity.birthday = age
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -103,8 +108,70 @@ export default {
           console.log(res.result)
           lib.MessageAlert_Success(res.message)
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
+      })
+    },
+    cancelOrderOrder () {
+      this.$dialog.confirm({
+        title: '确认取消订单？',
+        mes: '',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {}
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              let _this = this
+              let formData = new FormData()
+              formData.append('orderId', _this.getOrderId)
+              _this.$_HTTPData.getCompanyCancelOrder(_this, formData, function (res) {
+                if (res.code === 0 || res.code === '000') {
+                  _this.$router.push('/user/ordercenter')
+                  lib.MessageAlert_Success(res.message)
+                } else {
+                  lib.MessageAlert_Success(res.message)
+                }
+              })
+            }
+          }
+        ]
+      })
+    },
+    cancelOrder () {
+      this.$dialog.confirm({
+        title: '取消行程将扣除100枚SDG，累计三次取消行程将直接取消认证，确认取消行程？',
+        mes: '',
+        opts: [
+          {
+            txt: '取消',
+            color: '#ccc',
+            callback: () => {}
+          },
+          {
+            txt: '确定',
+            color: true,
+            callback: () => {
+              let _this = this
+              let formData = new FormData()
+              formData.append('type', 2)
+              formData.append('orderId', _this.getOrderId)
+              _this.$_HTTPData.getCancelOrder(_this, formData, function (res) {
+                if (res.code === 0 || res.code === '000') {
+                  _this.loadData()
+                  _this.reload()
+                  lib.MessageAlert_Success(res.message)
+                } else {
+                  lib.MessageAlert_Success(res.message)
+                }
+              })
+            }
+          }
+        ]
       })
     }
   }

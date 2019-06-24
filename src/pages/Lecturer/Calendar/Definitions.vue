@@ -6,25 +6,25 @@
         <div class="definitions-list">
           <p><i class="iconfont iconxing main-color"></i><span class="main-color">D</span>未存储</p>
           <div class="definitions-list-div">
-            未将此时间存储至时间银行，企业将不会在未存储的时 间内进行约讲。快来存储未来三个月的空闲时间，赚取SDG吧~
+            未将时间存储到时间银行，企业将不会在未存储的时间内进行约讲。赶快将空闲的时间存储到时间银行，赚取SDG吧！
           </div>
         </div>
         <div class="definitions-list">
           <p><i class="iconfont iconxing main-color"></i><span class="main-color">D</span>存储未约</p>
           <div class="definitions-list-div">
-            此时间已存储至时间银行，目前还没有企业约讲，不要 着急，预约已经在路上了呦~同时当天晚上24:00可以获 得时光银行奖励的SDG哦~
+            此时间已经存储到时间银行，只是目前还没有企业约讲，不要着急请耐心等待，预约可能已经在路上啦，同时当天晚上24：00可以获取时间银行奖励的SDG哦！
           </div>
         </div>
         <div class="definitions-list">
           <p><i class="iconfont iconxing main-color"></i><span class="main-color">D</span>有约需确认</p>
           <div class="definitions-list-div">
-            有企业约讲啦，要在24小时之内尽快确认并认真准备课 程呦~24小时之内未确认将被视作拒绝约讲。
+            有企业约讲啦！要在24小时之内尽快确认并认真准备课程呦，若24小时之内未确认将被视作拒绝约讲。
           </div>
         </div>
         <div class="definitions-list" style="border: 0;!important;">
           <p><i class="iconfont iconxing main-color"></i><span class="main-color">D</span>已约</p>
           <div class="definitions-list-div">
-            已确认当天约讲行程，将在当天晚24:00收到当天讲课 费用哦~要记在时间表中不要忘记哦，违约将影响您的 评分与约讲率。
+            已确认当天约讲行程，将在当天晚上24：00收到当天讲课的费用，如若违约将影响您的评分与约讲率。
           </div>
         </div>
       </div>

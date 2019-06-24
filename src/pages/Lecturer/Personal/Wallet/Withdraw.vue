@@ -82,7 +82,7 @@ export default {
       //   this.$dialog.loading.close()
       // }, 2000)
       // this.show1 = false
-      lib.MessageAlert_None('支付成功')
+      lib.MessageAlert_Success('支付成功')
       // this.$router.push('/personal/index')
     }
   },

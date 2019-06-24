@@ -21,7 +21,6 @@
             <input type="password" v-model="password" placeholder="请输入密码"/>
           </div>
         </div>
-        <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
         <div class="login-btn">
           <div @click="loginBtnClicked" class="login-btn-div">登录</div>
           <div class="forgetPassword clearfix">
@@ -41,7 +40,6 @@
             <input type="password" v-model="password" placeholder="请输入密码"/>
           </div>
         </div>
-        <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
         <div class="login-btn">
           <div @click="loginBtnClicked2" class="login-btn-div">登录</div>
           <div class="forgetPassword clearfix">
@@ -102,6 +100,7 @@ export default {
     loginAgreementClicked () {
       this.$router.push('/login-agreement')
     },
+    loginAgreementClicked2 () {},
     /**
      * 验证输入框的值
      * @return {boolean}

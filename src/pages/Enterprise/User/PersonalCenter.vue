@@ -73,10 +73,10 @@ export default {
               formData.append('type', 2)
               _this.$_HTTPData.getSwitchLogin(_this, formData, function (res) {
                 if (res.code === 0 || res.code === '000') {
-                  lib.MessageAlert_None(res.message)
+                  lib.MessageAlert_Success(res.message)
                   _this.$router.push('/personal/index')
                 } else {
-                  lib.MessageAlert_None(res.message)
+                  lib.MessageAlert_Success(res.message)
                 }
               })
             }

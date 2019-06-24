@@ -263,12 +263,12 @@ const router = new Router({
     //   name: 'ceshi',
     //   component: () => import('../pages/Home/Login')
     // },
-    // // 测试
-    // {
-    //   path: '/ceshiSelect',
-    //   name: 'ceshiSelect',
-    //   component: () => import('../pages/Home/Login')
-    // },
+    // 测试
+    {
+      path: '/ceshiSelect',
+      name: 'ceshiSelect',
+      component: () => import('../pages/Home/ceshiSelect')
+    },
     // // 测试
     // {
     //   path: '/selectItem',
@@ -370,6 +370,18 @@ const router = new Router({
       path: '/user/allorder-evaluate',
       name: 'AllOrderEvaluate',
       component: () => import('../pages/Enterprise/User/AllOrderEvaluate')
+    },
+    // 已完成
+    {
+      path: '/user/allorder-complete',
+      name: 'AllOrderComplete',
+      component: () => import('../pages/Enterprise/User/AllOrderComplete')
+    },
+    // 已取消
+    {
+      path: '/user/allorder-cancel',
+      name: 'AllOrderCancel',
+      component: () => import('../pages/Enterprise/User/AllOrderCancel')
     },
     // 售后/退款
     {

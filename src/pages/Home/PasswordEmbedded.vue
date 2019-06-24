@@ -21,7 +21,6 @@
           <input type="password" v-model="passwordSure" placeholder="请确认新登录密码" v-on:input="inputValue"/>
         </div>
       </div>
-      <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
       <div class="login-btn">
         <div @click="loginBtnClicked" class="login-btn-div">保存</div>
         <div class="forgetPassword">

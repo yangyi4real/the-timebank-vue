@@ -3,9 +3,9 @@
       <navbar :title="titleMsg"></navbar>
       <div class="wapper">
         <div class="lecturer-data">
-          <div class="lecturer-data-div1 flex-row-between">
-            <div><img src=""/></div>
-            <div>
+          <div class="lecturer-data-div1 clearfix">
+            <div class="fl" style="width: 50%"><img :src="listDatas.photo"/></div>
+            <div class="fl" style="width: 50%">
               <label>{{listDatas.name}}<i class="iconfont iconnv main-color" v-if="listDatas.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="listDatas.sexuality === 2"></i></label>
               <p>{{listDatas.birthday}}岁 | 工作{{listDatas.workingAge}}年 | 青岛</p>
               <p>{{listDatas.introduction}}</p>
@@ -41,25 +41,35 @@
             </div>
           </div>
           <div v-show="show2" class="lecturer-skill-div">
+            <div v-if="this.listDatas.classIntroEntityList.length === 0">
+              <div class="lecturer-skill-div-class-title" style="padding-top: 0.2rem;text-align: center">暂无课程介绍</div>
+            </div>
             <div class="lecturer-skill-div-class" v-for="(item,index) in listDatas.classIntroEntityList" :key="index" >
-              <div class="lecturer-skill-div-class-title">{{item.className}}</div>
+              <div class="lecturer-skill-div-class-title">课题：{{item.className}}</div>
+              <div class="lecturer-skill-div-class-title">课程标签：</div>
               <div class="flex-row-start">
                 <div class="tip">{{item.tags}}</div>
               </div>
               <div class="lecturer-skill-div-class-text">
-                {{item.description}}
+                课程内容：{{item.description}}
               </div>
             </div>
           </div>
           <div v-show="show3" class="lecturer-skill-div">
+            <div v-if="this.listDatas.classExampleEntityList.length === 0">
+              <div class="lecturer-skill-div-class-title" style="padding-top: 0.2rem;text-align: center">暂无服务案例</div>
+            </div>
             <div v-for="(item,index) in listDatas.classExampleEntityList" :key="index">
               <div class="lecturer-skill-div-case" >
-                <label>{{item.className}}</label>
-                <label>{{item.companyName}}</label>
+                <label>课题：{{item.className}}</label>
+                <label>企业名称：{{item.companyName}}</label>
               </div>
             </div>
           </div>
           <div v-show="show4" class="lecturer-skill-div">
+            <div v-if="this.listDatas.evaluationEntityList.length === 0">
+              <div class="lecturer-skill-div-class-title" style="padding-top: 0.2rem;text-align: center">暂无评价</div>
+            </div>
             <!--<div class="lecturer-skill-evaluate flex-row-start" v-for="(item,index) in listDatas.evaluationEntityList" :key="index" >-->
               <!--<div class="lecturer-skill-evaluate-left"><img src=""/></div>-->
               <!--<div class="lecturer-skill-evaluate-right">-->
@@ -161,7 +171,7 @@ export default {
           let workYears = d.getFullYear() - secondDate.getFullYear()
           _this.listDatas.workingAge = workYears
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },

@@ -12,13 +12,13 @@
       <div v-show="jsBtnClick">
         <div class="login-form">
           <div class="login-form-div" v-show="phone">
-            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" />
           </div>
           <div class="login-form-div" v-show="phone2">
-            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" />
           </div>
           <div class="login-form-div">
-            <input type="password" v-model="password" placeholder="请输入密码" v-on:input="inputValue"/>
+            <input type="password" v-model="password" placeholder="请输入密码" />
           </div>
         </div>
         <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
@@ -32,13 +32,13 @@
       <div v-show="qyBtnClick">
         <div class="login-form">
           <div class="login-form-div" v-show="phone">
-            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" />
           </div>
           <div class="login-form-div" v-show="phone2">
-            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" v-on:input="inputValue"/>
+            <input type="text" v-model="phoneNumber" placeholder="请输入手机号" />
           </div>
           <div class="login-form-div">
-            <input type="password" v-model="password" placeholder="请输入密码" v-on:input="inputValue"/>
+            <input type="password" v-model="password" placeholder="请输入密码" />
           </div>
         </div>
         <p class="agreement">新用户登录默认同意<span @click="loginAgreementClicked">《协议》</span></p>
@@ -68,8 +68,6 @@ export default {
       shows: 1,
       jsBtnClick: true,
       qyBtnClick: false,
-      inOperation: true, // 灰色按钮
-      operation: false,
       phone: false,
       phone2: false
     }

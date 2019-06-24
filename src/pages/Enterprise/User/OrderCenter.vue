@@ -1,88 +1,90 @@
 <template>
-    <div class="body">
-      <div class="navbar">
-        <div class="left-btn" @click="leftItemTouched">
-          <i class="iconfont iconxiazai6"></i>
-        </div>
-        <div class="item title">
-          订单中心
-        </div>
+  <div class="body" style="overflow-x: hidden">
+    <div class="navbar">
+      <div class="left-btn" @click="leftItemTouched">
+        <i class="iconfont iconxiazai6"></i>
       </div>
-      <div class="wapper">
-        <!--<div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>-->
-        <div class="order-center-tab flex-row-around">
-          <div @click="tabsClicked" class="active">
-            全部
-          </div>
-          <div @click="tabsClicked2">
-            待付款
-          </div>
-          <div @click="tabsClicked3">
-            待确认
-          </div>
-          <div @click="tabsClicked4">
-            待开课
-          </div>
-          <div @click="tabsClicked5">
-            待评价
-          </div>
-          <div @click="tabsClicked6">
-            已取消
-          </div>
-        </div>
-        <!--<yd-tab horizontal-scroll>-->
-          <!--<yd-tab-panel label="全部" @click="tabsClicked"></yd-tab-panel>-->
-          <!--<yd-tab-panel label="待付款" @click="tabsClicked2"></yd-tab-panel>-->
-          <!--<yd-tab-panel label="待确认" @click="tabsClicked3"></yd-tab-panel>-->
-          <!--<yd-tab-panel label="待开课" @click="tabsClicked4"></yd-tab-panel>-->
-          <!--<yd-tab-panel label="待评价" @click="tabsClicked5"></yd-tab-panel>-->
-          <!--<yd-tab-panel label="已完成"></yd-tab-panel>-->
-          <!--<yd-tab-panel label="已取消" @click="tabsClicked6"></yd-tab-panel>-->
-          <!--<yd-tab-panel label="已退款"></yd-tab-panel>-->
-        <!--</yd-tab>-->
-        <div class="list-null" v-show="listDataNull">
-          暂无订单
-        </div>
-        <div class="order-center-list" v-for="(item,index) in listData" :key="index" v-show="listDataShow">
-          <div class="order-center-list-msg">
-            <div class="flex-row-between">
-              <div class="order-center-list-msg-div flex-row-start">
-                <div class="msg-left"><img :src="item.userEntity.photo" @click="OrderDetailClick(item)"/></div>
-                <div class="msg-right">
-                  <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
-                  <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
-                  <p>{{item.userEntity.skillLevel}}</p>
-                </div>
-              </div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 6">已完成</div>
-              <div class="tip" v-if="item.orderEntity.orderStatus === 5 || item.orderEntity.orderStatus === 7">已取消</div>
-            </div>
-            <div class="msg-time">
-              <div>约讲内容：{{item.orderEntity.purpose}}</div>
-              <div v-if="item.orderEntity.purpose === null">约讲内容：无</div>
-              <div class="flex-row-start">
-                <div>约讲时间：</div>
-                <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
+      <div class="item title">
+        订单中心
+      </div>
+    </div>
+    <div class="order-center-tab">
+      <a @click="tabsClicked" class="active">
+        全部
+      </a>
+      <a @click="tabsClicked2">
+        待付款
+      </a>
+      <a @click="tabsClicked3">
+        待确认
+      </a>
+      <a @click="tabsClicked4">
+        待开课
+      </a>
+      <a @click="tabsClicked5">
+        待评价
+      </a>
+      <a @click="tabsClicked6">
+        已完成
+      </a>
+      <a @click="tabsClicked7">
+        已取消
+      </a>
+      <a @click="tabsClicked8">
+        已退款
+      </a>
+      <!--<div class="fl">-->
+      <!--待评价-->
+      <!--</div>-->
+      <!--<div class="fl">-->
+      <!--已取消-->
+      <!--</div>-->
+    </div>
+    <div class="wapper">
+      <!--<div class="title text-right" @click="allOrderClick">查看全部订单 <i class="iconfont iconjiantou font-size-14"></i></div>-->
+      <div class="list-null" v-show="listDataNull">
+        暂无订单
+      </div>
+      <div class="order-center-list" v-for="(item,index) in listData" :key="index" v-show="listDataShow">
+        <div class="order-center-list-msg">
+          <div class="flex-row-between">
+            <div class="order-center-list-msg-div flex-row-start">
+              <div class="msg-left"><img :src="item.userEntity.photo" @click="OrderDetailClick(item)"/></div>
+              <div class="msg-right">
+                <label>{{item.userEntity.name}}<i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 1"></i><i class="iconfont iconnv main-color" v-if="item.userEntity.sexuality === 2"></i></label>
+                <p>{{item.userEntity.birthday}}岁 | 工作{{item.userEntity.workingAge}}年 | {{item.userEntity.livingLocation}}</p>
+                <p>{{item.userEntity.skillLevel}}</p>
               </div>
             </div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 1">待付款</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 2">待确认</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 3">待开课</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 4">待评价</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 6">已完成</div>
+            <div class="tip" v-if="item.orderEntity.orderStatus === 5 || item.orderEntity.orderStatus === 7">已取消</div>
           </div>
-          <div class="order-center-list-opt">
-            <p class="text-right">合计：{{item.orderEntity.price}} 元</p>
-            <div class="opt-btn flex-row-end">
-              <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
-              <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
-              <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 3">取消行程</div>
-              <div v-if="item.orderEntity.orderStatus === 1" @click="cancelOrderOrder(item)">取消订单</div>
-              <div>联系客服</div>
+          <div class="msg-time">
+            <div>约讲内容：{{item.orderEntity.purpose}}</div>
+            <div v-if="item.orderEntity.purpose === null">约讲内容：无</div>
+            <div class="flex-row-start">
+              <div>约讲时间：</div>
+              <div><p>{{item.orderEntity.begin}}</p><p>{{item.orderEntity.end}}</p></div>
             </div>
+          </div>
+        </div>
+        <div class="order-center-list-opt">
+          <p class="text-right">合计：{{item.orderEntity.price}} 元</p>
+          <div class="opt-btn flex-row-end">
+            <div @click="paymentClicked(item)" v-if="item.orderEntity.orderStatus === 1">去支付</div>
+            <div @click="evaluateClicked(item)" v-if="item.orderEntity.orderStatus === 4">评价</div>
+            <div @click="cancelOrder(item)" v-if="item.orderEntity.orderStatus === 3">取消行程</div>
+            <div v-if="item.orderEntity.orderStatus === 1" @click="cancelOrderOrder(item)">取消订单</div>
+            <div>联系客服</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -127,6 +129,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
           if (_this.listData.length === 0) {
+            console.log(_this.listDataNull)
             _this.listDataNull = true
             _this.listDataShow = false
           } else {
@@ -144,7 +147,7 @@ export default {
             _this.listData[i].userEntity.workingAge = workYears
           }
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -158,6 +161,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
           if (_this.listData.length === 0) {
+            console.log(_this.listDataNull)
             _this.listDataNull = true
             _this.listDataShow = false
           } else {
@@ -175,7 +179,7 @@ export default {
             _this.listData[i].userEntity.workingAge = workYears
           }
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -192,15 +196,20 @@ export default {
       this.$router.push('/user/allorder-evaluate')
     },
     tabsClicked6 () {
+      this.$router.push('/user/allorder-complete')
+    },
+    tabsClicked7 () {
+      this.$router.push('/user/allorder-cancel')
+    },
+    tabsClicked8 () {
       this.$router.push('/user/allorder-refund')
     },
     paymentClicked (item) {
       this.$router.push(`/user/enterprise-payment/${item.orderEntity.price}/${item.orderEntity.id}/${item.orderEntity.certificateId}`)
     },
-    // 取消行程
     cancelOrder (item) {
       this.$dialog.confirm({
-        title: '确认取消行程？',
+        title: '取消行程将扣除100枚SDG，累计三次取消行程将直接取消认证，确认取消行程？',
         mes: '',
         opts: [
           {
@@ -222,7 +231,7 @@ export default {
                   _this.reload()
                   lib.MessageAlert_Success(res.message)
                 } else {
-                  lib.MessageAlert_None(res.message)
+                  lib.MessageAlert_Success(res.message)
                 }
               })
             }
@@ -254,7 +263,7 @@ export default {
                   _this.reload()
                   lib.MessageAlert_Success(res.message)
                 } else {
-                  lib.MessageAlert_None(res.message)
+                  lib.MessageAlert_Success(res.message)
                 }
               })
             }
@@ -272,22 +281,24 @@ export default {
     //   this.$router.push('/user/allorder')
     // }
   },
-  watch: {
-  }
+  watch: {}
 }
 </script>
 
 <style scoped>
-  .wapper{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0 0.1rem;}
-  .order-center-tab{padding: 0.2rem;font-size:15px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(0,0,0,1);background: #fff;border-radius:0.05rem;margin-bottom: 0.1rem;}
+  .wapper{border-radius:0.05rem;background: #fff;margin: 0 0.1rem;}
+  .order-center-tab{background:rgba(255,255,255,1);border-radius:0.05rem;margin: 0.66rem 0.1rem 0.1rem 0.1rem;font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;height: 0.46rem;line-height: 0.46rem;white-space: nowrap;overflow-x: scroll;overflow-y: hidden;-webkit-backface-visibility: hidden;-webkit-perspective: 1000;-webkit-overflow-scrolling: touch;text-align: justify;box-sizing: border-box;}
+  .order-center-tab::-webkit-scrollbar{display: none;}
+  .order-center-tab a{padding: 0 0.1rem;}
   .active{color:rgba(249,91,64,1)}
   .order-center-list{padding: 0 0.2rem;background: #fff;}
   .order-center-list .order-center-list-msg{padding: 0.2rem 0;}
   .order-center-list-msg .order-center-list-msg-div .msg-left{padding-right: 0.15rem;}
   .order-center-list-msg .order-center-list-msg-div .msg-left img{width: 0.6rem;height: 0.6rem;}
+  .order-center-list-msg .order-center-list-msg-div .msg-right{width: 2rem;}
   .order-center-list-msg .order-center-list-msg-div .msg-right label{font-size:0.16rem;font-family:PingFangSC-Medium;font-weight:500;color:rgba(0,0,0,1);}
   .order-center-list-msg .order-center-list-msg-div .msg-right label i{padding-left: 0.1rem;}
-  .order-center-list-msg .order-center-list-msg-div .msg-right p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);line-height: 0.3rem;}
+  .order-center-list-msg .order-center-list-msg-div .msg-right p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);line-height: 0.3rem;width: 2rem;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;}
   .order-center-list-msg .tip{font-size:0.16rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);}
   .order-center-list-opt p{padding: 0.15rem 0;font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(249,91,64,1);}
   .msg-time{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);}
@@ -345,5 +356,5 @@ export default {
   .navbar .right-btn:active {
     color: #dcbc6c;
   }
-  .wapper .list-null{text-align: center;font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(153,153,153,1);padding: 0.6rem 0;}
+  .list-null{font-size:0.15rem;font-family:PingFangSC-Regular;text-align: center;padding: 0.6rem 0;color:rgba(153,153,153,1);}
 </style>

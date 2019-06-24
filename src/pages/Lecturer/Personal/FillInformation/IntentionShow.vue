@@ -63,53 +63,235 @@ export default {
       areaIsDisabled: false,
       skillOptions: [
         {
-          id: '1',
-          label: '软件/互联网开发/系统集成',
+          id: '行业经验',
+          label: '行业经验',
           isDisabled: false,
           children: [
             {
-              id: '2',
+              id: '市场',
               isDisabled: false,
-              label: 'UI-设计'
+              label: '市场'
             },
             {
-              id: '3',
+              id: '销售',
               isDisabled: false,
-              label: '产品经理'
+              label: '销售'
+            },
+            {
+              id: '运营',
+              isDisabled: false,
+              label: '运营'
+            },
+            {
+              id: '人力',
+              isDisabled: false,
+              label: '人力'
+            },
+            {
+              id: '财务',
+              isDisabled: false,
+              label: '财务'
+            },
+            {
+              id: '金融',
+              isDisabled: false,
+              label: '金融'
+            },
+            {
+              id: '餐饮',
+              isDisabled: false,
+              label: '餐饮'
+            },
+            {
+              id: '零售',
+              isDisabled: false,
+              label: '零售'
+            },
+            {
+              id: '法律',
+              isDisabled: false,
+              label: '法律'
+            },
+            {
+              id: '品牌管理',
+              isDisabled: false,
+              label: '品牌管理'
+            },
+            {
+              id: '新媒体营销',
+              isDisabled: false,
+              label: '新媒体营销'
+            },
+            {
+              id: '公关传播',
+              isDisabled: false,
+              label: '公关传播'
+            },
+            {
+              id: '商业合作',
+              isDisabled: false,
+              label: '商业合作'
+            },
+            {
+              id: '市场调研',
+              isDisabled: false,
+              label: '市场调研'
+            },
+            {
+              id: '应用推广',
+              isDisabled: false,
+              label: '应用推广'
+            },
+            {
+              id: '整合营销',
+              isDisabled: false,
+              label: '整合营销'
+            },
+            {
+              id: '职业技能培训',
+              isDisabled: false,
+              label: '职业技能培训'
+            },
+            {
+              id: '职业规划',
+              isDisabled: false,
+              label: '职业规划'
             }
           ]
         },
         {
-          id: '4',
-          label: '销售',
+          id: '互联网+',
+          label: '互联网+',
           isDisabled: false,
           children: [
             {
-              id: '5',
+              id: '产品设计',
               isDisabled: false,
-              label: '操盘手'
+              label: '产品设计'
             },
             {
-              id: '6',
+              id: '研发管理',
               isDisabled: false,
-              label: '大堂经理'
+              label: '研发管理'
+            },
+            {
+              id: '测试管理',
+              isDisabled: false,
+              label: '测试管理'
+            },
+            {
+              id: '数据分析',
+              isDisabled: false,
+              label: '数据分析'
+            },
+            {
+              id: '新媒体运营',
+              isDisabled: false,
+              label: '新媒体运营'
+            },
+            {
+              id: '活动运营',
+              isDisabled: false,
+              label: '活动运营'
+            },
+            {
+              id: '产品运营',
+              isDisabled: false,
+              label: '产品运营'
+            },
+            {
+              id: '用户运营',
+              isDisabled: false,
+              label: '用户运营'
+            },
+            {
+              id: '内容运营',
+              isDisabled: false,
+              label: '内容运营'
+            },
+            {
+              id: '网络运营',
+              isDisabled: false,
+              label: '网络运营'
+            },
+            {
+              id: '商业数据分析',
+              isDisabled: false,
+              label: '商业数据分析'
             }
           ]
         },
         {
-          id: '7',
-          label: '酒保',
+          id: '创业和投资融',
+          label: '创业和投资融',
           isDisabled: false,
           children: [
             {
-              id: '8',
+              id: '团队搭建',
               isDisabled: false,
-              label: '面案'
+              label: '团队搭建'
             },
             {
-              id: '9',
+              id: '股权分配',
               isDisabled: false,
-              label: '服务员'
+              label: '股权分配'
+            },
+            {
+              id: '商业计划',
+              isDisabled: false,
+              label: '商业计划'
+            },
+            {
+              id: '融资',
+              isDisabled: false,
+              label: '融资'
+            },
+            {
+              id: '商业模式',
+              isDisabled: false,
+              label: '商业模式'
+            },
+            {
+              id: '创业经验',
+              isDisabled: false,
+              label: '创业经验'
+            },
+            {
+              id: '风险投资',
+              isDisabled: false,
+              label: '风险投资'
+            },
+            {
+              id: '资本投资服务',
+              isDisabled: false,
+              label: '资本投资服务'
+            },
+            {
+              id: '创业方法论',
+              isDisabled: false,
+              label: '创业方法论'
+            }
+          ]
+        },
+        {
+          id: '心理',
+          label: '心理',
+          isDisabled: false,
+          children: [
+            {
+              id: '个人成长',
+              isDisabled: false,
+              label: '个人成长'
+            },
+            {
+              id: '情绪压力',
+              isDisabled: false,
+              label: '情绪压力'
+            },
+            {
+              id: '职场心理',
+              isDisabled: false,
+              label: '职场心理'
             }
           ]
         }
@@ -143,7 +325,7 @@ export default {
      * @return {boolean}
      */
     checkInputValue () {
-      if (this.skillValue === '') {
+      if (this.skillLevel === '') {
         lib.MessageAlert_Error('请选择技能标签')
         return false
       }
@@ -158,26 +340,36 @@ export default {
       return true
     },
     treeselectBtn () {
-      this.sub1 = false
-      this.showList = true
-      this.skillLevelValue = this.skillLevel.toString()
+      if (this.skillLevel.length > 5) {
+        lib.MessageAlert_Error('技能标签不得超过5个')
+      } else {
+        this.sub1 = false
+        this.showList = true
+        this.skillLevelValue = this.skillLevel.toString()
+      }
     },
     treeselectBtn2 () {
-      this.sub2 = false
-      this.showList = true
-      let _this = this
-      let formData = new FormData()
-      formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      // formData.append('skillLevel', this.skillLevel.toString())
-      formData.append('expectSalary', _this.price)
-      formData.append('expectLocation', _this.areaValue.toString())
-      _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
-        if (res.code === 0 || res.code === '000') {
-          _this.loadData()
-        } else {
-          lib.MessageAlert_Error(res.message)
-        }
-      })
+      if (this.areaValue.length > 5) {
+        lib.MessageAlert_Error('意向地点不得超过5个')
+      } else if (this.areaValue.length === 0) {
+        lib.MessageAlert_Error('请选择意向地点')
+      } else {
+        this.sub2 = false
+        this.showList = true
+        let _this = this
+        let formData = new FormData()
+        formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
+        // formData.append('skillLevel', this.skillLevel.toString())
+        formData.append('expectSalary', 0)
+        formData.append('expectLocation', _this.areaValue.toString())
+        _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {
+          if (res.code === 0 || res.code === '000') {
+            _this.expectLocation = res.result.expectedLocation
+          } else {
+            lib.MessageAlert_Error(res.message)
+          }
+        })
+      }
     },
     showSub1 () {
       this.showList = false

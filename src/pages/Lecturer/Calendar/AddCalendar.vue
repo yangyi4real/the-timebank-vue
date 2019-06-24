@@ -8,7 +8,7 @@
             ref='Calendar'
             :markDateMore='calendarList'
             v-on:isToday='clickToday'
-            agoDayHide='1561046399'
+            :agoDayHide='timest'
             futureDayHide='1564588799'
             :sundayStart = 'true'
             v-on:choseDay='clickDay'
@@ -87,12 +87,19 @@ export default {
     }
   },
   computed: {
+    timest () {
+      let tmp = Date.parse(new Date()).toString()
+      tmp = tmp.substr(0, 10)
+      tmp.toString()
+      return tmp
+    }
   },
   mounted () {
     this.loadDataList()
   },
   methods: {
     clickDay (data) {
+      lib.LoadingHide()
       this.calendarData = Date.parse(data)
       let _this = this
       let formData = new FormData()
@@ -105,7 +112,7 @@ export default {
             lib.MessageAlert_Success('当前日期可储存')
             _this.tiemShow = true
           } else {
-            lib.MessageAlert_Error('当前日期已储存')
+            lib.MessageAlert_Warning('当前日期已储存')
             _this.tiemShow = false
           }
         }
@@ -136,7 +143,7 @@ export default {
             }
           }
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -175,10 +182,10 @@ export default {
       formData.append('end', endDateTime)
       _this.$_HTTPData.getStoreTime(_this, formData, function (res) {
         if (res.code === 0 || res.code === '000') {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
           _this.$router.push('/calendar/index')
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },

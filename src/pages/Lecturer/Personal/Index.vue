@@ -28,18 +28,16 @@
       <div class="modular-already" v-if="listData.sex !== 0 && listData.sex !== null">
         <div class="flex-row-between">
           <div style="min-width: 0;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;width: 0.6rem">{{listData.skillLevel}}</div>
-          <div><i class="iconfont iconjiantou"></i><span>|</span></div>
+          <div><span>|</span></div>
           <div style="min-width: 0;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;width: 0.6rem"><i class="iconfont iconditu main-color"></i>{{listData.livingLocation}}</div>
-          <div><i class="iconfont iconjiantou"></i><span>|</span></div>
-          <div @click="baseDataClick">完善资料</div>
-          <div><i class="iconfont iconjiantou"></i><span>|</span></div>
+          <div><span>|</span></div>
           <div>
             <div v-if="listData.authStatus === 0 || listData.authStatus === null" @click="authenticationClicked">去认证<i class="iconfont iconjiantou"></i><span></span></div>
             <div v-if="listData.authStatus === 1">已认证<span></span></div>
           </div>
+          <div><span>|</span></div>
+          <div @click="baseDataClick">完善资料<i class="iconfont iconjiantou"></i></div>
         </div>
-        <p v-if="listData.introduction === '' || listData.introduction === null" @click="skillLevelClicked">添加个人描述，可让企业更好地认识你</p>
-        <p>{{listData.introduction}}</p>
       </div>
     </div>
     <div class="modular2 flex-row-around">

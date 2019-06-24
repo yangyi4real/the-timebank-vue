@@ -5,7 +5,7 @@
       <div v-show="mainDiv">
         <div class="profile-title">个人介绍</div>
         <div class="profile-text">
-          <textarea draggable="false" v-model="introduction" placeholder="用文字描述自己或者直接上传一张简历图片吧~"></textarea>
+          <textarea draggable="false" v-model="introduction" placeholder="用文字描述自己吧，字数在300字以内哦~"></textarea>
         </div>
         <div class="profile-add-course">
           <div class="profile-add-course-set flex-row-between">

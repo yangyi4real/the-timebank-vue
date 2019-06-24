@@ -52,7 +52,7 @@
               ref='Calendar'
               :markDateMore='timeList'
               agoDayHide='1554048000'
-              futureDayHide='1561910399'
+              futureDayHide='1564588799'
               :sundayStart = 'true'
               v-on:choseDay='clickDay'
             ></Calendar>
@@ -300,7 +300,7 @@ export default {
             }
           }
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -439,7 +439,7 @@ export default {
           _this.begin = res.result.timeSave.begin.substring(11, 16)
           _this.statuss = res.result.timeSave.status
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
@@ -482,7 +482,7 @@ export default {
           _this.loadDataToday()
           _this.reload()
         } else {
-          lib.MessageAlert_None(res.message)
+          lib.MessageAlert_Success(res.message)
         }
       })
     },
