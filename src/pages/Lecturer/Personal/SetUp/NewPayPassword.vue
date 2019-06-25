@@ -91,7 +91,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.startTimer()
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },

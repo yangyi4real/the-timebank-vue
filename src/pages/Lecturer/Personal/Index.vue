@@ -164,10 +164,8 @@ export default {
           } else {
             _this.src = _this.listData.photo
           }
-          console.log(_this.src)
-          console.log(res.result)
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },

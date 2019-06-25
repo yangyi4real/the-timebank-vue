@@ -172,9 +172,8 @@ export default {
           _this.introduction = res.result.introduction
           _this.introDataList = res.result.classIntroEntityList
           _this.introDatasList = res.result.classExampleEntityList
-          console.log(res.result)
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },
@@ -215,7 +214,6 @@ export default {
       this.className = ''
       this.tags = ''
       this.description = ''
-      console.log(this.introDataList)
     },
     // 课程介绍点击修改完成
     courseCompleteClick2 () {
@@ -249,7 +247,6 @@ export default {
       // 清空文本框中的数据
       this.className = ''
       this.companyName = ''
-      console.log(this.introDatasList)
     },
     // 课程案例点击修改完成
     caseCompleteClick2 () {
@@ -270,8 +267,6 @@ export default {
       this.serviceDiv2 = true
       this.className = this.introDatasList[index].className
       this.companyName = this.introDatasList[index].companyName
-      console.log(this.className)
-      console.log(this.companyName)
     },
     // 点击添加课程介绍
     courseClick () {

@@ -201,7 +201,7 @@ export default {
     },
     // 消息
     msgClick () {
-      this.$router.push('/personal/msg')
+      this.$router.push('/user/msg')
     },
     // 钱包
     walletClick () {

@@ -155,7 +155,6 @@ export default {
         if (res.code === 0 || res.code === '000') {
           lib.MessageAlert_Success(res.message)
           _this.$SaiLei.cookiesSave('user_loginStatus', 2)
-          console.log(res)
           if (res.result.account.payPassword === null) {
             _this.$router.push(`/paypassword/${res.result.user.id}/2`)
           } else {
@@ -169,7 +168,6 @@ export default {
   },
   mounted () {
     this.getLoginInput()
-    console.log(localStorage.getItem('Ip'))
   },
   watch: {
   }

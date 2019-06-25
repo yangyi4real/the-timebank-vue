@@ -59,11 +59,17 @@ const router = new Router({
       name: 'AddCalendar',
       component: () => import('../pages/Lecturer/Calendar/AddCalendar')
     },
-    // 注册协议
+    // 用户隐私协议
     {
-      path: '/login-agreement',
-      name: 'LoginAgreement',
-      component: () => import('../pages/Home/Agreement/LoginAgreement')
+      path: '/agreement-ys',
+      name: 'AgreementPushYs',
+      component: () => import('../pages/Home/Agreement/AgreementPushYs')
+    },
+    // 用户协议
+    {
+      path: '/agreement-yy',
+      name: 'AgreementPushYy',
+      component: () => import('../pages/Home/Agreement/AgreementPushYy')
     },
     // 名词解释
     {
@@ -257,6 +263,12 @@ const router = new Router({
       name: 'Msg',
       component: () => import('../pages/Lecturer/Personal/Msg')
     },
+    // 消息详情
+    {
+      path: '/personal/msg-details/:title/:content',
+      name: 'MsgDetails',
+      component: () => import('../pages/Lecturer/Personal/MsgDetails')
+    },
     // // 测试
     // {
     //   path: '/ceshi',
@@ -406,6 +418,12 @@ const router = new Router({
       path: '/user/msg',
       name: 'CoMsg',
       component: () => import('../pages/Enterprise/User/Msg')
+    },
+    // 企业端-消息详情
+    {
+      path: '/user/msg/:title/:content',
+      name: 'CoMsgDetails',
+      component: () => import('../pages/Enterprise/User/MsgDetails')
     }
   ]
 })

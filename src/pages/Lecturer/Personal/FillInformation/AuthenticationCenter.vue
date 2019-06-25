@@ -293,7 +293,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },

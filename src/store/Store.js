@@ -18,7 +18,9 @@ import {
   SHOW_PTPAY_PASSWORDTEXT,
   HIDE_PTPAY_PASSWORDTEXT,
   SHOW_GLOBAL_REGISTER,
-  SHOW_GLOBAL_PASSWORD
+  SHOW_GLOBAL_PASSWORD,
+  SHOW_YISI_AGREEMENT,
+  SHOW_YONGHU_AGREEMENT
 } from './MutationTypes'
 
 Vue.use(Vuex)
@@ -53,6 +55,14 @@ const state = {
    * 全局登录密码
    */
   showGlobalPassword: false,
+  /**
+   * 全局隐私协议
+   */
+  showYiSiAgreement: false,
+  /**
+   * 全局用户协议
+   */
+  showYongHuAgreement: false,
   /**
    * 支付密码弹框
    */
@@ -182,6 +192,22 @@ const mutations = {
    */
   [SHOW_GLOBAL_PASSWORD] (state, value) {
     state.showGlobalPassword = value
+  },
+  /**
+   * 显示全局隐私协议
+   * @param state
+   * @param value
+   */
+  [SHOW_YISI_AGREEMENT] (state, value) {
+    state.showYiSiAgreement = value
+  },
+  /**
+   * 显示全局用户协议
+   * @param state
+   * @param value
+   */
+  [SHOW_YONGHU_AGREEMENT] (state, value) {
+    state.showYongHuAgreement = value
   }
 }
 
@@ -273,6 +299,22 @@ const actions = {
    */
   [SHOW_GLOBAL_PASSWORD] ({commit}, value) {
     commit(SHOW_GLOBAL_PASSWORD, value)
+  },
+  /**
+   * 显示全局隐私协议
+   * @param commit
+   * @param value
+   */
+  [SHOW_YISI_AGREEMENT] ({commit}, value) {
+    commit(SHOW_YISI_AGREEMENT, value)
+  },
+  /**
+   * 显示全局用户协议
+   * @param commit
+   * @param value
+   */
+  [SHOW_YONGHU_AGREEMENT] ({commit}, value) {
+    commit(SHOW_YONGHU_AGREEMENT, value)
   },
   /**
    * 支付密码显示

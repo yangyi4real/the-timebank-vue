@@ -81,7 +81,7 @@ export default {
           lib.MessageAlert_Success('设置成功')
           _this.$router.go(-1)
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     }

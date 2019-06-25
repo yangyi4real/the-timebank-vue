@@ -117,7 +117,7 @@ export default {
             // _this.$router.push('/customized/index')
           }
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     }

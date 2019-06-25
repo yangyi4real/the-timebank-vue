@@ -136,9 +136,8 @@ export default {
           _this.model1 = res.result.livingLocation
           _this.workDate = res.result.workAge
           _this.birthDate = res.result.birthday
-          console.log(res.result)
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },
@@ -204,13 +203,9 @@ export default {
           let result = this.result
           let img = new Image()
           img.src = result
-          console.log('********未压缩前的图片大小********')
-          console.log(result)
           img.onload = function () {
             let data = self.compress(img)
             self.imgUrl = self.compress(img)
-            console.log('********imgUrl的数据********')
-            console.log(self.imgUrl)
             let blob = self.dataURItoBlob(data)
             var formData = new FormData()
             formData.append('file', blob)
@@ -231,8 +226,6 @@ export default {
       ctx.fillRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0, width, height)
       let ndata = canvas.toDataURL('image/jpeg', 0.1)
-      console.log('*******压缩后的图片大小*******')
-      console.log(ndata)
       return ndata
     },
     // base64转成bolb对象
@@ -285,7 +278,6 @@ export default {
       let myImg = this.imgUrl
       myImg = myImg.replace('data:image/png;base64,', '')
       myImg = myImg.replace('data:image/jpeg;base64,', '')
-      console.log(this.areaValue.length)
       if (this.areaValue.length === 0) {
         let _this = this
         let formData = new FormData()

@@ -84,15 +84,15 @@ export default {
     Calendar
   },
   methods: {
-    clickDay (data) {
-      console.log('选中了', data)
-    },
-    clickToday (data) {
-      console.log('跳到了本月今天', data)
-    },
-    changeDate (data) {
-      console.log('左右点击切换月份', data)
-    }
+    // clickDay (data) {
+    //   console.log('选中了', data)
+    // },
+    // clickToday (data) {
+    //   console.log('跳到了本月今天', data)
+    // },
+    // changeDate (data) {
+    //   console.log('左右点击切换月份', data)
+    // }
   },
   created () {
   }

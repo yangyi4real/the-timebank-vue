@@ -73,7 +73,10 @@ export default {
       this.$router.push('/')
     },
     loginAgreementClicked () {
-      this.$router.push('/login-agreement')
+      this.$router.push('/agreement-yy')
+    },
+    loginAgreementClicked2 () {
+      this.$router.push('/agreement-ys')
     },
     inputValue () {
       if (this.phoneNumber !== '' && this.phoneNumberCode !== '') {
@@ -156,7 +159,7 @@ export default {
           _this.startTimer()
           lib.MessageAlert_Success(res.message)
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },

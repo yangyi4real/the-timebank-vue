@@ -78,7 +78,7 @@ export default {
     },
     // 筛选中某项
     selectItem (query) {
-      console.log(query)
+      // console.log(query)
       // 根据业务需要进行数据请求即可
       // 打印出对象: {jingyan: '0', xueli: '0', xinzi: '2', hangye: '0'}
     }

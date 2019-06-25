@@ -390,7 +390,7 @@ export default {
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
-      formData.append('skillLevel', this.skillLevel)
+      formData.append('skillLevel', _this.skillLevel)
       formData.append('expectSalary', _this.price)
       formData.append('expectLocation', _this.areaValue)
       _this.$_HTTPData.getMyClassInfo(_this, formData, function (res) {

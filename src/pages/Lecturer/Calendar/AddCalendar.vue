@@ -88,7 +88,13 @@ export default {
   },
   computed: {
     timest () {
-      let tmp = Date.parse(new Date()).toString()
+      let date = new Date()
+      let times = date.getTime()
+      let hour = date.getHours()
+      let minute = date.getMinutes()
+      let second = date.getSeconds()
+      let dayTime = times - hour * 3600 * 1000 - minute * 60 * 1000 - second * 1000
+      let tmp = dayTime.toString()
       tmp = tmp.substr(0, 10)
       tmp.toString()
       return tmp
@@ -101,6 +107,18 @@ export default {
     clickDay (data) {
       lib.LoadingHide()
       this.calendarData = Date.parse(data)
+      let calendarDataTmp = this.calendarData.toString()
+      calendarDataTmp = calendarDataTmp.substr(0, 10)
+      calendarDataTmp.toString()
+      let myDate = new Date()
+      let times = myDate.getTime()
+      let hour = myDate.getHours()
+      let minute = myDate.getMinutes()
+      let second = myDate.getSeconds()
+      let dayTime = times - hour * 3600 * 1000 - minute * 60 * 1000 - second * 1000
+      let dayTimeData = dayTime.toString()
+      dayTimeData = dayTimeData.substr(0, 10)
+      dayTimeData.toString()
       let _this = this
       let formData = new FormData()
       formData.append('userId', _this.$SaiLei.cookiesGet('user_id'))
@@ -111,8 +129,14 @@ export default {
           if (_this.dateInfo === null) {
             lib.MessageAlert_Success('当前日期可储存')
             _this.tiemShow = true
+          } else if (calendarDataTmp === dayTimeData && _this.dateInfo !== null) {
+            lib.MessageAlert_Warning('当前时间已存储')
+            _this.tiemShow = false
+          } else if (calendarDataTmp === dayTimeData && _this.dateInfo === null) {
+            lib.MessageAlert_Warning('当天时间不可存储')
+            _this.tiemShow = false
           } else {
-            lib.MessageAlert_Warning('当前日期已储存')
+            lib.MessageAlert_Warning('当前时间已存储')
             _this.tiemShow = false
           }
         }

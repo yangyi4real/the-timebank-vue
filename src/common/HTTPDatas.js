@@ -8,7 +8,7 @@ import TipsTools from './TipsTools'
 import UserModel from '../store/UserModel'
 import { SET_USER_INFO, SHOW_GLOBAL_LOGIN } from '../store/MutationTypes'
 
-const PUBLIC = true // 发布状态
+const PUBLIC = false // 发布状态
 
 let currentVueObj = null
 const Axios = axios.create({
@@ -22,7 +22,7 @@ class HTTPData {
     if (PUBLIC) {
       this.host = 'http://time.shangdiguo.com:8081'
     } else {
-      this.host = 'http://192.168.1.120:8081'
+      this.host = 'http://192.168.1.127:8081'
     }
     this.TipsTools = new TipsTools()
     this.SaiLei = new SaiLeiTool()
@@ -83,7 +83,9 @@ class HTTPData {
       // 微信下单支付
       create: '/time-bank/wx/order/create',
       // 企业取消订单
-      companyCancelOrder: '/time-bank/company/cancel_order'
+      companyCancelOrder: '/time-bank/company/cancel_order',
+      // 消息列表
+      msgList: '/time-bank/msg/msg_list'
     }
     // 请求拦截
     // 响应拦截
@@ -623,6 +625,19 @@ class HTTPData {
     let _this = this
     // data.append('tokenId', _this.SaiLei.GetUUID())
     _this.POST(obj, `${_this.host}${_this.url.companyCancelOrder}`, data, function (res) {
+      callback(res)
+    })
+  }
+  /**
+   * 消息列表
+   * @param obj 调用该方法所在的 vue 对象
+   * @param data 本次请求的参数
+   * @param callback 本次请求的回调
+   */
+  getMsgList (obj, data, callback) {
+    let _this = this
+    // data.append('tokenId', _this.SaiLei.GetUUID())
+    _this.POST(obj, `${_this.host}${_this.url.msgList}`, data, function (res) {
       callback(res)
     })
   }

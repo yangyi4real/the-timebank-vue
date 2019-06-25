@@ -389,16 +389,13 @@ export default {
           _this.expectLocation = res.result.expectLocation
           _this.skillLevelValue = res.result.skillLevel
           _this.price = res.result.price
-          console.log(res.result)
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },
     pushClick () {
       // if (!this.checkInputValue()) { return }
-      console.log(this.skillLevel)
-      console.log(this.areaValue)
       if (this.skillLevel === null && this.areaValue === null) {
         let _this = this
         let formData = new FormData()

@@ -4,6 +4,8 @@
     <login-embedded v-if="showLogin"></login-embedded>
     <register-embedded v-if="showRegister"></register-embedded>
     <password-embedded v-if="showPassword"></password-embedded>
+    <yi-si-agreement v-if="showYisi"></yi-si-agreement>
+    <yong-hu-agreement v-if="showYongHu"></yong-hu-agreement>
   </div>
 </template>
 
@@ -13,8 +15,12 @@ import {SET_USER_INFO} from './store/MutationTypes'
 import LoginEmbedded from './pages/Home/LoginEmbedded'
 import RegisterEmbedded from './pages/Home/RegisterEmbedded'
 import PasswordEmbedded from './pages/Home/PasswordEmbedded'
+import YiSiAgreement from './pages/Home/Agreement/YinSiAgreement'
+import YongHuAgreement from './pages/Home/Agreement/YonghuAgreement'
 export default {
   components: {
+    YongHuAgreement,
+    YiSiAgreement,
     PasswordEmbedded,
     RegisterEmbedded,
     LoginEmbedded
@@ -39,6 +45,12 @@ export default {
     },
     showPassword () {
       return this.$store.state.showGlobalPassword
+    },
+    showYisi () {
+      return this.$store.state.showYiSiAgreement
+    },
+    showYongHu () {
+      return this.$store.state.showYongHuAgreement
     }
   },
   mounted () {
@@ -48,7 +60,6 @@ export default {
     reload () {
       this.isRouterAlive = false
       this.$nextTick(function () {
-        console.log('进来了')
         this.isRouterAlive = true
       })
     }
@@ -143,6 +154,7 @@ export default {
   .payment-btn .yd-btn-primary{background:rgba(249,91,64,1)!important;}
   /*.main-center-title-star .yd-rate a{background:rgba(232,232,232,1);}*/
   .index-popup .yd-popup-bottom{height: 5rem!important;}
+  .index-popup-div-font .yd-cell-item{padding-left: 0!important;}
   /*按钮黄框黑色字*/
   .btn-border-black{width:2.36rem;height:0.48rem;border-radius:0.05rem;line-height: 0.48rem;font-size: 0.17rem;font-family:PingFangSC-Medium;font-weight:500;text-align: center;margin: 0 auto;border: 0.01rem solid #F95B40}
   /*按钮背景色透明*/
@@ -220,4 +232,5 @@ export default {
   .el-date-editor.el-input, .el-date-editor.el-input__inner{width: auto!important;}
   .banner .swiper-pagination{top: 1.45rem!important;width: 100%!important;}
   .banner2 .swiper-pagination{top: 1.45rem!important;width: 100%!important;}
+  .mint-toast{z-index: 100000!important;}
 </style>

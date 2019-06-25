@@ -40,18 +40,12 @@ export default {
           let result = this.result
           let img = new Image()
           img.src = result
-          console.log('********未压缩前的图片大小********')
-          console.log(result.length)
           img.onload = function () {
             let data = self.compress(img)
             self.imgUrl = result
             let blob = self.dataURItoBlob(data)
-            console.log('*******base64转blob对象******')
-            console.log(blob)
             var formData = new FormData()
             formData.append('file', blob)
-            console.log('********将blob对象转成formData对象********')
-            console.log(formData.get('file'))
           }
         }
       }
@@ -69,9 +63,6 @@ export default {
       ctx.fillRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0, width, height)
       let ndata = canvas.toDataURL('image/jpeg', 0.1)
-      console.log('*******压缩后的图片大小*******')
-      console.log(ndata)
-      console.log(ndata.length)
       return ndata
     },
     // base64转成bolb对象

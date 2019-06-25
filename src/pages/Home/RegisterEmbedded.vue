@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { SHOW_GLOBAL_LOGIN, SHOW_GLOBAL_REGISTER } from '../../store/MutationTypes'
+import { SHOW_GLOBAL_LOGIN, SHOW_GLOBAL_REGISTER, SHOW_YISI_AGREEMENT, SHOW_YONGHU_AGREEMENT } from '../../store/MutationTypes'
 import Navbar from '../../views/navbar/navbar'
 import TipsTools from '../../common/TipsTools'
 let lib = new TipsTools()
@@ -72,13 +72,19 @@ export default {
     }
   },
   methods: {
+    loginAgreementClicked () {
+      this.$store.dispatch(SHOW_GLOBAL_REGISTER, false)
+      this.$store.dispatch(SHOW_YONGHU_AGREEMENT, true)
+    },
+    loginAgreementClicked2 () {
+      // this.$router.push('/login-agreement')
+      this.$store.dispatch(SHOW_GLOBAL_REGISTER, false)
+      this.$store.dispatch(SHOW_YISI_AGREEMENT, true)
+    },
     returnLogin () {
       // this.$router.push('/')
       this.$store.dispatch(SHOW_GLOBAL_REGISTER, false)
       this.$store.dispatch(SHOW_GLOBAL_LOGIN, true)
-    },
-    loginAgreementClicked () {
-      this.$router.push('/login-agreement')
     },
     inputValue () {
       if (this.phoneNumber !== '' && this.phoneNumberCode !== '') {

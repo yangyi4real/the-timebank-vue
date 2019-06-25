@@ -91,7 +91,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.startTimer()
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },
@@ -106,7 +106,7 @@ export default {
           lib.MessageAlert_Success('设置成功')
           _this.$router.push('/personal/setup/index')
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },

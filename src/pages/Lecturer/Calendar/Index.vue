@@ -175,10 +175,12 @@
               <div v-if="this.storageList.order !== null">
                 <div class="main-color flex-row-between">
                   <div>约讲编号：{{storageList.order.id}}</div>
-                  <div v-if="this.storageList.order.orderStatus === 1">待确认</div>
+                  <div v-if="this.storageList.order.orderStatus === 2">待确认</div>
                   <div v-if="this.storageList.order.orderStatus === 3">待开课</div>
                   <div v-if="this.storageList.order.orderStatus === 4">待评价</div>
-                  <div v-if="this.storageList.order.orderStatus === 5">已完成</div>
+                  <div v-if="this.storageList.order.orderStatus === 5">已退款</div>
+                  <div v-if="this.storageList.order.orderStatus === 6">已完成</div>
+                  <div v-if="this.storageList.order.orderStatus === 7">已取消</div>
                 </div>
                 <label>约讲企业：{{storageList.company.companyName}}</label>
                 <p>约讲地址：{{storageList.order.address}}</p>
@@ -274,7 +276,7 @@ export default {
         if (res.code === 0 || res.code === '000') {
           _this.listData = res.result
         } else {
-          console.log(res.message)
+          // console.log(res.message)
         }
       })
     },
@@ -509,7 +511,6 @@ export default {
       } else {
         this.ChoseNotAbout = true
         this.ChoseNotAboutTiem = true
-        console.log('tianjia')
       }
     },
     cancelTime () {

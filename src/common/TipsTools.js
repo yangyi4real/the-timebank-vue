@@ -4,7 +4,6 @@ import 'mint-ui/lib/style.css'
 class LibTools {
   constructor () {}
   MessageAlert_Success (string) {
-    console.log(string)
     Toast({
       message: string,
       iconClass: 'iconfont iconchenggong',
@@ -12,7 +11,6 @@ class LibTools {
     })
   }
   MessageAlert_Error (string) {
-    console.log(string)
     Toast({
       message: string,
       iconClass: 'iconfont icontishishibai',
@@ -20,7 +18,6 @@ class LibTools {
     })
   }
   MessageAlert_Warning (string) {
-    console.log(string)
     Toast({
       message: string,
       iconClass: 'iconfont iconwarningo',
@@ -28,7 +25,6 @@ class LibTools {
     })
   }
   MessageAlert_Bottom (string) {
-    console.log(string)
     Toast({
       message: string,
       position: 'bottom'
