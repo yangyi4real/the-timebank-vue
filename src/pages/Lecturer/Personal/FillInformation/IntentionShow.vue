@@ -35,7 +35,7 @@
     <div class="wapper" v-show="sub2">
       <div class="treeselect">
         <div class="flex-row-between">
-          <treeselect class="treeselect-input" v-model="areaValue" :multiple="true" :alwaysOpen="true" :options="areaOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请选择地点" :searchable="true" :limit='5'/>
+          <treeselect class="treeselect-input" v-model="areaValue" :multiple="true" :disable-branch-nodes="true" :alwaysOpen="true" :options="areaOptions" :flat="true" :show-count="true" :flatten-search-results="true" placeholder="请选择地点" :searchable="true" :limit='5'/>
           <div class="treeselectBtn" @click="treeselectBtn2">完成</div>
         </div>
       </div>

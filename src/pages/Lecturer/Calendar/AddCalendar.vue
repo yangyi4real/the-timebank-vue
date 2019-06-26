@@ -23,11 +23,11 @@
                 <el-time-select
                   placeholder="起始时间"
                   v-model="startTime"
+                  editable="false"
                   :picker-options="{
                         start: '09:00',
                         step: '01:00',
-                        end: '23:00',
-                        editable: false
+                        end: '23:00'
                       }">
                 </el-time-select>
               </div>
@@ -35,12 +35,12 @@
                 <el-time-select
                   placeholder="结束时间"
                   v-model="endTime"
+                  editable="false"
                   :picker-options="{
                         start: '10:00',
                         step: '01:00',
                         end: '23:00',
-                        minTime: startTime,
-                        editable: false
+                        minTime: startTime
                       }">
                 </el-time-select>
               </div>

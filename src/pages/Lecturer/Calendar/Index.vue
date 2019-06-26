@@ -186,7 +186,7 @@
                 <p>约讲地址：{{storageList.order.address}}</p>
                 <p>约讲时间：{{storageList.order.begin}} 至 {{storageList.order.end}}</p>
                 <p>约讲人数：{{storageList.order.joinNum}}人</p>
-                <p>需求：{{storageList.order.purpose}}</p>
+                <p>需求：{{storageList.order.purpose == null? '无' : storageList.order.purpose}}</p>
               </div>
             </div>
           </div>
@@ -375,14 +375,16 @@ export default {
               _this.storageTime = false
               _this.choseItem = 0
               _this.choseItem2 = 1
-            } else if (_this.storageList.order !== null && _this.storageList.order.orderStatus === 1) {
-              _this.ChoseAbout = true
-              _this.ChoseNotAbout = false
-              _this.notChose = false
-              _this.notChoseEd = false
-              _this.storageTime = false
-              _this.choseItem = 0
-              _this.choseItem2 = 1
+            } else if (_this.storageList.order !== null) {
+              if (_this.storageList.order.orderStatus === 1 || _this.storageList.order.orderStatus === 2 || _this.storageList.order.orderStatus === 3 || _this.storageList.order.orderStatus === 4 || _this.storageList.order.orderStatus === 5 || _this.storageList.order.orderStatus === 6) {
+                _this.ChoseAbout = true
+                _this.ChoseNotAbout = false
+                _this.notChose = false
+                _this.notChoseEd = false
+                _this.storageTime = false
+                _this.choseItem = 0
+                _this.choseItem2 = 1
+              }
             }
           } else if (myDateDay === calendarTime) { // 今天
             if (_this.storageList === null) {

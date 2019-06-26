@@ -273,8 +273,11 @@ export default {
     clickDay (data) {
       this.calendarData = data
       let calendarTime = Date.parse(this.calendarData)
+      let dayTimeData = calendarTime.toString()
+      dayTimeData = dayTimeData.substr(0, 10)
+      dayTimeData.toString()
       let a = Math.round(new Date() / 1000)
-      if (a > calendarTime) {
+      if (a > dayTimeData) {
         lib.MessageAlert_Error('时间已过，无法预约')
       } else {
         let _this = this

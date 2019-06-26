@@ -18,8 +18,8 @@
           </div>
           <div class="lecturer-data-div3 clearfix">
             <div class="lecturer-data-div3-left fl">
-              <div style="padding-left: 0.2rem">
-                <yd-rate slot="left" v-model="rate" color="#E2E2E2" active-color="#FED500" size="0.2rem"></yd-rate>
+              <div style="text-align: center">
+                <span style="font-size: 0.2rem;font-family: PingFangSC-Medium;font-weight: 500;color: rgba(249,91,64,1)">{{listDatas.lectureScore}}</span> 分
               </div>
               <p>综合评分</p>
             </div>
@@ -70,15 +70,17 @@
             <div v-if="this.listDatas.evaluationEntityList.length === 0">
               <div class="lecturer-skill-div-class-title" style="padding-top: 0.2rem;text-align: center">暂无评价</div>
             </div>
-            <!--<div class="lecturer-skill-evaluate flex-row-start" v-for="(item,index) in listDatas.evaluationEntityList" :key="index" >-->
-              <!--<div class="lecturer-skill-evaluate-left"><img src=""/></div>-->
-              <!--<div class="lecturer-skill-evaluate-right">-->
-                <!--<label>青岛赛雷科技有限公司</label>-->
+            <div class="lecturer-skill-evaluate flex-row-start" v-for="(item,index) in listDatas.evaluationEntityList" :key="index" >
+              <div class="lecturer-skill-evaluate-left"><img :src="profile"/></div>
+              <div class="lecturer-skill-evaluate-right">
+                <label>{{companyEntity}}</label>
                 <!--<span>2019-04-21</span>-->
-                <!--<p><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i><i class="iconfont iconxing star"></i> 非常推荐</p>-->
-                <!--<div class="right-text"></div>-->
-              <!--</div>-->
-            <!--</div>-->
+                <p><yd-rate slot="left" v-model="item.lectureScore" color="#E2E2E2" active-color="#FED500" size="0.2rem"></yd-rate></p>
+                <div class="right-text">
+                  {{item.companyContent}}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -107,7 +109,6 @@ export default {
         {name: '服务案例'},
         {name: '评价'}
       ],
-      rate: 5,
       changeTab: 0,
       show1: true,
       show2: false,
@@ -117,7 +118,11 @@ export default {
         classExampleList: [],
         classIntroEntityList: [],
         evaluationEntityList: []
-      }
+      },
+      evaluationTemp: '',
+      companyEntity: '',
+      profile: '',
+      listDatasDetail: []
     }
   },
   computed: {
@@ -170,6 +175,26 @@ export default {
           let secondDate = new Date(_this.listDatas.workingAge.replace(/-/g, '/'))
           let workYears = d.getFullYear() - secondDate.getFullYear()
           _this.listDatas.workingAge = workYears
+          for (let i = 0; i < _this.listDatas.evaluationEntityList.length; i++) {
+            _this.evaluationTemp = _this.listDatas.evaluationEntityList[i].orderId
+            _this.loadDatas()
+            console.log(_this.evaluationTemp)
+          }
+        } else {
+          lib.MessageAlert_Success(res.message)
+        }
+      })
+    },
+    loadDatas () {
+      let _this = this
+      let formData = new FormData()
+      formData.append('orderId', _this.evaluationTemp)
+      _this.$_HTTPData.getOrderDetail(_this, formData, function (res) {
+        if (res.code === 0 || res.code === '000') {
+          _this.listDatasDetail = res.result
+          _this.companyEntity = res.result.companyEntity.companyName
+          _this.profile = res.result.companyEntity.profile
+          console.log(_this.listDatasDetail)
         } else {
           lib.MessageAlert_Success(res.message)
         }
@@ -193,7 +218,7 @@ export default {
   .lecturer-data .lecturer-data-div1 label i{padding-left: 0.1rem;}
   .lecturer-data .lecturer-data-div1 p{font-size:0.14rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);line-height: 0.3rem;}
   .lecturer-data .lecturer-data-div2 p{font-size:15px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);line-height: 0.3rem;}
-  .lecturer-data .lecturer-data-div3 .lecturer-data-div3-left{border-right: 0.01rem solid #E8E8E8;text-align: center;width: 50%;padding: 0.2rem 0;}
+  .lecturer-data .lecturer-data-div3 .lecturer-data-div3-left{border-right: 0.01rem solid #E8E8E8;text-align: center;width: 50%;padding: 0.14rem 0;}
   .lecturer-data .lecturer-data-div3 .lecturer-data-div3-left label i{padding: 0 0.03rem;}
   .lecturer-data .lecturer-data-div3 .lecturer-data-div3-left p{font-size:0.15rem;font-family:PingFangSC-Regular;font-weight:400;color:rgba(51,51,51,1);padding-top: 0.15rem;}
   .lecturer-data .lecturer-data-div3 .lecturer-data-div3-right{width: 50%;padding: 0.14rem 0;text-align: center}
